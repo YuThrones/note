@@ -475,3 +475,37 @@ method 和salt\_length 的默认值就能满足大多数需求。
 ###有多个Python 包可用于生成虚拟信息，其中功能相对完善的是ForgeryPy，可以使用pip 进行安装：
 	(venv) $ pip install forgerypy
 
+
+###最简单的方法是使用git reset 命令：
+	$ git reset --hard
+这个命令会损坏本地修改，所以执行此命令前你需要保存所有不想丢失的改动。
+
+
+	$ git fetch --all
+	$ git fetch --tags
+	$ git reset --hard origin/master
+git fetch 命令用于利用GitHub 上的远程仓库更新本地仓库的提交历史和标签，但不会改
+动真正的源文件，随后执行的git reset 命令才是用于更新文件的操作。再次提醒，执行
+git reset 命令后，本地修改会丢失。
+
+
+若要查看SQLAlchemy 为查询生成的原生SQL 查询语句，只需把query 对象转换成字
+符串：
+
+	>>> str(User.query.filter_by(role=user_role))
+
+###测试邮件
+	from flask.ext.mail import Message
+	from hello import mail
+	msg = Message('test subject', sender='18819481205@163.com', recipients=['18819481205@163.com'])
+	msg.body = 'text body'
+	msg.html = '<b>HTML</b> body'
+	with app.app_context():
+	   mail.send(msg)
+密码是**客户端授权密码**，不是账户密码
+
+###数据库迁移
+migrate子命令创建自动迁移脚本：
+
+	python hello.py db migrate -m "initial migration"
+	python hello.py db upgrade
