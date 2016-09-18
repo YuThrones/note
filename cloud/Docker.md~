@@ -20,7 +20,7 @@
     * 写时复制：文件系统都是用写时复制创建，这意味着文件系统是分层的、快速的，而且占用磁盘空间更小
     * 日志：容器产生的STDOUT、STDERR和STDIN这些IO流都会被收集并计入日志，用来进行日志分析和故障排错
     * 交互式Shell：用户可以创建一个伪tty终端，将其连接到STDIN，为容器提供一个交互式的Shell
-
+    
 ##Docker安装
 * 前提条件：
   * 64位CPU的计算机
@@ -33,21 +33,17 @@
       *  默认存储通常是Device Mapper
   * 内核必须支持并开启cgroup和命名空间（namespace）功能
   * 检查前提条件：  
-      * 用```uname```命令来检查内核版本  
+      * 用```uname```命令来检查内核版本
       ```uname -a```
-      * 检查Device Mapper    
-      ``` ls -l /sys/class/misc/device-mapper ```  
+      * 检查Device Mapper
+      ``` ls -l /sys/class/misc/device-mapper ```
 
-* 安装Docker：  
-添加Docker的APT仓库：  
-```sudo sh -c "echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"```  
-检查是否有curl命令：  
-```whereis curl```  
-如果没有，需要安装：  
-```sudo apt-get -y install curl```  
-接下来添加Docker的GPG仓库：   
-```curl -s https://get.docker.io/gpg | sudo apt-key add -```  
-之后需要更新软件源：  
-```sudo apt-get update```  
-然后就可以安装Docker软件包了：  
-```sudo apt-get install lxc-docker```  
+* 安装Docker：
+添加Docker的APT仓库：
+```sudo sh -c "echo deb https://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"```
+检查是否有curl命令：
+```whereis curl```
+如果没有，需要安装：
+```sudo apt-get -y install curl```
+接下来添加Docker的GPG仓库：
+```curl -s https://get.docker.io/gpg | sudo apt-key add -```
