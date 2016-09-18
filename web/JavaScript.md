@@ -280,3 +280,41 @@ if (s.length) { // 条件计算结果为3
 }
 ```
 
+* for循环的一个变体是```for ... in```循环，它可以把一个对象的所有属性依次循环出来：
+```
+var o = {
+    name: 'Jack',
+    age: 20,
+    city: 'Beijing'
+};
+for (var key in o) {
+    alert(key); // 'name', 'age', 'city'
+}
+```
+
+* ```Map``` 是一组键值对的结构，具有极快的查找速度。
+```
+var m = new Map([['Michael', 95], ['Bob', 75], ['Tracy', 85]]);
+m.get('Michael'); // 95
+```
+初始化Map需要一个二维数组，或者直接初始化一个空Map。Map具有以下方法：
+```
+var m = new Map(); // 空Map
+m.set('Adam', 67); // 添加新的key-value
+m.set('Bob', 59);
+m.has('Adam'); // 是否存在key 'Adam': true
+m.get('Adam'); // 67
+m.delete('Adam'); // 删除key 'Adam'
+m.get('Adam'); // undefined
+```
+
+* Set和Map类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在Set中，没有重复的key。
+要创建一个Set，需要提供一个Array作为输入，或者直接创建一个空Set：
+```
+var s1 = new Set(); // 空Set
+var s2 = new Set([1, 2, 3]); // 含1, 2, 3
+```
+
+* 遍历Array可以采用下标循环，遍历Map和Set就无法使用下标。为了统一集合类型，ES6标准引入了新的iterable类型，Array、Map和Set都属于iterable类型。
+具有iterable类型的集合可以通过新的for ... of循环来遍历。
+for ... of循环是ES6引入的新的语法，请测试你的浏览器是否支持：
