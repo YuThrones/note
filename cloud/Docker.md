@@ -120,10 +120,10 @@ Docker会先检查本地是否存在ubuntu镜像，如果没有，就会链接�
 sudo docker run --restart=always --name daemon_dave -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
 ```
   我们还可以将这个标志设为 ```on-failure```，这样只有容器退出代码非0值时才会重新启动,另外， ```on-failure``` 还可以接受一个可选的重启次数参数
-```--restart=on-failure:5```
+```--restart=on-failure:5```  
 
 * 深入容器：
-  我们可以通过 ```docker inspect```获得更多容器的信息：
+  我们可以通过 ```docker inspect```  获得更多容器的信息：
 ```sudo docker inspect daemon_dave```
   也可以使用 ```-f``` 或者```--format```参数来选定查看结果：
 ```sudo docker inspect --format '{{ .State.Running }}' daemon_dave```
