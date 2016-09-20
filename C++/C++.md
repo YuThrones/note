@@ -157,3 +157,28 @@ int main(){
 
 * 在计算机编程语言中用来为复杂的声明定义简单的别名，与宏定义有些差异。它本身是一种存储类的关键字，与auto、extern、mutable、static、register等关键字不能出现在同一个表达式中。
 
+##泛型
+* 泛型函数：
+```
+template  <typename T1, typename T2>
+T1 fun(T1, T2, int )
+{  //…..}
+```  
+* 泛型类：
+```
+##声明部分
+template  <class T1, class T2 >  
+class A {
+   private:
+   int a;
+  T1 b;  //成员变量也可以用模板参数
+  public: 
+  int fun1(T1 x, int y );
+ T2 fun2(T1 x, T2 y);
+}
+##实现部分
+template  <class T1, class T2 >
+int A<T1>:: fun1(T1 x, int y ){//实现…… }
+ template  <class T1, class T2 >
+T2 A<T1,T2>:: fun2(T1 x, T2 y) {//实现…… }
+```

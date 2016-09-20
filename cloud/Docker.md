@@ -152,4 +152,24 @@ sudo docker run --restart=always --name daemon_dave -d ubuntu /bin/sh -c "while 
   查找Docker Hub上公共的可用镜像
 
 * 构建镜像：  
-  
+  构建镜像有两种方法：
+  1. 使用docker commit命令
+  2. 使用docker build 和 Dockerfile文件（推荐）
+  可以使用docker login命令登录到Docker Hub
+  在对镜像进行操作之后执行docker commit命令，会提交修改
+```
+sudo docker commit -m="A new custom image" --author="James Turnbull" \
+4aab3asdfas jamtur02/apache2:webserver
+```
+  `-m`选项指定提交信息，`--author`列出作者信息，接着指定了要提交的容器ID，并为该镜像指定了一个webserver标签。
+  `Dockerfile`示例：
+```
+# Version:0.0.1
+FROM ubuntu:14.04
+MAINTAINER James Turnbull "james@example.com"
+RUN apt-get update
+RUN apt-get install -y nginx
+RUN echo 'Hi, I am in your container' \
+	>/usr/share/nginx/html/index.html
+EXPOSE 80
+```
