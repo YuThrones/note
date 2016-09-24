@@ -39,7 +39,7 @@ eg.  fourth = raw_input('Year: ')[3]
 none可以作为空的元素
 a in tag检验一个值是否在序列中
 
-2.3
+###2.3
 list('Hello')根据String创建列表
 a[1]=10
 为列表中元素赋值
@@ -59,11 +59,11 @@ y=x只是让x,y指向同一个列表，不是复制
 sorted(x)返回x排序后的副本
 a.sort(key=len,reverse=true，cmp=mycmp)key指定用于排序的键，cmp指定排序函数
 
-2.4
+###2.4
 (1,)创建只有一个值得元组
 tuple('abc')以一个序列为参数将他转化为元组
 
-3.1
+###3.1
 字符串都是不可变的
 
 eg.
@@ -72,23 +72,23 @@ values=("Hello" "World")
 print format % values
 用%%输出%
 
-3.3
+###3.3
 %-010.2f宽度10，精度2，用0填充，左对齐
 *表示数值从元祖参数中读取
 +无论正负都标示出符号
 
-3.4
+###3.4
 find返回找到的最左端的索引，找不到返回-1
 a.find（'a',1,3）可以提供起始点
 join可以把队列中元素连接成字符串，与split相反
 strip去除两段空格，也可以带参数指定去除字符
 translate用于转化字符串
 
-4.1
+###4.1
 a={'alice':'12','bob':'22'}
 创建字典
 
-4.3
+###4.3
 可以用dict函数为其他映射或者序列创建字典，也可以通过关键字参数创造
 eg.
 item =[('name', 'Gumby'), ('age', 42)]
@@ -103,10 +103,10 @@ pop(x)返回值并删除字典项
 popitem()随机删除一个字典项
 update用一个字典更新另一个字典
 
-5.2
+###5.2
 x,y=y,x
 
-5.4
+###5.4
 if  :    
 elif:
 
@@ -116,7 +116,7 @@ xrange功能相同，但一次创建一个数，迭代大数列时更好用
 zip压缩两个列表
 for index, string in enumerate(Strings):得到索引
 
-5.6
+###5.6
 [x*x for x in range(10)]
 pass 空语句
 exec 执行字符串中的代码
@@ -126,36 +126,40 @@ exec 'sqrt = 1' in scope
 
 eval 求值
 
-6.3
+###6.3
 callable(x)判断函数是否可以调用
+```
 def fibs(num)
     'Calculate...'
     return result
+```
 help（fib）能得到关于函数和他的文档字符串的信息
 默认返回none
 
-6.4
+###6.4
+```
 def x(a, *b)
-#  *收集剩余参数为一个元组
-#  **能收集关键字参数为字典
+  *收集剩余参数为一个元组
+  **能收集关键字参数为字典
+```
 调用函数时使用*和**可以分配参数
 
-6.5
+###6.5
 vars()返回全局变量字典
 globals()[]获取全局变量值
 
-6.6
+###6.6
 map(func,seq [, seq, ...])对列表中的每个元素应用函数
 
-7.2
-
+###7.2
+```
 __metaclass = type #确定使用新式类
 class Person:
     def setName(self, name): #self是传入本身
         self.name = name
     def getName(self):
         return self.name
-
+```
 函数名前加双下划线无法从外部访问
 但是还是可以在前面加单下划线和雷鸣访问
 class Student(Person): #继承
@@ -166,7 +170,8 @@ s.__class__查看类型
 hasattr(a,"setname") #检查是否存在该方法
 random.choice从非空序列中随机选择元素
 
-8.1
+###8.1
+```
 raise Exception引发异常
 try:
     ...
@@ -176,24 +181,25 @@ else: #没有错误发生才会执行
     ...
 finally:
     ... #必然执行
+```
 
-9.1
+###9.1
 __init__是构造方法
 __del__是析构方法，但具体调用时间无法确定，应该尽量减少使用
 super(Kid,self)调用父类构造函数
 
-9.5
+###9.5
 size = property(getSize, setSize)
 静态函数没有self参数，类方法传入cls而非self
 __iter__方法返回一个迭代器
 包含yield语句的函数称为生成器，每次产生一个值函数就会被冻结
 
-10.1
+###10.1
 在主程序中，__name__值为'__main__'，在导入模块中为模块名
 set PYTHONPATH=%PYTHONPATH%;C:\python  #可以这样添加路径
 必须包含一个名为__init__.py的文件才能当成包对待
 
-10.2
+###10.2
 __all__能看到public函数
 help看到函数开头的字符串
 __file__能看到文件位置
