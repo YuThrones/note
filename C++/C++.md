@@ -184,3 +184,45 @@ int A<T1>:: fun1(T1 x, int y ){//实现…… }
  template  <class T1, class T2 >
 T2 A<T1,T2>:: fun2(T1 x, T2 y) {//实现…… }
 ```
+
+##文件读写
+[http://blog.csdn.net/kingstar158/article/details/6859379/](http://blog.csdn.net/kingstar158/article/details/6859379/)
+```
+#include <fstream>  
+ofstream         //文件写操作 内存写入存储设备   
+ifstream         //文件读操作，存储设备读区到内存中  
+fstream          //读写操作，对打开的文件可进行读写操作   
+```
+写文件例子：
+```
+#include <fiostream.h>  
+ int main () {  
+     ofstream out("out.txt");  
+     if (out.is_open())   
+    {  
+         out << "This is a line.\n";  
+         out << "This is another line.\n";  
+         out.close();  
+     }  
+     return 0;  
+ }  
+```
+读文件例子：
+```
+#include <iostream.h>  
+   #include <fstream.h>  
+   #include <stdlib.h>  
+     
+   int main () {  
+       char buffer[256];  
+       ifstream in("test.txt");  
+       if (! in.is_open())  
+       { cout << "Error opening file"; exit (1); }  
+       while (!in.eof() )  
+       {  
+           in.getline (buffer,100);  
+           cout << buffer << endl;  
+       }  
+       return 0;  
+   }  
+```
