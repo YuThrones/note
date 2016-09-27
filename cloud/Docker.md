@@ -173,3 +173,6 @@ RUN echo 'Hi, I am in your container' \
 	>/usr/share/nginx/html/index.html
 EXPOSE 80
 ```
+  该Dockerfile由一系列指令和参数组成，每条指令都**必须为大写字母**，且后面要跟随一个参数，指令会按顺序从上到下执行
+  RUN命令会在当前镜像中执行，默认会用/bin/sh -c执行
+  EXPOSE指令向外部公开端口
