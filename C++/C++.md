@@ -226,3 +226,24 @@ fstream          //读写操作，对打开的文件可进行读写操作
        return 0;  
    }  
 ```
+
+#const用法
+1. 用于指针的两种情况:const是一个左结合的类型修饰符.
+```
+int const *A; //A可变,*A不可变
+int *const A; //A不可变,*A可变
+```
+2.限定函数的传递值参数:
+```
+void function(const int Var); //传递过来的参数在函数内不可以改变.
+```
+3.限定函数返回值型.
+```
+const int function(); //此时const无意义
+const myclassname function(); //函数返回自定义类型myclassname.
+```
+4限定函数类型.
+```
+void function()const; //常成员函数, 常成员函数是不能改变成员变量值的函数。
+```
+const修饰的对象，该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图。
