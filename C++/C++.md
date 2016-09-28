@@ -227,7 +227,7 @@ fstream          //读写操作，对打开的文件可进行读写操作
    }  
 ```
 
-#const用法
+##const用法
 1. 用于指针的两种情况:const是一个左结合的类型修饰符.
 ```
 int const *A; //A可变,*A不可变
@@ -247,3 +247,12 @@ const myclassname function(); //函数返回自定义类型myclassname.
 void function()const; //常成员函数, 常成员函数是不能改变成员变量值的函数。
 ```
 const修饰的对象，该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图。
+
+##随机数生成
+* C++中常用rand()函数生成随机数，我们一般将系统当前时间(Unix时间)作为种子
+```
+#include <ctime>
+#include <cstdlib>
+srand(unsigned(time(0)));
+cout << rand();
+```

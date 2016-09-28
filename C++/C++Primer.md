@@ -158,7 +158,7 @@ decltype(odd) *arrPtr(int i)
 ```inline const string& func()```
 constexpr函数指能用于常量表达式的函数,函数的返回值和所有形参的类型都得是字面值类型
 
-#6.7
+##6.7
 要声明一个可以指向函数的指针，只需要把函数名替换成指针：
 ```
 bool com(string a, string b);
@@ -175,3 +175,15 @@ auto f1(int) -> int (*) (int*, int);
 std:string Sales_data::isbn(const Sales_data *const this)
 ```
 
+##7.2
+* 使用class和struct唯一的区别就是默认访问权限，struct是public，class是private
+类可以允许其他类或者函数访问它的非公有成员，方法是令其他类或者函数成为它的友元
+* 任何成员函数都可以改变可变数据成员的值
+* 提供一个类内初始值时必须以符号=或者花括号表示
+
+##7.3
+返回引用可以像下列用法
+```
+myScreen.move(4,0).set('#')
+```
+如果返回的不是引用，set是无法成功的，因为他修改的是拷贝值
