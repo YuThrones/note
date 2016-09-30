@@ -177,6 +177,15 @@ EXPOSE 80
   RUN命令会在当前镜像中执行，默认会用/bin/sh -c执行
   EXPOSE指令向外部公开端口
   ENV指令设置环境变量
+  ADD复制文件到docker镜像
 
 * docker自动使用缓存，如果不想用，可以使用 `--no-cache` 标识
   可以使用docker history命令查看构造过程
+
+* docker rmi命令可以删除一个镜像
+
+* 从容器安装一个registry
+```
+sudo docker run -p 5000:5000 registry
+```
+

@@ -243,3 +243,72 @@ Data vall = {0, "Aana"};
     3. 如果一个数据成员含有类内初始值，则内置数据成员的初始值必须是一条常量表达式；或者如果成员属于某种类类型，则初始值必须使用成员自己的constexpr构造函数。
     4. 类必须使用析构函数的默认定义，该成员负责销毁类的对象
 
+##7.6 类的静态成员
+* 静态成员函数不能声明成const，我们使用作用与运算符 `::` 直接访问静态成员，也可以使用域的对象，指针或者引用来访问。
+```
+doublr r;
+r = Account::rate();
+Account ac1;
+Account *ac2 = &ac1;
+r = ac1.rte();
+r = ac2->rate();
+```
+成员函数不通过作用域运算符就能直接使用静态成员
+
+* 静态成员可以在类内部或者外部定义，在外部定义时不能重复static关键字，一般不能在类的内部初始化静态成员。
+```
+//定义并初始化一个静态成员
+double Account::interestRate = initRate();
+```
+
+*静态成员可以声明为类类型，而普通成员只能是类的引用或者指针
+
+##8.1
+* iostream定义了用于读写流的基本类型，fstream定义了读写命名文件的类型，sstream定义了读写内存string对象的类型。
+  1. istream 从流读取数据
+  2. ostream 向流写入数据
+  3. iostream 读写流
+  4. ifstream 从文件读取数据
+  5. ofstream 向文件写入数据
+  6. fstream 读写文件
+  7. istringstream 从string读取数据
+  8. ostringstream 向string写入数据
+  9. stringstream 读写string
+  10. 加一个w开头的用于读写宽字符版本（wchar_t）
+* 不能拷贝或者对IO对象赋值
+* IO库条件状态：
+    1. strm::iostate   strm是一种IO类型，iostate是一种机器相关的类型，提供了表达条件状态的完整功能。
+    2. strm::badbit    指示流已崩溃 
+    3. strm::failbit   指出一个IO操作失败了
+    4. strm::eofbit    指出流到达了文件结束
+    5. strm::goodbit   指出流未处于错误状态，此值保证为0
+    6. s.eof()         若eofbit置位，则返回true
+    7. s.fail()
+    8. s.bad()
+    9. s.good()
+    10. s.clear()      将所有条件状态位复位，将流的状态设置为有效，返回void
+    11. s.clear(flags) 复位指定的条件状态位
+    12. s.setstate(flags) 置位指定条件状态位
+    13. s.rdstate(）    返回当前流的条件状态
+* 输出flush和endl会刷新缓存区，区别是flush不换行。输出 `unitbuf` 则以后每次写操作都会刷新缓冲区， 输出 `nounitbuf` 则重置流，使其恢复使用正常的缓冲区刷新机制。
+* **注：如果程序崩溃，输出缓冲区不会被刷新**
+* 任何试图从输入流读取数据的操作都会先刷新关联的输出流。tie有两个版本，一个不带参数，返回指向输出流的指针。第二个接受一个指向ostream的指针，将自己关联到ostream。即，x.tie(&o)将流关联到输出流o。每个流最多同时关联到一个流，但多个流可以同时关联到一个ostream。
+
+##8.2
+* 特有操作：
+    1. fstream fstrm；    创建一个未绑定的文件流
+    2. fstream fstrm(s);  创建一个fstream并打开名为s的文件，s可以是string类型。
+    3. fstream fstrm（s， mod）； 与前一个构造函数想似，但按指定mode打开文件
+    4. fstrm.open(s)      打开文件s
+    5. fstrm.close()      关闭绑定的文件，返回void
+    6. fstrm.is_open()    查看是否成功打开
+* 文件模式：
+    1. in  以读方式打开
+    2. out 以写方式打开
+    3. app 每次写操作均定位到文件末尾
+    4. ate 打开文件后立即定位到文件末尾
+    5. trunc 截断文件
+    6. binary 以二进制方式进行IO
+以out打开文件会丢弃已有数据
+
+##8.3
