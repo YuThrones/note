@@ -275,6 +275,7 @@ double Account::interestRate = initRate();
   8. ostringstream 向string写入数据
   9. stringstream 读写string
   10. 加一个w开头的用于读写宽字符版本（wchar_t）
+* getline(stream, line)读取行放到line中
 * 不能拷贝或者对IO对象赋值
 * IO库条件状态：
     1. strm::iostate   strm是一种IO类型，iostate是一种机器相关的类型，提供了表达条件状态的完整功能。
@@ -311,4 +312,170 @@ double Account::interestRate = initRate();
     6. binary 以二进制方式进行IO
 以out打开文件会丢弃已有数据
 
-##8.3
+##8.3 string流
+* 特有操作：
+    1. sstream strm；
+    2. sstream strm（s）
+    3. strm.str() 返回strm保存的string的拷贝
+    4. strm.str9(s) 将string s拷贝到strm中，返回void
+* 利用string转换double等：  
+```
+#include <iostream>  
+#include <sstream>    //使用stringstream需要引入这个头文件  
+using namespace std;  
+//模板函数：将string类型变量转换为常用的数值类型（此方法具有普遍适用性）  
+template <class Type>  
+Type stringToNum(const string& str)  
+{  
+    istringstream iss(str);  
+    Type num;  
+    iss >> num;  
+    return num;      
+}  
+int main(int argc, char* argv[])  
+{  
+    string str("00801");  
+    cout << stringToNum<int>(str) << endl;  
+  
+    system("pause");  
+    return 0;  
+}
+```
+
+##9.2
+* C seq(n) seq包含n个元素，进行了值初始化
+  C seq(n,t) seq包含n个初始化为t的元素
+* 标准库array具有固定大小
+  `array<int, 42> s;`
+  array类型不支持assign
+* swap操作可以交换两个容器的内容
+`swap(vec1, vec2)`
+* 容器中的元素是拷贝，而不是对象本身，改变容器中元素的值不会改变原对象
+* emplace类似于insert，但是它是构造而非拷贝元素，调用构造函数
+* 访问元素的成员函数返回的是引用，const容器返回const的引用，如果不是const，可以用来改变元素的值。可以使用at（）函数访问下标
+
+##9.3
+* 删除操作：
+  c.erase(p) 删除p指向的元素
+  c.erase(b, e) 删除b到e范围元素，返回最后一个被删除元素之后元素的迭代器
+* forward_list中添加或删除元素的操作是通过改变给定的元素之后的元素来实现的，定义的行为有insert_after,emplace_after和erase_after。forward_list 定义了一个before_begin首前迭代器
+* resize可以增大或者缩小容器
+
+##9.4
+* capacity是在不分配新的内存空间的前提下它最多可以保存多少元素，size是它已经保存的元素数目
+  reserve（n）分配至少能容纳n个元素的空间
+  shrink_to_fit()只适用于vector，string和deque，退回不需要的内存空间（未必成功），减少为与size（）相同
+  capacity和reserve只适用于vector和string
+
+##9.5 string操作
+* string s(cp, n) 拷贝cp指向的数组前n个元素
+* string s(s2, pos2) 从s2的pos位置开始拷贝
+* string s(s2, pos2, len2) 从s2的pos2开始拷贝len2个拷贝
+* s.substr(pos, len)
+* s.insert(pos, len, char); 在pos位置插入len个char符号
+* s.erase(pos, len) 从pos开始删除len个符号
+* replace调用erase和insert
+* string搜索函数返回unsigned的string::size_type，找不到则返回-1：
+    1. find（args）  寻找第一次出现的下标
+    2. find_first_of（args） 查找与给定字符串中任何一个字符匹配的位置
+    3. find_first_not_of（args） 查找第一个不在给定字符串中的位置
+    4. rfind（args） 找到最后一次出现的下标
+    5. find_last_of（args）
+    6. find_last_not_of（args）
+* args必须有下列形式：
+    1. c, pos 从s中pos位置开始查找，pos默认为0
+    2. s2, pos
+    3. cp, pos
+    4. cp, pos, n 从s中位置pos开始查找cp指向的数组的前n个字符，pos和n无默认值
+* s.compare函数能比较字符串是大于、小于还是等于
+* 新标准引入了多个函数，可以实现数值数据与标准库string之间的转换：
+```  
+int i = 42;
+string s = to_string(i);
+double d = stod(s);
+```
+  b表示转换用的基数，p保存第一个非数值字符的下标，默认为0
+  返回类型分别是int，long，unsigned long, long long, unsigned long long,float, double, long double
+  1. stoi(s, p, b)
+  2. stol(s, p, b)
+  3. stoul(s, p, b)
+  4. stoll(s, p, b)
+  5. stoull(s, p, b)
+  6. stof(s, p)
+  7. stod(s, p)
+  8. stold(s, p)
+  
+##9.6 容器适配器（adaptor）
+* 定义了三个顺序容器适配器：stack，queue和priority_queue。本质上，适配器是一种机制，能使某种事物的行为看起来像另外一种事物。一种容器适配器接受一种已有的容器类型，使其行为看起来像一种不同的类型。例如一个stack接受一个顺序容器（除array或forward_list外），并使其操作看起来像stack一样。
+* 适配器支持的操作：
+    1. size_type
+    2. value_type
+    3. container_type
+    4. A a; 创建一个名为a的适配器
+    5. A a(c); 创建适配器a带有c的拷贝
+    6. 关系运算符 ==、！=等
+    7. a.empty()
+    8. a.size()
+    9. swap(a, b)
+    10. a.swap(b)
+```
+stack<int> stk(deq);
+stack<string, vector<string>> str_stk;
+//可以在创建时将一个命名的顺序容器作为第二个类型参数
+```
+
+* 栈默认基于deque实现，也可以在list或者vector之上实现，操作包括：
+  1. s.pop()
+  2. s.push(item)
+  3. s.emplace(args)
+  4. s.top()
+* queue默认基于deque实现，priority_queue默认基于vector
+  queue可以用list或者vector实现，priority_queue也可以用deque实现，操作包括：
+  1. q.pop()
+  2. q.front()
+  3. q.back()
+  4. q.top()
+  5. q.push(item)
+  6. q.emplace(args)
+
+##10.1 泛型算法概述
+* 大多数算法都定义在头文件algorithm中，标准库还在头文件numeric定义了一组数组泛型算法
+* 标准库算法find可用于搜索容器
+* 泛型算法本身不会执行容器的操作，它们只运行于迭代器之上
+
+##10.2
+* 除了少数例外，标准库算法都对一个范围内的元素进行操作，我们将此元素的范围称为“输入范围”，两个输入元素分别是第一个元素和尾元素之后位置的迭代器。
+* 只读算法，值读取范围内的元素，不改变元素。例如find，还有定义在numeric之中的accumulate
+  输入范围和和的初始值，求范围内的和，此外还有equal算法
+* 写容器元素的算法：
+  fill接受一个范围和一个值，将一个子序列全部设置为给定值，必须在足够大的容器上面操作，或者使用插入迭代器back_inserter进行迭代
+```
+vector<int> vec;
+fill_n(back_inserter(vec), 10, 0)
+```
+* 拷贝算法
+  copy接受输入范围跟目的序列起始位置，目的序列至少要包含跟输入序列一样多的元素
+  replace接受四个参数，分别是输入范围，要搜索的值和要替换的值
+```
+//将所有值为0的元素改成42
+replace(list.begin(), list.end(), 0, 42)
+```
+
+* 重排容器元素的算法
+  sort算法是利用元素类型运算符<实现
+  要消除重复元素，可以将vector排序，使重复的单词相邻出现，然后用标准库算法unique重排vector，由于算法不能执行容器的操作，需要erase成员来完成真正的删除操作
+```
+sort(words.begin(), words.end());
+auto end_unique = unique(words.begin(), words.end());
+words.erase(end_unique, words,end())
+```
+
+##10.3 定制操作
+* 很多算法会比较输入序列中的元素，默认情况下，使用元素类型的<或者==来完成比较，标准库允许我们提供自己定义的操作来替代默认运算符。
+* 我们可以使用sort的第二个版本，它接受第三个参数，这个参数是一个**谓词（predicate）**。谓词是一个可调用的表达式，其运算结果是返回一个能用做条件的值。标准库算法使用的谓词分为两类：一元谓词（unary predicate）和二元谓词（binary predicate），代表参数的个数
+* 在我们将words大小重排的同时，还希望具有相同长度的元素按字典序排列。为了保持相同长度的单词按字典序排列，可以使用stable_sort算法，这种稳定排序算法维持相等元素的原有顺序。
+* lambda表达式具有如下形式
+  `[capture list](parameter list) -> return type { function body}`
+其中，capture list(捕获列表)是一个lambda所在函数中定义的局部变量的列表（通常为空）； return type、 parameter list和function body与任何普通函数一样，分别表示返回类型，参数列表和函数体。与普通函数不同，lambda**必须使用尾置返回**来指定返回类型。我们可以忽略参数列表和返回类型，但必须**永远包括捕获列表和函数体**，捕获列表只用于局部非static变量。
+* for_each算法接受一个可调用对象，并对输入序列中每个元素调用此对象
+* find_if寻找第一个满足条件的位置
