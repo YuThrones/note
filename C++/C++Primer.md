@@ -479,3 +479,138 @@ words.erase(end_unique, words,end())
 其中，capture list(捕获列表)是一个lambda所在函数中定义的局部变量的列表（通常为空）； return type、 parameter list和function body与任何普通函数一样，分别表示返回类型，参数列表和函数体。与普通函数不同，lambda**必须使用尾置返回**来指定返回类型。我们可以忽略参数列表和返回类型，但必须**永远包括捕获列表和函数体**，捕获列表只用于局部非static变量。
 * for_each算法接受一个可调用对象，并对输入序列中每个元素调用此对象
 * find_if寻找第一个满足条件的位置
+* 引用捕获必须保证在lambda执行时变量是存在的，[=]是值捕获，[&]是引用捕获，必须是捕获列表中第一个符号，定义默认捕获方式，可以采用混合捕获，如 `[&, c]` 或者 `[=, &c]` 
+  如果一个lambda包含return之外的任何语句，编译器假定此lambda返回void
+* transform算法接受三个迭代器和一个可调用对象。前两个代表输入序列，第三个表示目的位置，transform将输入序列中每个元素替换为可调用对象操作该元素得到的结果。
+* functional头文件中的bind标准库函数可以看作一个通用的函数适配器。它接受一个可调用对象，生成一个新的可调用对象来“适应”原对象的参数列表。一般调用形式为：
+ `auto newCallable = bind(callable, arg_list);`
+  其中，newCallable本身是一个可调用对象，arg_list是一个逗号分隔的参数列表，对应给定的callable的参数。当我们调用newCallable时，newCallable会调用callable，并传递给它arg_list中的参数。
+  arg_list中的参数可能包含形如_n的名字，其中n是一个整数。这些参数是“占位符”，表示newCallable的参数，占据了传递给newCallable的参数的“位置”。数值n表示生成的可调用对象中参数的位置。
+  例如 `auto g = bind(f, a, b, _2, c, _1);` 调用g(_1, _2)可以映射成 f(a, b, _2, c, _1) 
+  使用placeholders名字，名字_n都定义在这个命名空间中，这个命名空间本身定义在std命名空间内，所以两个都要写上。bind拷贝参数，如果我们希望传递给bind一个对象而又不拷贝它，就必须使用ref函数
+
+##10.4
+* 迭代器包括以下几种：
+    1. 插入迭代器（insert iterator） 绑定到一个容器上，可以用来向容器插入元素
+        * it = t，根据插入迭代器的不同种类，会分别调用push_back,push_front或者insert
+        * *it,++it,it++这些操作虽然存在，返回的都是it，不会做任何事情
+        * 插入器有三种，back_inserter,front_inserter, inserter
+    2. 流迭代器（stream iterator） 绑定到输入流或者输出流上，可用来遍历所有关联的IO流
+        * 流迭代器有如下用法：
+        ```
+		istream_iterator<int> in_iter(cin), eof; 从cin读取int，用空的迭代器eof来作尾后迭代器
+		vector<int> vec(in_iter, eof); 从迭代器范围构造vec
+        ```
+		* 还可以使用算法
+		```
+		istream_iterator<int> in(cin),eof;
+		cout << accumulate(int, eof, 0) << endl;
+		```
+		* 只要定义了>>或者<<就可以创建输入流对象或者输出流对象
+    3. 反向迭代器（reverse iterator） 这些迭代器不是向前而是向后移动
+    4. 移动迭代器（move iterator） 这些迭代器不是拷贝其中的元素，而是移动他们
+
+##10.5 泛型算法结构
+* 算法要求的迭代器分为5个级别：
+	1. 输入迭代器       只读，不写；单边扫描，只能递增
+	2. 输出迭代器       只写，不读；单边扫描，只能递增
+	3. 前向迭代器       可读写；多遍扫描，只能递增
+	4. 双向迭代器       可读写；多遍扫描，可递增递减
+	5. 随机访问迭代器   可读写，多遍扫描，支持全部迭代器运算
+
+##10.6 特定容器算法
+* 链表类型定义的其他算法的通用版本可以用于链表，但是成本太高，应该优先使用成员函数版本的算法而不是通用算法。
+* list和forward_list成员函数版本的算法
+    1. lst.merge(lst2)       将来自lst2的元素合并入lst，合并后lst2为空，使用<运算符
+    2. lst.merge(lst2, comp)
+    3. lst.remove(val)
+    4. lst.remove_if(pred)
+    5. lst.reverse()
+    6. lst.sort()
+    7. lst.sort(cmp)
+    8. lst.unique()          调用erase删除同一个值的连续拷贝，第一个版本使用==
+    9. lst.unique(pred)      第二个使用给定的二元谓词
+* splice算法，这是链表数据结构所特有的，不需要通用版本
+	1. (p, lst2)   p是一个指向lst中元素的迭代器，将lst2中的元素全部删除，然后添加到p的位置
+	2. (p, lst2, p2) 
+	3. (p, lst2, b, e)
+	
+##11.1
+* 主要关联容器：map和set。multi开头的表示允许重复。从map提取一个元素时，会得到一个pair类型的对象，这是一个模板类型，保存一个名为first和second的（公有）数据成员。
+* find调用返回一个迭代器，找不到则返回尾后迭代器
+
+##11.2
+* 默认情况下，标准库使用关键字类型的<运算符比较两个关键字，可以向算法提供我们定义的比较操作，所提供的的操作必须在关键字类型上定义一个**严格弱序（strict weak ordering）**，必须具有以下性质：
+	1. 两个关键字不能同时“小于等于”对方；
+	2. 如果k1小于等于k2<,且k2小于等于k3，那么k1必须小于等于k3
+	3. 如果存在两个关键字，任何一个都不小于等于另一个，我们称这两个关键字是等价的
+  在定义set时，应该提供两个类型：关键字类型以及比较操作类型——如果是一种函数指针类型，例：
+`multiset<Sales_data, decltype(compareIsbn)*>   bookstore(compareIsbn);`
+* pair定义在头文件utility中，一个pair保存两个数据成员，pair的默认构造函数对数据成员进行值初始化，我们也可以为每个成员提供初始化器，pair的操作如下：
+	1. pair<T1, T2> p;
+	2. pair<T1, T2> p(v1, v2)
+	3. pair<T1, T2> = {v1, v2};
+	4. make_pair(v1, v2)
+	5. p.first
+	6. p.second
+	7. p1 relop p2 
+	8. p1 == p2 利用元素的<运算符来实现
+	9. p1 != p2
+
+##11.3 关联容器操作
+* 关联容器定义的类型：
+  * key_type 关键字类型
+  * mapped_type 每个关键字关联的类型，只适用于map
+  * value_type，对于set与key_type相同，对于map为pair<const key_type, mapped_type>
+* 添加元素，使用insert函数，可以添加一个元素或一个元素范围。insert的返回值依赖于容器类型和参数，对于不含重复关键字的set和map，insert和emplace返回一个pair，first成员是一个迭代器，指向具有给定关键字的元素，second是一个bool值，指出元素是插入成功还是已经在容器中。
+* 通过erase来进行删除，可以传递一个迭代器，或者一个迭代器范围，或者一个key_type参数，返回删除的元素的数量
+* 可以使用下标运算符或者at()函数读取map，at（）会进行参数检查，如果不在map中会抛出out_of_range异常，下标和at（）操作只适用于非const的map
+* 查找元素的操作：
+	1. c.find(k)
+	2. c.count(k) 返回关键字等于k的元素的数量
+	3. c.lower_bound(k) 返回一个迭代器，指向第一个关键字不小于k的元素
+	4. c.upper_bound(k) 返回一个迭代器，指向第一个关键字大于k的元素
+	5. c.equal_range(k) 返回一个迭代器的pair，表示关键字等于k的元素的范围。若k不存在，pair的两个成员等于c.end()
+
+##11.4 无序容器
+* 无序容器不是使用比较运算符来组织元素，而是使用一个哈希函数和关键字类型的==运算符。
+* 用于map和set的操作能用于unordered_map和unordered_set。无序容器的性能依赖于哈希函数的质量和桶的数量和大小。
+* 无序容器的成员函数：
+  * 桶接口：
+	1. c.bucket_count() 正在使用的桶的数目
+	2. c.max_bucket_count() 容器能容纳的最多的桶的数量
+	3. c.bucket_size(n) 第n个桶中有多少个元素
+	4. c.bucket(k) 关键字为k的元素在哪个桶中
+  * 桶迭代：
+    1. local_iterator 可以用来访问桶中元素的迭代器类型
+    2. const_local_iterator 桶迭代器的const版本
+    3. c.begin(n),c.end(n) 桶n的首元素迭代器和尾后迭代器
+    4. c.cbegin(n),c.cend(n) 返回const版本
+  * 哈希策略：
+    1. c.load_factor() 每个桶的平均元素数量，返回float值
+    2. c.max_load_factor() c试图维护的平均桶大小，返回float值
+    3. c.rehash(n) 重组存储，使得bucket_count>=n且bucket_count > size/max_load_factor
+    4. c.reserve(n) 重组存储，使得c可以保存n个元素且不必rehash
+
+* 默认情况下，无序容器使用关键字类型的==运算符来比较元素，它们还使用一个hash<key_type>类型的对象来生成每个元素的hash值。标准库为内置类型（包括指针）提供了hash模板。但是我们**不能直接定义**关键字是自定义类类型的无序容器，不能直接使用哈希模板，而必须提供我们自己的hash模板版本。
+
+##12.1
+* 全局对象在程序启动时分配，在程序结束时销毁。对于局部自动对象，当我们进入其定义的程序块时被创建，在离开块时销毁。局部static对象在第一次使用前分配，在程序结束时销毁。
+* new为对象分配内存空间，delete销毁对象
+* 新标准库提供了两种**智能指针（smart pointer）**类型来管理动态对象，其行为类似于常规指针，区别是它负责自动释放对象。**shared_ptr**允许多个指针指向同一对象，**unique_ptr**则独占所指向的对象。标准库还定义了一种名为**weak_ptr**的伴随类，它是一种弱引用，指向shared_ptr所管理的对象。
+* 类似vector，智能指针也是模板，当我们创建时必须提供额外信息，指针指向的类型，默认初始化的智能指针保留一个空指针。
+* shared_ptr和unique_ptr都支持的操作：
+	1. shared_ptr<T> sp 空智能指针，可以指向类型为T的对象
+	2. unique_ptr<T> up
+	3. p 将p用作一个条件判断，若p指向一个对象，则为true
+	4. *p 解引用p，获得它指向的对象
+	5. p->mem 等价于（*p）.mem
+	6. p.get() 返回p中保存的指针。要小心使用，若智能指针释放了其对象，返回的指针所指向的对象也就消失了。
+	7. swap(p, q) 交换q和p中的指针
+	8. p.swap(q)
+* shared_ptr独有的操作：
+	1. make_shared<T>(args) 返回一个shared_ptr，指向一个动态分配的类型为T的对象，并且用args初始化此对象
+	2. shared_ptr<T>p (q) p是shared_ptr q的拷贝，此操作会递增q中的计数器。q中的指针必须转换为T*
+	3. p=q p和q都是shared_ptr,所保存的指针必须能相互转换。此操作会递减p的引用计数，递增q的引用计数，递增q的引用计数；若p的引用计数变为0，则将其管理的原内存释放
+	4. p.unique() 若p.use_count()为1，返回true，否则返回false
+	5. p.use_count() 返回与p共享对象的智能指针变量；可能很慢，主要用于调试
