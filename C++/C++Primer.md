@@ -614,3 +614,33 @@ words.erase(end_unique, words,end())
 	3. p=q p和q都是shared_ptr,所保存的指针必须能相互转换。此操作会递减p的引用计数，递增q的引用计数，递增q的引用计数；若p的引用计数变为0，则将其管理的原内存释放
 	4. p.unique() 若p.use_count()为1，返回true，否则返回false
 	5. p.use_count() 返回与p共享对象的智能指针变量；可能很慢，主要用于调试
+
+* 最安全的分配和使用动态内存的方式是调用一个名为make_shared的标准库函数，此函数在动态内存中分配一个对象并初始化他，返回指向此对象的shared_ptr。与智能指针一样，make_shared也定义在头文件memory中。
+```
+//指向一个值为42的int的shared_ptr
+shared_ptr<int> p3 = make_shared<int>(42)
+```
+
+* 程序使用动态内存的三个原因：
+	1. 程序不知道自己需要使用多少对象
+	2. 程序不知道所需对象的准确类型
+	3. 程序需要在多个对象间共享数据
+
+* 内存耗尽
+一旦一个程序用尽了它所有可用的内存，new表达式就会失败，默认情况下，如果new不能分配所要求的内存空间，它会抛出一个类型为bad_alloc的异常，我们可以改变new的方式来阻止它抛出异常：
+```
+int *p1 = new int; //如果分配失败，new抛出std::bad_alloc
+int *p2 = new (nothrow) int; //如果分配失败，new返回空指针
+```
+这种形式称为**定位new（placement new）**
+
+* 释放一块非new分配的内存，或者将相同的指针释放多次，其行为是未定义的
+
+* 定义和改变shared_ptr的其他方法：
+	1. shared_ptr<T> p(q) p管理内置指针q所指向的对象；q必须指向new分配的内存，且能够转换成T*类型
+	2. shared\_ptr<T> p(u) p从unique\_ptr u那里接管了对象的所有权；将u置为空
+	3. shared\_ptr<T> p(q,d) p接管了内置指针q所指向的对象的所有权。q必须能够转换为T*类型。p将使用可调用对象d来代替delete
+	4. shared_ptr<T> p(p2,d) p是shared_ptr p2的拷贝，唯一的区别是p将调用可调用对象d来替代delete
+	5. p.reset() 若p是唯一指向其对象的shared_ptr,reset会释放此对象
+	6. p.reset(q) 若传递了可选的参数内置指针q，会令p指向q，否则会将p置为空
+	7. p.reset(q, d) 若还传递了参数d，将会调用d而不是delete
