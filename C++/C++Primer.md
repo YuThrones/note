@@ -644,3 +644,5 @@ int *p2 = new (nothrow) int; //如果分配失败，new返回空指针
 	5. p.reset() 若p是唯一指向其对象的shared_ptr,reset会释放此对象
 	6. p.reset(q) 若传递了可选的参数内置指针q，会令p指向q，否则会将p置为空
 	7. p.reset(q, d) 若还传递了参数d，将会调用d而不是delete
+
+* 不能使用get初始化另一个智能指针或为智能指针赋值

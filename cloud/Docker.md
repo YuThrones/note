@@ -6,7 +6,7 @@
   * Docker镜像
   * Registry
   * Docker容器
-* Docker是一个客户机-服务器（C/S）架构的程序，提供了一个命令行工具以及一整套RESTful API，可以从本地客户端连接另一台宿主机的Docker守护程序。
+* Docker是一个客户机-服务器（C/S）架构的程序，提供了一个命令行工具以及一整套RESTful API，可以从本地客户端连接另一台宿主机的Docker守护程序。  
 * Docker镜像是基于联合（Union）文件系统的一种层式的机构，由一系列指令一步一步构建出来。
 * Registry用来保存用户的镜像，分为公共跟私有两种。
 * 容器是基于镜像启动起来的，我们只需要把应用程序或者服务打包放进去。
@@ -54,10 +54,10 @@
 ```sudo apt-get install lxc-docker```  
 在Ubuntu中，如果使用UFW，即Uncomplicated Firewall，需要对其做一点修改，因为Docker使用一个网桥管理容器中的网络，默认情况下UFW会丢弃所有转发的包，需要在UFW启动数据包转发。将```/etc/default/ufw``` 中的 ```DEFAULT_FORWARD_POLICY="DROP"``` 改成 ```DEFAULT_FORWARD_POLICY="ACCEPT"``` ,然后 ```sudo ufw reload```
 
-* 也可以简单的使用远程安装脚本安装docker：
+* 也可以简单的使用远程安装脚本安装docker：  
 ```curl -fsSL https://get.docker.com/ | sh```
 
-* 配置Docker守护进程：  
+* 配置Docker守护进程：   
   运行Docker守护进程时，我们可以用 ```-H``` 标志调整守护进程绑定监听接口的方式，比如要想绑定到网络接口：  
 ``` sudo /usr/bin/docker -d -H tcp://0.0.0.0:2375```  
   如果不想每次都加上 ```-H``` ，可以通过设置环境变量来省略：
@@ -173,13 +173,13 @@ RUN echo 'Hi, I am in your container' \
 	>/usr/share/nginx/html/index.html
 EXPOSE 80
 ```
-  该Dockerfile由一系列指令和参数组成，每条指令都**必须为大写字母**，且后面要跟随一个参数，指令会按顺序从上到下执行
-  RUN命令会在当前镜像中执行，默认会用/bin/sh -c执行
-  EXPOSE指令向外部公开端口
-  ENV指令设置环境变量
-  ADD复制文件到docker镜像
+  该Dockerfile由一系列指令和参数组成，每条指令都**必须为大写字母**，且后面要跟随一个参数，指令会按顺序从上到下执行  
+  RUN命令会在当前镜像中执行，默认会用/bin/sh -c执行  
+  EXPOSE指令向外部公开端口  
+  ENV指令设置环境变量  
+  ADD复制文件到docker镜像  
 
-* docker自动使用缓存，如果不想用，可以使用 `--no-cache` 标识
+* docker自动使用缓存，如果不想用，可以使用 `--no-cache` 标识  
   可以使用docker history命令查看构造过程
 
 * docker rmi命令可以删除一个镜像
@@ -195,13 +195,151 @@ sudo docker run -d -p 80 --name website \
 -v $PWD/website:/var/www/html/website：ro \
 jamtur01/nginx nginx
 ```
--v是一个新选项，允许我们将宿主机的目录作为卷挂在到容器里。
+-v是一个新选项，允许我们将宿主机的目录作为卷挂在到容器里。  
 卷是一个在一个或者多个容器内被选定的目录，可以绕过分层的联合文件系统（Union File System），为Docker提供持久数据或者共享数据。这意味着对卷的修改会直接生效，并绕过镜像。当提觉或者创建镜像时，卷不被包含在镜像里。卷可以在容器中共享，即便容器停止，卷里的内容依旧存在。
-参数-v指定了卷的源目录和容器里的目的目录，这两个目录通过：来分隔，如果目的目录不存在，Docker会创造一个。
-也可以在目的目录后面加上rw或者ro来指定目的目录的读写状态。
+参数-v指定了卷的源目录和容器里的目的目录，这两个目录通过：来分隔，如果目的目录不存在，Docker会创造一个。  
+也可以在目的目录后面加上rw或者ro来指定目的目录的读写状态。  
 
 * 在安装Docker时，会创建一个新的网络接口，名字是Docker0。每个Docker容器都会在这个接口上分配一个IP地址，docker0接口有符合RFC1918的私有IP地址，范围是172.16~172.30。接口本身地址172.17.42.1是这个Docker网络的网关地址，也是所有Docker容器的网关地址。
 
-* 接口docker0是一个虚拟的以太网桥，用于连接容器和本地宿主网络。如果进一步查看Docker宿主机的其他网络接口，会发现一系列以veth开头的接口。Docker每创建一个容器就会创建一组互联的网络接口。这组接口其中一端作为容器里的eth0接口，而另一端统一命名为类似vethec6a这种名字，作为宿主机的一个接口。
+* 接口docker0是一个虚拟的以太网桥，用于连接容器和本地宿主网络。如果进一步查看Docker宿主机的其他网络接口，会发现一系列以veth开头的接口。Docker每创建一个容器就会创建一组互联的网络接口。这组接口其中一端作为容器里的eth0接口，而另一端统一命名为类似vethec6a这种名字，作为宿主机的一个接口。  
 
-* 
+* link连接容器
+```
+sudo docker run -p 4567 \
+--name webapp --link redis:db -t -i \
+-v $PWD/webapp:/opt/webapp jamtur01/sinatra \
+/bin/bash
+```
+--link标志创建了两个容器间的父子连接，需要两个参数，一个是要连接的容器的名字，另一个是连接后容器的别名。这个例子中连接到redis容器，并且使用db作为别名。连接让父容器有能力访问子容器，并且把子容器的一些连接细节分享给父容器。  
+可以强制docker只允许有连接的容器之间互相通信，需要在docker守护进程加上--icc==false标志
+
+* --privileged标志可以启动Docker的特权模式，允许我们以宿主机的所有能力来运行容器。
+* Docker启动容器时支持--cidfile选项，这个选项会让Docker截获容器ID并将存到--cidfile指定的文件里
+
+##使用Docker构建服务
+* --volumes-from标志可以把指定容器里的所有卷都加入新创建的容器里
+* --rm用于只用一次的容器，用完即扔
+* `sudo docker kill -s <signal> <container>`这个操作会发送指定的信号给容器，而不是杀掉容器
+
+##fig编配Docker
+* fig.yml例：
+```
+web:
+  image: jamtur01/figapp
+  command: python app.py
+  ports:
+   - "5000:5000"
+  volumes:
+   - .:/figapp
+  links:
+   - redis
+redis:
+  image: redis
+```
+然后可以用 `fig up`来执行服务
+
+##使用Docker API
+* Docker生态系统中一共有三种API：
+	1. Registry API：提供了与来存储Docker镜像的Docker Registry集成的功能
+	2. Docker Hub API： 提供了与Docker Hub集成的功能。
+	3. Docker Remote API：提供与Docker守护进程进行集成的功能。
+所有者三种功能都是RESTful风格的
+
+* Docker remote
+对于Ubuntu或者Debian，需要编辑 `/etc/default/docker`来访问远程Docker守护进程
+
+* 获取Docker守护进程中所有镜像的列表：
+` curl http://docker.example.com:2375/images/json | python -mjson.tool`
+返回结果提供了与docker images命令非常类似的信息，我们也可以使用镜像ID查询某一镜像的信息，类似于用docker inspect 命令查看某镜像ID
+
+* 使用/containers列出所有正在运行的容器
+```
+curl -s "http://docker.example.com:2375/containers/json" | python -mjson.tool
+```
+如果想查询所有容器，可以在接入点加入all，并将它的值置为1：
+```
+http://docker.example.com:2375/containers/json?all=1
+```
+
+* 我们可以通过POST请求调用/containers/create接入点来创建容器
+```
+curl -X POST -H "Content-Type: application/json" \
+http://docker.example.com:2375.containers/create \
+-d '{
+	"Image":"jamtur01/jekyll"
+}'
+```
+我们调用了/containers/create接入点，并POST了一个JSON散列数据，这个结构中包括要启动的镜像名。这个API返回了刚创建的容器的ID，以及可能的警告信息。
+
+* 要启动一个容器，要用/containers/start接入点
+
+* 建立证书授权中心
+	1. 确保系统安装了openssl
+	`which openssl`
+	2. 创建一个目录来保存CA和相关资料，并且生成私钥。
+	```
+	sudo mkdir /etc/docker
+	cd /etc/docker
+	echo 01 | sudo tee ca.sr1
+	sudo openssl genrsa -des3 -out ca-key.pem
+	```
+在创建过程中我们会生成一个密码，我们需要牢记这个密码，在新CA中，我们需要用这个密码来创建并对证书签名。这个操作将创建一个名为ca-key.pem的新文件。这个文件是我们CA的密钥。
+	3. 创建CA证书
+	```
+	sudo openssl req -new -x509 -days 365 -key ca-key.pem -out ca.pem
+	```
+
+* 创建服务器的证书签名请求和密钥
+```
+sudo openssl genrsa -des3 -out server-key.pem
+```
+这将为服务器创建一个秘钥server-key.pem  
+然后创建服务器的证书签名请求（CSR）
+```
+sudo openssl req -new key server-key.pem -out server.csr
+```
+这将创建一个名为server.csr的文件，这也是一个请求。这个请求将为创建我们的服务器证书进行签名。
+现在我们对CSR签名并生成服务器证书：
+```
+sudo openssl x509 -req -days 365 -in server.csr -CA ca.pem \
+-CAkey ca-key.pem -out server-cert.pem
+```
+这里需要输入CA密钥文件的密码，该命令会生成一个server-cert.pem文件，这个文件就是我们的服务器证书。  
+因为我们不想在Docker守护进程启动的时候再一次输入密码，因此需要清除它
+```
+sudo openssl rsa -in server-key.pem -out server-key.pem
+```
+
+* 配置Docker守护进程使用证书和密钥，要编辑 `/etc/default/docker`
+
+* 创建客户端证书和密钥  
+创建客户机密钥
+```
+sudo openssl genrsa -des3 -out client-key.pem
+```
+创建客户端CSR
+```
+sudo openssl req -new -key client-key.pem -out client.csr
+```
+添加拓展的SSL属性来开启密钥的客户端身份认证：
+```
+echo extendedKeyUsage = clientAuth > extfile.cnf
+```
+在CA中对客户端的CSR进行签名
+```
+sudo openssl x509 -req -days 365 -in client.csr -CA ca.pem \
+-CAkey ca-key.pem -out client-cert.pem -extfile extfile.cnf
+```
+清除client-cert.pem文件中的密码，以便在Docker客户端使用他
+```
+sudo openssl rsa -in client-key.pem -out client-key.pem
+```
+
+* 配置Docker客户端开启认证功能  
+我们需要将ca.pem、client-cert.pem和client-key.pem这三个文件复制到想运行Docker客户端的宿主机上。我们把它复制到.docker目录下，这也是Docker查找证书和密钥的默认位置。
+测试连接：
+```
+sudo docker -H=docker.example.com:2376 --tlsverify info
+```
+我们指定了--tlsverify标注，它使我们通过TLS方式连接到Docker守护进程，不需要任何证书或者密钥文件，以为Docker会在我们的~/.docker/下查找，如果真的需要制定，可以使用`--tlscacert`, `--tlscert`, `--tlskey` 标志来指定这些文件的位置。
