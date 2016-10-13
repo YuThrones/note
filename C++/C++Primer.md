@@ -646,3 +646,27 @@ int *p2 = new (nothrow) int; //如果分配失败，new返回空指针
 	7. p.reset(q, d) 若还传递了参数d，将会调用d而不是delete
 
 * 不能使用get初始化另一个智能指针或为智能指针赋值
+* 可以使用智能指针管理连接，来保证资源的释放
+```
+void f(destination &d /*其他参数*/)
+{
+	connection c = connect(&d);
+	shared_ptr<connection> p(&c, end_connection);
+	//使用连接
+	//当f退出时（即使是由于异常而退出），connection会被正确关闭
+}
+```
+
+* 智能指针基本规范：
+	1. 不适用相同的内置指针值初始化（或reset）多个智能指针
+	2. 不delete get()返回的指针
+	3. 不适用get（）初始化或者reset另一个智能指针
+	4. 如果使用get（）返回的指针，当最后一个对应的智能指针销毁后我们的指针就无效了
+	5. 如果使用的智能指针管理的资源不是new分配的内存，记住传递给他一个删除器
+
+* unique_ptr必须使用直接初始化形式
+
+* weak_ptr是一种不控制所指向对象生存期的智能指针，它指向一个由shared_ptr管理的对象，并且不会改变shared_ptr的引用计数。
+
+##12.2 动态内存
+* 标准库中包含一个allocator的类，允许我们将分配和初始化分离，使用allocator通常会提供更好的性能和更灵活的内存管理能力。

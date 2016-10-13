@@ -268,3 +268,9 @@ constexpr所修饰的变量一定是编译期可求值的，所修饰的函数�
 是一种很强的约束，更好地保证程序的正确语义不被破坏。
 编译器可以在编译期对constexpr的代码进行非常大的优化，比如将用到的constexpr表达式都直接替换成最终结果等。
 相比宏来说，没有额外的开销，但更安全可靠。
+
+##多线程
+* 旧版C++使用多线程需要系统支持：参考
+[http://blog.sina.com.cn/s/blog_4ae717db01013z9m.html](http://blog.sina.com.cn/s/blog_4ae717db01013z9m.html)
+* C++ 11 多线程：参考
+[http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438288.html](http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438288.html)
