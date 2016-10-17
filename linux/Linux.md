@@ -18,3 +18,18 @@
 
 ##shell
 * a2enmod 开启模块命令
+
+##修改dns
+* 临时修改
+```vi /etc/resolv.conf```
+* 永久修改
+```
+vi /etc/network/interfaces
+#添加dns-nameservers 111.111.111.111
+```
+或者
+```
+vi /etc/resolvconf/resolv.conf.d/base
+#添加nameserver 1.1.1.1
+resolvconf -u
+```
