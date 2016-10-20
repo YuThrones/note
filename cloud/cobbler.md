@@ -1,7 +1,8 @@
 # cobbler
 ## cobbler安装
 ### 文档参考
-[https://www.ibm.com/developerworks/cn/linux/l-cobbler/](https://www.ibm.com/developerworks/cn/linux/l-cobbler/ "文档参考")
+[https://www.ibm.com/developerworks/cn/linux/l-cobbler/](https://www.ibm.com/developerworks/cn/linux/l-cobbler/ "文档参考")  
+
 1. 安装cobbler和cobbler-web
   其中cobbler-web是cobbler的web接口，可以通过它来使cobbler操作形象。
 ```
