@@ -1,6 +1,6 @@
-#cobbler
-##cobbler安装
-###文档参考
+# cobbler
+## cobbler安装
+### 文档参考
 [https://www.ibm.com/developerworks/cn/linux/l-cobbler/](https://www.ibm.com/developerworks/cn/linux/l-cobbler/ "文档参考")
 1. 安装cobbler和cobbler-web
   其中cobbler-web是cobbler的web接口，可以通过它来使cobbler操作形象。
@@ -118,7 +118,7 @@ mount -o loop /home/vinzor/ubuntu-12.04.5-server-amd64.iso /mnt/iso
 ```
 然后import
 ```
-cobbler import --path=/media/Ubuntu-Server\ 12.04\ LTS\ amd64/ --name=Ubuntu-Server-12.04 --arch=x86_64    
+cobbler import --path=/media/Ubuntu-Server\ 12.04\ LTS\ amd64/ --name=ubuntu12 --arch=x86_64    
 ```
 **注：经尝试，在这一步就可以启动并且成功安装系统**
 可以通过列出profile和distros
@@ -141,3 +141,60 @@ cobbler system edit --name=test --interface=eth0 --mac=00:11:22:AA:BB:CC --ip-ad
 ```
 cobbler system edit --name=test --gateway=192.168.100.1 --hostname=test.mydomain.com
 ```
+
+9. 使用cobbler启动tinycore linux：  
+重新制作tinycore的镜像，在boot目录下增加一个`version`文件，内容为`tinycore`，以作标志文件使用。  
+制作镜像参考：[http://wiki.tinycorelinux.net/wiki:remastering](http://wiki.tinycorelinux.net/wiki:remastering)
+然后，需要修改cobbler的文件`/var/lib/cobbler/distro_signatures.json`，在文件的末尾部分修改如下：  
+```
+  "windows": {
+  },
+############被框起来的这一段表示是我们加入的内容，两行井号不需要输入
+  "tinycore": {
+   "test": {
+    "signatures":["boot"],
+    "version_file":"version",
+    "version_file_regex":"tinycore",
+    "kernel_arch":"",
+    "kernel_arch_regex":"null",
+    "supported_arches":["x86_64"],
+    "supported_repo_breeds":["tcz"],
+    "kernel_file":"vmlinuz",
+    "initrd_file":"core.gz",
+    "isolinux_ok":false,
+    "default_kickstart":"",
+    "kernel_options":"ipaddress=192.168.100.2",
+    "kernel_options_post":"",
+    "boot_files":[]
+   }
+  },
+###########
+  "generic": {
+   "generic26": {
+    "signatures":[],
+    "version_file":"",
+    "version_file_regex":"",
+    "kernel_arch":"",
+    "kernel_arch_regex":"",
+    "supported_arches":["i386","x86_64"],
+    "supported_repo_breeds":[],
+    "kernel_file":"",
+    "initrd_file":"",
+    "isolinux_ok":false,
+    "default_kickstart":"",
+    "kernel_options":"",
+    "kernel_options_post":"",
+    "boot_files":[]
+   }
+
+  }
+ }
+}
+
+```
+修改完成后重启机器，然后就可以按上面cobbler启动的步骤启动tinycore linux了  
+```
+mount -o loop,ro TC-remastered.iso /mnt
+ cobbler import --arch=x86_64 --path=/mnt/tiny --name=tiny
+```
+成功之后就可以用cobbler在另一台机器上面启动tinycore linux了。

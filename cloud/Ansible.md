@@ -162,3 +162,22 @@ Ansible会在`host_vars`的目录中寻找主机变量文件，在名为`group_v
 一个动态inventory脚本必须支持如下两个命令行参数：
   * --host=<hostname> 用来列出主机的详细信息
   * --list 用来列出群组
+
+* 展示主机详细信息  
+  Ansible会按照如下形式调用inventory脚本来获取单台主机的详细信息：  
+```
+./dynamic.py --host-vagrant2
+```
+输出应该包含所有主机特定的变量，也包括行为参数，类似：  
+```
+{ "ansible_ssh_host": "127.0.0.1", "ansible_ssh_port": 2200,
+  "ansible_ssh_user": "vagrant"}
+```
+
+* 列出群组  
+动态inventory脚本需要能够列出所有的群组和每台主机的详细信息。例如我们的脚本叫做dynami.py，Ansible将按照如下方式调用它来列出所有的群组：  
+```shell
+$./dynamic.py --list
+```
+输出是一个JSON对象，该JSON对象的名字为群组名，值为由主机的名字组成的数组。
+
