@@ -181,3 +181,39 @@ $./dynamic.py --list
 ```
 输出是一个JSON对象，该JSON对象的名字为群组名，值为由主机的名字组成的数组。
 
+* debug模块可以用来打印任意信息
+```
+-debug: var=myvarname
+```
+
+* 确认模块返回形式最简单的方法就是设置一个register变量，然后使用debug模块输出这个变量：
+```
+- name: show return value of command module
+  hosts: server1
+  tasks:
+    - name: capture output of id command
+      command: id -un
+      register: login
+    - debug: var=login
+```
+
+* 当Ansible采集fact的时候，它会连接到主机收集各种详细信息：CPU架构、操作系统等，这些信息保存在被称为fact的变量中，fact与其他变量的行为一模一样。Ansible使用一个名为setup的特殊模块来实现fact的手机，不需要再playbook中去调用，因为他会在采集fact时自动调用。我们也可以用filter参数对fact名进行过滤。
+
+* 如果模块返回一个ansible_facts的key，那么Ansible将会根据对应的value创建相应的变量，并分配给相对应的主机。
+
+* 可以将一个或多个文件放置在目标主机的/etc/ansible/fact.d目录下，如果该目录中的文件是一下形式的，Ansible会自动识别：
+  * .ini格式
+  * JSON格式
+  * 可以不加参数形式执行，并在标准输出中输出JSON的可执行文件
+    
+* 用于安装系统软件包的task：
+```
+- name: install apt packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  sudo: True
+  with_items:
+    - git
+    - libjpeg-dev
+    - libpq-dev
+```
+使用with_items语句来安装多个软件包效率更高。

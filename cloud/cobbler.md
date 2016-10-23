@@ -3,11 +3,11 @@
 ### 文档参考
 [https://www.ibm.com/developerworks/cn/linux/l-cobbler/](https://www.ibm.com/developerworks/cn/linux/l-cobbler/ "文档参考")  
 
-1. 安装cobbler和cobbler-web
-  其中cobbler-web是cobbler的web接口，可以通过它来使cobbler操作形象。
+1. 安装cobbler和cobbler-web  
+其中cobbler-web是cobbler的web接口，可以通过它来使cobbler操作形象。
 ```
 sudo apt-get install cobbler cobbler-web
-```
+```  
 建议把`debmirror` 和 `createrepo` 也一并安装好，其中debmirror是用来建立Debian系统镜像源的工具，而createrepo是用来简历RedHat系列镜像源的工具。  
 安装完成后，cobbler和apache的服务都会启动。
 
