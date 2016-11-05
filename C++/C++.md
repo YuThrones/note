@@ -274,3 +274,38 @@ constexpr所修饰的变量一定是编译期可求值的，所修饰的函数�
 [http://blog.sina.com.cn/s/blog_4ae717db01013z9m.html](http://blog.sina.com.cn/s/blog_4ae717db01013z9m.html)
 * C++ 11 多线程：参考
 [http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438288.html](http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438288.html)
+
+## 内存对齐
+[http://www.cppblog.com/snailcong/archive/2009/03/16/76705.html](http://www.cppblog.com/snailcong/archive/2009/03/16/76705.html)
+
+* volatile 限定每次都要读取值，不能优化省略，读取寄存器里面的备份。
+
+* mutable 限定变量永远可变，即使在const修饰的函数中
+
+*  register 修饰符暗示编译程序相应的变量将被频繁地使用，如果可能的话，应将其保存在CPU的寄存器中，以加快其存储速度。  
+参见[http://blog.sina.com.cn/s/blog_6a1837e90101128k.html](http://blog.sina.com.cn/s/blog_6a1837e90101128k.html)
+
+## 线程互斥与同步
+[http://www.cnblogs.com/diyingyun/archive/2011/12/04/2275229.html](http://www.cnblogs.com/diyingyun/archive/2011/12/04/2275229.html)
+
+## 信号量
+[http://blog.csdn.net/qinxiongxu/article/details/7830537](http://blog.csdn.net/qinxiongxu/article/details/7830537)
+
+* typedef 还可以掩饰复合类型，如指针和数组。  
+例如，你不用像下面这样重复定义有 81 个字符元素的数组：
+```
+char　line[81];
+char　text[81];
+```
+只需这样定义，Line类型即代表了具有81个元素的字符数组，使用方法如下：
+```
+typedef char Line[81];
+Line　text,line;
+getline(text);
+```
+同样，可以像下面这样隐藏指针语法：
+```
+typedef　char*　pstr;
+int　mystrcmp(const　pstr　p1,const　pstr　p3);
+```
+
