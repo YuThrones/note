@@ -180,3 +180,4 @@ resolvconf -u
 * bzip2压缩比强于gzip
 * tar -j表示使用bzip2进行压缩
 
+* dump用于备份资料，restore用于还原
