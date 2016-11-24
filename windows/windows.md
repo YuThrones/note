@@ -1,1 +1,57 @@
-#Windows编程
+#Windows编程  
+
+##基础
+在每个用 C 编写的Windows 程式的开头都可看到:
+```  
+#include <windows.h>
+```  
+
+* WINDOWS.H 是主要的含入档案,它包含了其他Windows 表头档案,这些表头
+档案的某些也包含了其他表头档案。这些表头档案中最重要的和最基本的是:
+  * WINDEF.H 基本型态定义。
+  * WINNT.H 支援 Unicode 的型态定义。
+  * WINBASE.H Kernel 函式。
+  * WINUSER.H 使用者介面函式。
+  * WINGDI.H 图形装置介面函式。
+  
+  * 正如在 C 程式中的进入点是函数 main 一样,Windows 程式的进入点是
+WinMain,总是像这样出现:  
+```
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
+```
+该进入点在 / Platform SDK / User Interface Services / Windowing /Windows / Window Reference / Window Functions 中有说明。它在 WINBASE.H中宣告如下:  
+```
+int
+WINAPI
+WinMain(
+    HINSTANCE hInstance,
+    HINSTANCE hPrevInstance,
+    LPSTR lpCmdLine,
+    int nShowCmd
+);
+```
+第三个参数在 WINBASE.H中定义为 LPSTR,我将它改为 PSTR。这两种资料型态都定义在 WINNT.H 中,作为指向字串的指标。LP 字首代表「长指标」,这是 16 位元 Windows 下的产物。字首 i 表示 int、sz 表示「以零结束的字串」。  
+WinMain 函式宣告为返回一个 int 值。WINAPI 识别字在 WINDEF.H 定义,语
+句如下:
+```
+#define WINAPI __stdcall
+```
+该语句指定了一个呼叫约定,包括如何生产机器码以在堆栈中放置函数调用的参数。许多 Windows 函数调用声明为 WINAPI。  
+
+* WinMain的第一个参数唯一的标志该程序，需要它在其他Windows函数调用中作为参数。同一应用程序的可以通过检查hPrevInstance确定自身的其他执行实体是否正在运行。在Win32版本中已被废弃，总是为NULL。第三个参数用于执行程序的命令参数，第四个用于支出程序最初显示的方式。
+
+* MessageBox的第一个参数是消息窗拥有的窗口的ID，第二个是要显示的信息，第三个是窗体上方标题列的信息，第四个是用于确定在对话框中出现的按钮等。
+
+##Unicode
+* ASCII使用８位，Unicode使用16位。C 中的宽字元基於 wchar_t 资料型态, 它在几个表头档案包括 WCHAR.H 中都有定义,像这样:
+```
+typedef unsigned short wchar_t ;
+```
+因此,wchar_t 资料型态与无符号短整数型态相同,都是 16 位元宽。  
+可定义指向宽字串的指标:
+```
+wchar_t * p = L"Hello!" ;
+```
+注意紧接在第一个引号前面的大写字母 L(代表「long」)。这将告诉编译器该字串按宽字元保存——即每个字元占用 2 个位元组。
+
+
