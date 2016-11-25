@@ -183,4 +183,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc (hwnd, message, wParam, lParam) ;
 }
 ```
+WndProc 函式传回一个型态为 LRESULT 的值,该值简单地被定义为一个LONGWinMain 函式被指定了一个 WINAPI 型态,而 WndProc 函式被指定一个 CALLBACK 型态。这两个识别字都被定义为_stdcall,表示在 Windows 本身和使用者的应用程式之间发生的函式呼叫的呼叫参数传递方式。
+
+* 视窗讯息处理程式在处理讯息时,必须传回 0。视窗讯息处理程式不予处理的所有讯息应该被传给名为DefWindowProc 的 Windows 函式。 从 DefWindowProc 传回的值必须由视窗讯息处理程式传回。
 
