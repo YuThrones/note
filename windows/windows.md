@@ -54,4 +54,50 @@ wchar_t * p = L"Hello!" ;
 ```
 注意紧接在第一个引号前面的大写字母 L(代表「long」)。这将告诉编译器该字串按宽字元保存——即每个字元占用 2 个位元组。
 
+* 如果定义了_UNICODE 识别字,那么一个称作__T 的巨集就定义如下:
+```
+#define __T(x) L##x
+```
+那一对井字号称为「粘贴符号(token paste)」,它将字母 L 添加到巨集引数上。因此,如果巨集引数是"Hello!",则 L##x 就是 L"Hello!"。基本地,必须按下述方法在_T 或_TEXT 巨集内定义字串文字:
+```
+_TEXT ("Hello!")
+```
+
+* INNT.H 的前面包含 C 的表头档案 CTYPE.H,这是 C 的众多表头档案之一,
+包括 wchar_t 的定义。WINNT.H 定义了新的资料型态,称作 CHAR 和 WCHAR:
+```
+typedef char CHAR ;
+typedef wchar_t WCHAR ;
+// wc
+```
+这里精选了表头档案中一些实用的说明资料型态语句:
+```
+typedef CHAR * PCHAR, * LPCH, * PCH, * NPSTR, * LPSTR, * PSTR ;
+typedef CONST CHAR * LPCCH, * PCCH, * LPCSTR, * PCSTR ;
+```
+WINNT.H 将 TCHAR定义为一般的字元类型。如果定义了识别字 UNICODE(没有底线),则 TCHAR 和指向 TCHAR 的指标就分别定义为 WCHAR 和指向 WCHAR 的指标;如果没有定义识别字 UNICODE, 则 TCHAR 和指向 TCHAR 的指标就分别定义为 char 和指向 char 的
+指标:
+```
+#ifdef UNICODE
+typedef WCHAR TCHAR, * PTCHAR ;
+typedef LPWSTR LPTCH, PTCH, PTSTR, LPTSTR ;
+typedef LPCWSTR LPCTSTR ;
+#else
+typedef char TCHAR, * PTCHAR ;
+typedef LPSTR LPTCH, PTCH, PTSTR, LPTSTR ;
+typedef LPCSTR LPCTSTR ;
+#endif
+```
+
+* 在文字模式程式设计中,
+```
+printf ("The sum of %i and %i is %i", 5, 3, 5+3) ;
+```
+的功能相同於
+```
+char szBuffer [100] ;
+sprintf (szBuffer, "The sum of %i and %i is %i", 5, 3, 5+3) ;
+puts (szBuffer) ;
+```
+
 
