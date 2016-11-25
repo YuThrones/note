@@ -1,6 +1,6 @@
-#Windows编程  
+# Windows编程  
 
-##基础
+## 基础
 在每个用 C 编写的Windows 程式的开头都可看到:
 ```  
 #include <windows.h>
@@ -42,7 +42,7 @@ WinMain 函式宣告为返回一个 int 值。WINAPI 识别字在 WINDEF.H 定�
 
 * MessageBox的第一个参数是消息窗拥有的窗口的ID，第二个是要显示的信息，第三个是窗体上方标题列的信息，第四个是用于确定在对话框中出现的按钮等。
 
-##Unicode
+## Unicode
 * ASCII使用８位，Unicode使用16位。C 中的宽字元基於 wchar_t 资料型态, 它在几个表头档案包括 WCHAR.H 中都有定义,像这样:
 ```
 typedef unsigned short wchar_t ;
@@ -99,6 +99,7 @@ char szBuffer [100] ;
 sprintf (szBuffer, "The sum of %i and %i is %i", 5, 3, 5+3) ;
 puts (szBuffer) ;
 ```
+## 窗口
 * HelloWin程序：
 ```c
 HELLOWIN.C
@@ -186,4 +187,45 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 WndProc 函式传回一个型态为 LRESULT 的值,该值简单地被定义为一个LONGWinMain 函式被指定了一个 WINAPI 型态,而 WndProc 函式被指定一个 CALLBACK 型态。这两个识别字都被定义为_stdcall,表示在 Windows 本身和使用者的应用程式之间发生的函式呼叫的呼叫参数传递方式。
 
 * 视窗讯息处理程式在处理讯息时,必须传回 0。视窗讯息处理程式不予处理的所有讯息应该被传给名为DefWindowProc 的 Windows 函式。 从 DefWindowProc 传回的值必须由视窗讯息处理程式传回。
+
+## 文本输出
+* 目前使用最为普遍的文字输出函式是TextOut。该函式的格式如下:
+```
+TextOut (hdc, x, y, psText, iLength) ;
+```
+TextOut 向视窗的显示区域写入字串。psText 参数是指向字串的指标,iLength 是字串的长度。x 和 y 参数定义了字串在显示区域的开始位置(不久会讲述关於它们的详细情况)。hdc 参数是「装置内容代号」.程式必须在处理单个讯息处理期间取得和释放代号。除了呼叫 CreateDC(函式,在本章暂不讲述)建立的装置内容之外,程式不能在两个讯息之间保存其他装置内容代号。  
+
+* 在处理 WM_PAINT 讯息时,使用这种方法。它涉及 BeginPaint 和 EndPaint两个函式,这两个函式需要视窗代号(作为参数传给视窗讯息处理程式)和PAINTSTRUCT 结构的变数 (在 WINUSER.H 表头档案中定义)的地址为参数。Windows程式写作者通常把这一结构变数命名为 ps 并且在视窗讯息处理程式中定义它:
+```
+PAINTSTRUCT ps ;
+```
+
+* 在处理 WM_PAINT 讯息时,视窗讯息处理程式首先呼叫 BeginPaint。BeginPaint 函式一般在准备绘制时导致无效区域的背景被擦除。该函式也填入ps 结构的栏位。BeginPaint 传回的值是装置内容代号,这一传回值通常被保存在叫做 hdc 的变数中。
+```
+HDC hdc ;
+```
+
+* 一般地,处理 WM_PAINT 讯息的形式如下:
+```
+case WM_PAINT:
+	hdc = BeginPaint (hwnd, &ps) ;
+		使用 GDI 函式
+	EndPaint (hwnd, &ps) ;
+	return 0 ;
+```
+在处理 WM_PAINT 讯息时,必须成对地呼叫 BeginPaint 和 EndPaint。如果视窗讯息处理程式不处理 WM_PAINT 讯息,则它必须将 WM_PAINT 讯息传递给Windows中DefWindowProc(内定视窗讯息处理程式)。
+
+* 在处理 WM_PAINT 讯息时,为了在更新的矩形外绘图,可以使用如下呼叫:
+```
+InvalidateRect (hwnd, NULL, TRUE) ;
+```
+该呼叫在 BeginPaint 呼叫之前进行,它使整个显示区域变为无效,并擦除背景。但是,如果最後一个参数等於 FALSE,则不擦除背景,原有的东西将保留在原处。
+
+* 要得到视窗显示区域的装置内容代号,可以呼叫 GetDC 来取得代号,在使用完後呼叫 ReleaseDC:
+```
+hdc = GetDC (hwnd) ;
+使用 GDI 函式
+ReleaseDC (hwnd, hdc) ;
+```
+
 
