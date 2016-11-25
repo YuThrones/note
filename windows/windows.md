@@ -100,7 +100,7 @@ sprintf (szBuffer, "The sum of %i and %i is %i", 5, 3, 5+3) ;
 puts (szBuffer) ;
 ```
 * HelloWin程序：
-```
+```c
 HELLOWIN.C
 /*------------------------------------------------------------------------
 	HELLOWIN.C -- Displays "Hello, Windows 98!" in client area
