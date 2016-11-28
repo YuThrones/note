@@ -181,3 +181,9 @@ resolvconf -u
 * tar -j表示使用bzip2进行压缩
 
 * dump用于备份资料，restore用于还原
+
+* mkisofs:建立映像档  
+我们从 FTP 站捉下的 Linux 映像档 (不管是 CD 还是 DVD) 都得要继续刻录成为实体的光盘/DVD后, 才能够进一步的使用,包括安装和更新你的 Linux 啦!同样的道理,你想要利用刻录机将你的数据刻录到 DVD 时, 也得要先将你的数据报成一个映像档,这样才能够写入 DVD 片中。
+
+* cdrecord用于进行刻录
+
