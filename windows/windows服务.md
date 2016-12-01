@@ -14,7 +14,7 @@
 
 1. 首先是main函数，由于windows服务不需要界面，所以大部分程序为win32控制台应用程序，所以程序主函数为main 而不是WinMain()。在主函数要做的主要工作就是初始化一个SERVICE_TABLE_ENTRY 分派表结构体，然后调用StartServiceCtrlDispatcher();这将把调用进程的主线程转换为控制分派器。该分派器启动一个新线程，该线程运行分派表中对应于你的服务的ServiceMain（）函数。ServiceMain（）函数将在下面提到。  
 此过程示例代码如下：  
-```
+```cpp
 SERVICE_TABLE_ENTRY entrytable[2];
 entrytable[0].lpServiceName="testservice";
 entrytable[0].lpServiceProc=(LPSERVICE_MAIN_FUNCTION)ServiceMain;
@@ -26,7 +26,7 @@ StartServiceCtrlDispatcher(entrytable);
 在这之后系统将自动创建一个线程去执行ServiceMain函数的内容，你应该将你要执行的任务在ServiceMain中循环，这样服务就开始运行了。  
 
 2. ServiceMain函数为void WINAPI ServiceMain（int argc, char** argv）格式的函数，函数名字可以任意定义。它的作用就是：将你需要执行的任务放到该函数中循环执行即可。这就是服务程序的工作函数。在ServiceMain执行你的任务前，需要给SERVICE_TABLE_ENTRY 分派表结构体进行赋值，注意由于此时服务还没有开始执行你的任务所以我们将服务的状态设置为SERVICE_START_PENDING，即正在初始化。我们进行如下赋值：
-```
+```cpp
 servicestatus.dwServiceType = SERVICE_WIN32;
 servicestatus.dwCurrentState = SERVICE_START_PENDING;
 servicestatus.dwControlsAccepted=SERVICE_ACCEPT_SHUTDOWN|SERVICE_ACCEPT_STOP;
@@ -45,7 +45,7 @@ Hstatus为SERVICE_STATUS_HANDLE类型的全局变量。当需要改变服务状�
 3. void WINAPI CtrlHandler(DWORD request)，函数的主要功能是，接收系统传递的控制命令，比如当你通过sc.exe关闭服务时，该函数会收到SERVICE_CONTROL_STOP消息，你就可以对服务进行必要的管理。在本例子程序中就只接收SERVICE_ACCEPT_SHUTDOWN和SERVICE_ACCEPT_STOP消息，这是通过前面给servicestatus赋值设定的。这样一个基本的服务程序就完成了。   
 
 下面贴出我的示例代码仅供参考。该代码在vs2008中调试通过。本文结束的时候会附上如何安装服务。
-```
+```cpp
 #include <stdio.h>
 #include <Windows.h>
 #define SLEEP_TIME 5000 //间隔时间
