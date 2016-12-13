@@ -13,3 +13,6 @@
 
 * GET和POST请求参考
 [HTTP请求参考](http://blog.csdn.net/jinchaoh/article/details/47438911) 
+
+* 使用select控制超时
+[select函数详解](http://www.cnblogs.com/renyuan/p/5100184.html) 
