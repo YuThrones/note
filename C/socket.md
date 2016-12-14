@@ -14,6 +14,9 @@
 * GET和POST请求参考  
 [HTTP请求参考](http://blog.csdn.net/jinchaoh/article/details/47438911) 
 
-* 使用select控制超时  
+* 使用select
 [select函数详解](http://www.cnblogs.com/renyuan/p/5100184.html)   
  [select connect例子](http://www.cnblogs.com/yuxingfirst/archive/2013/03/08/2950281.html) 
+ 
+* 控制connect超时  
+[使用setsockopt控制connect超时](http://www.cnblogs.com/hfww/articles/2364516.html)  
