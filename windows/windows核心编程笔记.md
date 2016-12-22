@@ -46,3 +46,36 @@ BOOL CloseHandle(HANDLE hobj);
   * 邮箱和指定的管道使得应用程序能够在连网的不同机器上运行的进程之间发送数据块。
   * 互斥对象、信标和事件使得不同进程中的线程能够同步它们的连续运行,这与一个应用程序在完成某项任务时需要将情况通知另一个应用程序的情况相同。
   
+* 只有当进程具有父子关系时,才能使用对象句柄的继承：
+  * 首先,当父进程创建内核对象时,必须向系统指明,它希望对象的句柄是个可继承的句柄。请记住,虽然内核对象句柄具有继承性,但是内核对象本身不具备继承性。若要创建能继承的句柄,父进程必须指定一个 SECURITY\_ATTRIBUTES结构并对它进行初始化。如果将 bIheritHandle成员置为TRUE，对象变为可继承。
+  * 使用对象句柄继承性时要执行的下一个步骤是让父进程生成子进程。这要使用Create Process函数来完成。对象句柄的继承性只有在生成子进程的时候才能使用。如果父进程准备创建带有可继承句柄的新内核对象,那么已经在运行的子进程将无法继承这些新句柄。
+  * 子进程不知道它已经继承了任何句柄。只有在另一个进程生成子进程时记录了这样一个情况,即它希望被赋予对内核对象的访问权时,才能使用内核对象句柄的继承权。也就是说，必须传递给子进程句柄的值子进程才知道用这个值去访问对象。
+  
+* 共享跨越进程边界的内核对象的第二种方法是给对象命名。
+  * 下列函数都可以创建命名的内核对象：
+    * CreateMutex
+    * CreateEvent
+    * CreateSemaphore
+    * CreateWaitableTimer
+    * CreateFileMapping
+    * CreateJobObject
+  通过传递参数给pszName这个最后的参数，可以给对象命名，但是无法保证一个同名对象是否已经存在。
+  * 在第二个进程调用Create\*函数后，立刻调用GetLastError，可以知道是创建了新的对象还是打开了一个现有的对象：  
+```
+if (GetLastError() == ERROR\_ALREADY\_EXISTS) {
+}
+```  
+  * 进程按名字共享对象的另一种方法是不适用Create\*函数，而是调用Open\*函数中的某一个来打开已存在的内核对象。Create\*函数跟Open\*函数的主要区别是如果对象不存在，Create\*函数将创建对象，而Open\*函数则运行失败。
+  
+* 共享跨越进程边界的内核对象的最后一个方法是使用DuplicateHandle函数:  
+```
+BOOL DuplicateHandle(
+	HANDLE hSourceProcessHandle,
+	HANDLE hSourceHandle,
+	HANDLE hTargetProcessHandle,
+	PHANDLE phTargetHandle,
+	DWORD dwDesiredAccess,
+	BOOL bInheritHandle,
+	DWORD dwOptions);
+```
+简单说来,该函数取出一个进程的句柄表中的项目,并将该项目拷贝到另一个进程的句柄表中。DuplicateHandle函数配有若干个参数,但是实际上它是非常简单的。 DuplicateHandle函数最普通的用法要涉及系统中运行的 3个不同进程。
