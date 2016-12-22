@@ -10,7 +10,7 @@
 * 内核对象由内核所拥有,而不是由进程所拥有。如果你的进程调用了一个创建内核对象的函数,然后你的进程终止运行,那么内核对象**不一定被撤消**。内核知道有多少进程正在使用某个内核对象,因为每个对象包含一个**使用计数**。使用计数是所有内核对象类型常用的数据成员之一。如果内核对象的使用计数降为 0,内核就撤消该对象。这样可以确保在没有进程引用该对象时系统中不保留任何内核对象。
 
 * 内核对象能够得到**安全描述符**的保护。安全描述符用于描述谁创建了该对象,谁能够访问或使用该对象,谁无权访问该对象。用于创建内核对象的函数几乎都有一个指向 SECURITY_ATTRIBUTES结构的指针作为其参数,下面显示了CreateFileMapping函数的指针:
-```
+```cpp
 HANDLE CreateFileMapping(
 	HANDLE hFile,
 	PSECURITY_ATTRIBUTES psa,
@@ -34,7 +34,7 @@ typedef struct _SECURITY_ATTRIBUTES {
 如 果 传 递 了 一 个 无 效 索 引(句柄),该函数便返回失败,而GetLastError 则返回6(ERROR\_INVALID\_HANDLE)。由于句柄值实际上是放入进程句柄表的索引,因此这些句柄是与进程相关的,并且不能由其他进程成功地使用。
 
 * 无论怎样创建内核对象,都要向系统指明将通过调用CloseHandle来结束对该对象的操作:  
-```
+```cpp
 BOOL CloseHandle(HANDLE hobj);
 ```
 
@@ -58,7 +58,7 @@ BOOL CloseHandle(HANDLE hobj);
     * CreateSemaphore
     * CreateWaitableTimer
     * CreateFileMapping
-    * CreateJobObject
+    * CreateJobObject  
   通过传递参数给pszName这个最后的参数，可以给对象命名，但是无法保证一个同名对象是否已经存在。
   * 在第二个进程调用Create\*函数后，立刻调用GetLastError，可以知道是创建了新的对象还是打开了一个现有的对象：  
 ```
@@ -68,7 +68,7 @@ if (GetLastError() == ERROR\_ALREADY\_EXISTS) {
   * 进程按名字共享对象的另一种方法是不适用Create\*函数，而是调用Open\*函数中的某一个来打开已存在的内核对象。Create\*函数跟Open\*函数的主要区别是如果对象不存在，Create\*函数将创建对象，而Open\*函数则运行失败。
   
 * 共享跨越进程边界的内核对象的最后一个方法是使用DuplicateHandle函数:  
-```
+```cpp
 BOOL DuplicateHandle(
 	HANDLE hSourceProcessHandle,
 	HANDLE hSourceHandle,
@@ -79,3 +79,6 @@ BOOL DuplicateHandle(
 	DWORD dwOptions);
 ```
 简单说来,该函数取出一个进程的句柄表中的项目,并将该项目拷贝到另一个进程的句柄表中。DuplicateHandle函数配有若干个参数,但是实际上它是非常简单的。 DuplicateHandle函数最普通的用法要涉及系统中运行的 3个不同进程。
+
+## 第4章 进程
+### 4.1
