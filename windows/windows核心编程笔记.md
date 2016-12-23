@@ -126,3 +126,20 @@ VarName2=VarValue2\0
 与每个进程相关联的是一组标志,用于告诉系统,进程对严重的错误应该如何作出反映,
 这包括磁盘介质故障、未处理的异常情况、文件查找失败和数据没有对齐等。进程可以告诉系统如何处理每一种错误。方法是调用 `SetErrorMode` 函数
 
+### 4.2
+* 可以用CreateProcess函数创建一个进程:  
+```cpp
+BOOL CreateProcess(
+	PCTSTR pszApplicationNam,
+	PTSTR pszCommandLine,
+	PSECURITY_ATTRIBUTES psaProcess,
+	PSECURITY_ATTRIBUTES psaThread,
+	BOOL bInheritHandles,
+	DWORD fdwCreate,
+	PVOID pvEnvironment,
+	PCTSTR pszCurDir,
+	PSTARTUPINFO psiStartInfo,
+	PPROCESS_INFORMATION ppiProcInfo);
+```  
+注意 在进程被完全初始化之前,CreateProcess返回TRUE。由于CreateProcess返回TRUE,因此父进程不知道出现的任何初始化问题。
+
