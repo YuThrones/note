@@ -245,3 +245,6 @@ VOID FreeLibraryAndExitThread(
 ```
 必须传递HINSTANCE值,以便标识要卸载的DLL 。该值是较早的时候调用LoadLibrary(Ex)而返回的值。也可以通过调用FreeLibraryAndExitThread函数从进程的地址空间中卸载DLL.
 
+## 第22章 插入DLL和挂接API
+### 22.2
+* 可以用修改注册表的方式插入DLL，只需要修改一个存在的注册表关键字的值，这是最简单的方法，但是有一些缺点。
