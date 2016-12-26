@@ -162,3 +162,86 @@ typedef struct _PROCESS_INFORMATION {
   * 另一个进程中的线程调用Te r m i n a t e P r o c e s s函数(应该避免使用这种方法)。
   * 进程中的所有线程自行终止运行(这种情况几乎从未发生)。
   
+### 4.4
+* 创建新进程，让它进行一些操作，并且等待结果的代码例子：
+```
+PROCESS_INFROMATION pi;
+DWORD dwExitCode;
+
+BOOL fSuccess = CreateProcess(..., &pi);
+if(fSuccess) {
+	CloseHandle(pi.hThread);
+	WaitForSingleObject(pi.hProcess, INFINITE);
+	GetExitCodeProcess(pi.hProcess, &dwExitCode);
+	CloseHandle(pi.hProcess);
+}
+```
+若要放弃与子进程的所有联系, Explorer必须通过调用CloseHandle来关闭它与新进程及它的主线程之间的句柄。
+
+### 4.5
+
+## 第19章 DLL基础
+* 动态链接库(DLL)一直是Windows操作系统的基础,Windows API 中的所有函数都包含在DLL中。 3个最重要的DLL是Kernel32.dll,它包含用于管理内存、进程和线程的各个函数; User32.dll,它包含用于执行用户界面任务(如窗口的创建和消息的传送)的各个函数; GDI32.dll,它包含用于画图和显示文本的各个函数。
+
+### 19.1
+* 在应用程序(或另一个DLL)能够调用DLL中的函数之前,DLL文件映像必须被映射到调用进程的地址空间中。若要进行这项操作,可以使用两种方法中的一种,即加载时的隐含链接或运行期的显式链接。一旦DLL的文件映像被映射到调用进程的地址空间中, DLL的函数就可以供进程中运行的所有线程使用。实际上, DLL几乎将失去它作为DLL的全部特征。
+
+### 19.2
+* DLL创建使用流程：
+```
+创造DLL:
+1) 建立带有输出原型/结构/符号的头文件。
+2) 建立实现输出函数/变量的C/C++源文件。
+3) 编译器为每个C/C++源文件生成 .obj模块。
+4) 链接程序将生成DLL的 .obj模块链接起来。
+5) 如果至少输出一个函数/变量,那么链接程序也生成lib 文件。
+创造EXE:
+6) 建立带有输入原型/结构/符号的头文件。
+7) 建立引用输入函数/变量的C/C++源文件。
+8) 编译器为每个C/C++源文件生成 .obj源文件。
+9) 链接程序将各个 .obj模块链接起来,产生一个 .exe文件(它包含了所需要DLL模块的名字和输入符号的列表)。
+运行应用程序:
+10) 加载程序为 .exe 创建地址空间。
+11) 加载程序将需要的DLL加载到地址空间中进程的主线程开始执行;应用程序启动运行。
+```
+
+## DLL的高级操作技术
+### 20.1
+* 显式加载DLL的过程：
+```
+创造DLL :
+1) 建立带有输出原型/结构/符号的头文件。
+2) 建立实现输出函数/变量的 C/C++源文件。
+3) 编译器为每个 C/C++源文件生成 .obj模块。
+4) 链接程序将生成DLL的 .obj模块链接起来。
+5) 如果至少输出一个函数/变量,那么链接程序也生成 .lib 文件。
+创造EXE :
+6) 建立带有输入原型/结构/符号的头文件(视情况而定)。
+7) 建立不引用输入函数/变量的 C/C++源文件。
+8) 编译器为每个 C/C++源文件生成 .obj源文件。
+9) 链接程序将各个 .obj模块链接起来,生成 .exe文件。
+注: DLL的lib文件是不需要的,因为并不直接引用输出符号。.exe 文件不包含输入表。
+运行应用程序 :
+10) 加载程序为 .exe 创建模块地址空进程的主线程开始执行;应用程序启动运行。
+显式加载DLL:
+11) 一个线程调用LoadLibrary (Ex)函数,将DLL加载到进程的地址空间 这时线程可以调用GetProcAddress 以便间接引用DLL的输出符号。
+```
+
+* 无论何时,进程中的线程都可以决定将一个 D L L映射到进程的地址空间,方法是调用下面两个函数中的一个:
+```
+HINSTANCE LoadLibrary(PCTSTR pszDLLPathName);
+HINSTANCE LoadLibraryEx(
+	PCTSTR pszDLLPathName,
+	HANDLE hFile,
+	DWORD dwFlags);
+```
+LoadLibraryEx函数配有两个辅助参数,即hFile和dwFlags。参数hFile保留供将来使用,现在必须是NULL 。对于参数dwFlags ,必须将它设置为0,或者设置为DONT\_RESOLVE\_DLL\_REFERENCES、LOAD\_LIBRARY\_AS\_DATAFILE和LOAD\_WITH\_ALTERED\_SEARCH\_PATH等标志的一个组合。
+
+* 当进程中的线程不再需要 D L L中的引用符号时,可以从进程的地址空间中显式卸载DLL,方法是调用下面的函数:
+```cpp
+VOID FreeLibraryAndExitThread(
+	HINSTANCE hinstDLL,
+	DWORD dwExitCode);
+```
+必须传递HINSTANCE值,以便标识要卸载的DLL 。该值是较早的时候调用LoadLibrary(Ex)而返回的值。也可以通过调用FreeLibraryAndExitThread函数从进程的地址空间中卸载DLL.
+
