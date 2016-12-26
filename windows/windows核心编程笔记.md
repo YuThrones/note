@@ -130,7 +130,7 @@ VarName2=VarValue2\0
 * 可以用CreateProcess函数创建一个进程:  
 ```cpp
 BOOL CreateProcess(
-	PCTSTR pszApplicationNam,
+	PCTSTR pszApplicationName,
 	PTSTR pszCommandLine,
 	PSECURITY_ATTRIBUTES psaProcess,
 	PSECURITY_ATTRIBUTES psaThread,
@@ -141,5 +141,24 @@ BOOL CreateProcess(
 	PSTARTUPINFO psiStartInfo,
 	PPROCESS_INFORMATION ppiProcInfo);
 ```  
-注意 在进程被完全初始化之前,CreateProcess返回TRUE。由于CreateProcess返回TRUE,因此父进程不知道出现的任何初始化问题。
+注意 在进程被完全初始化之前,CreateProcess返回TRUE。由于CreateProcess返回TRUE,因此父进程不知道出现的任何初始化问题。  
+大多数情况下pszApplicationName都是NULL，如果不传递NULL,可以将地址传递给pszApplicationName参数中包含想运行的可执行文件的名字的字符串。  
+pvEnvironment参数用于指向包含新进程将要使用的环境字符串的内存块。在大多数情况下,为该参数传递 NULL,使子进程能够继承它的父进程正在使用的一组环境字符串。  
+psiStartInfo参数用于指向一个STARTUPINFO结构，大多数应用程序将要求生成的应用程序仅仅使用默认值。至少应该将该结构中的所有成员初始化为零,然后将cb成员设置为该结构的大小  。
+p p i P r o c I n f o参数用于指向你必须指定的PROCESS_INFORMATION结构。CreateProcess在返回之前要对该结构的成员进行初始化。该结构的形式如下面所示:
+```cpp
+typedef struct _PROCESS_INFORMATION {
+	HANDLE hProcess;
+	HANDLE hThread;
+	DWORD dwProcessId;
+	DWORD dwThreadId;
+} PROCESS_INFORMATION
+```
 
+### 4.3
+* 若要终止进程的运行,可以使用下面四种方法:
+  * 主线程的进入点函数返回(最好使用这个方法)。
+  * 进程中的一个线程调用E x i t P r o c e s s函数(应该避免使用这种方法)。
+  * 另一个进程中的线程调用Te r m i n a t e P r o c e s s函数(应该避免使用这种方法)。
+  * 进程中的所有线程自行终止运行(这种情况几乎从未发生)。
+  
