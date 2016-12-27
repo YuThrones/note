@@ -164,7 +164,7 @@ typedef struct _PROCESS_INFORMATION {
   
 ### 4.4
 * 创建新进程，让它进行一些操作，并且等待结果的代码例子：
-```
+```cpp
 PROCESS_INFROMATION pi;
 DWORD dwExitCode;
 
@@ -228,7 +228,7 @@ if(fSuccess) {
 ```
 
 * 无论何时,进程中的线程都可以决定将一个 D L L映射到进程的地址空间,方法是调用下面两个函数中的一个:
-```
+```cpp
 HINSTANCE LoadLibrary(PCTSTR pszDLLPathName);
 HINSTANCE LoadLibraryEx(
 	PCTSTR pszDLLPathName,
@@ -269,7 +269,7 @@ HHOOK hHook = SetWindowsHookEx(WH_GETHMSSAGE, GetMsgProc, hinstDLL, 0);
 ```
 
 * 与插入DLL的注册表方法不同,这个方法允许你在另一个进程的地址空间中不再需要DLL时删除该DLL的映像,方法是调用下面的函数:
-```
+```cpp
 BOOL UnhookWindowsHookEx(HHOOK hhook);
 ```
 
