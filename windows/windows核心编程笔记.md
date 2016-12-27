@@ -248,3 +248,55 @@ VOID FreeLibraryAndExitThread(
 ## 第22章 插入DLL和挂接API
 ### 22.2
 * 可以用修改注册表的方式插入DLL，只需要修改一个存在的注册表关键字的值，这是最简单的方法，但是有一些缺点。
+
+### 22.3
+* 通过调用SetWindowsHookEx函数安装钩子：
+```cpp
+HHOOK hHook = SetWindowsHookEx(WH_GETHMSSAGE, GetMsgProc, hinstDLL, 0);
+```
+第一个参数WH\_GETMESSAGE用于指明要安装的挂钩的类型。第二个参数 GetMsgProc用于指明窗口准备处理一个消息时系统应该调用的函数的地址(在你的地址空间中)。第三个参数hinstDll用于指明包含GetMsgProc函数的DLL。在Windows中,DLL的hinstDll的值用于标识DLL被映射到的进程的地址空间中的虚拟内存地址。最后一个参数 0用于指明要挂接的线程。对于一个线程来说,它可以调用SetWindowsHookEx函数,传递系统中的另一个线程的ID。通过为这个参数传递0,就告诉系统说,我们想要挂接系统中的所有GUI线程。
+
+* 挂载过程：
+```
+1) 进程B中的一个线程准备将一条消息发送到一个窗口。
+2) 系统查看该线程上是否已经安装了WH_GETMESSAGE挂钩。
+3) 系统查看包含GetMsgProc函数的DLL是否被映射到进程 B的地址空间中。
+4) 如果该DLL尚未被映射,系统将强制该DLL映射到进程B的地址空间,并且将进程B中的DLL映像的自动跟踪计数递增1。
+5) 当DLL的hinstDll用于进程 B时,系统查看该函数,并检查该DLL的hinstDll是否与它用于进程A时所处的位置相同。
+6) 系统将进程B中的DLL映像的自动跟踪计数递增1。
+7) 系统调用进程B的地址空间中的GetMsgProc函数。
+8) 当GetMsgProc函数返回时,系统将进程B中的D L L映像的自动跟踪计数递减1。
+```
+
+* 与插入DLL的注册表方法不同,这个方法允许你在另一个进程的地址空间中不再需要DLL时删除该DLL的映像,方法是调用下面的函数:
+```
+BOOL UnhookWindowsHookEx(HHOOK hhook);
+```
+
+### 22.4
+* 插入D L L的第三种方法是使用远程线程。这种方法具有更大的灵活性。它要求你懂得若干个Windows特性、如进程、线程、线程同步、虚拟内存管理、 DLL和Unicode等.  
+我们要做的事情是创建一个新线程,并且使线程函数的地址成为LoadLibraryA或LoadLibraryW函数的地址。本质上,我们必须进行的操作是执行类似下面的一行代码:
+```
+HANDLE hThread = CreateRemoteThread(hProcessRemote, NULL, 0, LoadLibraryA, "C:\\MyLib.dll", 0, NULL);
+```
+对CreateRemoteThread进行调用的前提是, Kernel32.dll已经被同时映射到本地和远程进程的地址空间中。每个应用程序都需要Kernel32.dll,根据我的经验,系统将 Kernel32.dll映射到每个进程的同一个地址。因此,必须调用下面的 CreateRemoteThread函数:
+```cpp
+PTHREAD_START_ROUTINE pfnThreadRtn = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(Text("kernel32")), "LoadLibraryA");
+HANDLE hThread = CreateRemoteThread(hProcessRemote, NULL, 0, pfnThreadRtn, "C:\\MyLib.dll", 0, NULL);
+```
+我们还需要VirtualAllocEx函数远程分配其他进程的空间，并且用ReadProcessMemory和WriteProcessMemory读写。  
+下面让我们将必须执行的操作步骤做一个归纳:
+```
+1) 使用VirtualAllocEx函数,分配远程进程的地址空间中的内存。
+2) 使用WriteProcessMemory函数,将DLL的路径名拷贝到第一个步骤中已经分配的内存中。
+3) 使用GetProcAddress函数,获取 LoadLibraryA或LoadLibratyW函数的实地址(在Kernel32.dll中)。
+4) 使用CreateRemoteThread函数,在远程进程中创建一个线程,它调用正确的 LoadLibrary函数,为它传递第一个步骤中分配的内存的地址。
+5) 使用VirtualFreeEx函数,释放第一个步骤中分配的内存。
+6) 使用GetProcAddress函数,获得FreeLibrary函数的实地址(在Kernel32.dll中)。
+7) 使用CreateRemoteThread函数,在远程进程中创建一个线程,它调用FreeLibrary函数,传递远程DLL的HINSTANCE。
+```
+
+
+
+
+
