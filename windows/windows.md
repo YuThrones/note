@@ -248,3 +248,24 @@ VarName2=VarValue2\0
   * 进程中的一个线程调用E x i t P r o c e s s函数(应该避免使用这种方法)。
   * 另一个进程中的线程调用Te r m i n a t e P r o c e s s函数(应该避免使用这种方法)。
   * 进程中的所有线程自行终止运行(这种情况几乎从未发生)。
+
+* CreateProcess例子：
+```
+STARTUPINFO si;
+PROCESS_INFORMATION pi;
+memset(&si, 0, sizeof(STARTUPINFO));
+memset(&pi, 0, sizeof(PROCESS_INFORMATION));
+si.cb = sizeof(STARTUPINFO);
+
+CreateProcess(TEXT("D:\\weixin\\WeChat\\WeChat.exe"),
+	TEXT(""),
+	NULL,
+	NULL,
+	FALSE,
+	0,
+	NULL,
+	NULL,
+	&si,
+	&pi);
+```
+参考[http://www.cnblogs.com/wangliang651/archive/2007/05/25/760057.html](http://www.cnblogs.com/wangliang651/archive/2007/05/25/760057.html "CreateProcess详解")
