@@ -269,3 +269,6 @@ CreateProcess(TEXT("D:\\weixin\\WeChat\\WeChat.exe"),
 	&pi);
 ```
 参考[http://www.cnblogs.com/wangliang651/archive/2007/05/25/760057.html](http://www.cnblogs.com/wangliang651/archive/2007/05/25/760057.html "CreateProcess详解")
+
+* 宽字符操作：一般把char类型函数中的" str "替换为" wcs "即可
+`wcs：wide char string`
