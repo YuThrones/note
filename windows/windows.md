@@ -273,9 +273,47 @@ CreateProcess(TEXT("D:\\weixin\\WeChat\\WeChat.exe"),
 * 宽字符操作：一般把char类型函数中的" str "替换为" wcs "即可
 `wcs：wide char string`
 
-* curl库的使用：
-  1. 将libcurl.dll和libcurl.lib分别拷贝到curl项目的include和lib目录下
-  2. curl测试项目属性—- C/C++ --- 预处理器– 预处理器定义  添加 CURL_STATICLIB
-  3. curl测试项目属性—- C/C++--- 常规–附加包含目录  添加include
-  4. curl测试项目属性—- 连接器 --- 常规 – 附加库目录 添加lib
-  5. 将curl-7.38.0\include\下的curl目录拷贝到curl测试项目的include目录下
+## C发送url请求
+* 可以使用CInternetSession来发送，需要MFC，范例代码如下：
+```
+//省略mfc自带头文件
+#include   <afxinet.h> 
+int main() {
+//省略mfc初始化代码
+    CInternetSession session;
+	CHttpFile *file = NULL;
+	CString strURL = L"http://192.168.1.116:5000/api/v1.0/cloudredirect/start_app/qq";
+	CString strHtml = L"";   //存放网页数据
+
+	try {
+		file = (CHttpFile*)session.OpenURL(strURL);
+	}
+	catch (CInternetException * m_pException) {
+		file = NULL;
+		m_pException->m_dwError;
+		m_pException->Delete();
+		session.Close();
+		//MessageBox("CInternetException");
+		printf("exception\n");
+	}
+	CString strLine;
+	if (file != NULL) {
+		printf("begin\n");
+		while (file->ReadString(strLine) != NULL) {
+			strHtml += strLine;
+		}
+
+	}
+	else {
+		printf("fail\n");
+	}
+
+	printf("%s\n", strHtml);
+
+	session.Close();
+	file->Close();
+	delete file;
+	file = NULL;
+//省略部分代码
+}
+```
