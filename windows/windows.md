@@ -320,3 +320,44 @@ int main() {
 
 ## 注入explorer
 * 必须传递DLL的绝对路径给explorer进程，传递相对的路径的话explorer会从自己的运行目录开始找，跟我们用来注入的程序运行目录不是同一个，是找不到的
+
+## 多线程
+* 参考[http://blog.csdn.net/zhouxuguang236/article/details/7775232](http://blog.csdn.net/zhouxuguang236/article/details/7775232 "Windows多线程详解")
+
+* CreateThread函数原型如下：
+```
+HANDLEWINAPICreateThread(
+    LPSECURITY_ATTRIBUTESlpThreadAttributes,
+    SIZE_TdwStackSize,
+    LPTHREAD_START_ROUTINElpStartAddress,
+    LPVOIDlpParameter,
+    DWORDdwCreationFlags,
+    LPDWORDlpThreadId
+);
+```
+函数说明：
+1. 第一个参数表示线程内核对象的安全属性，一般传入NULL表示使用默认设置。
+2. 第二个参数表示线程栈空间大小。传入0表示使用默认大小（1MB）。
+3. 第三个参数表示新线程所执行的线程函数地址，多个线程可以使用同一个函数地址。
+4. 第四个参数是传给线程函数的参数。
+5. 第五个参数指定额外的标志来控制线程的创建，为0表示线程创建之后立即就可以进行调度，如果为CREATE_SUSPENDED则表示线程创建后暂停运行，这样它就无法调度，直到调用ResumeThread()。
+6. 第六个参数将返回线程的ID号，传入NULL表示不需要返回该线程ID号。  
+函数返回值：  
+成功返回新线程的句柄，失败返回NULL。  
+
+* 如果在代码中有使用标准C运行库中的函数时，尽量使用 `_beginthreadex()` 来代替 `CreateThread()` 。
+
+* WaitForSingleObject函数原型如下：
+```
+DWORDWINAPIWaitForSingleObject(
+    HANDLEhHandle,
+    DWORDdwMilliseconds
+);
+```
+函数说明：
+1. 第一个参数为要等待的内核对象。  
+2. 第二个参数为最长等待的时间，以毫秒为单位，如传入5000就表示5秒，传入0就立即返回，传入INFINITE表示无限等待.  
+因为线程的句柄在线程运行时是未触发的，线程结束运行，句柄处于触发状态。所以可以用WaitForSingleObject()来等待一个线程结束运行。  
+函数返回值：  
+在指定的时间内对象被触发，函数返回WAIT_OBJECT_0。超过最长等待时间对象仍未被触发返回WAIT_TIMEOUT。传入参数有错误将返回WAIT_FAILED  
+
