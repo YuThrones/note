@@ -9,5 +9,5 @@ E:
 cd E:\zlib128\zlib-1.2.8\contrib\masmx64
 bld_ml64.bat
 ```
-3. 生成解决方案
+最后生成解决方案即可，在x64\ZlibDllDebug下面可以找到对应的输出文件
 
