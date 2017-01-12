@@ -11,3 +11,10 @@ bld_ml64.bat
 ```
 最后生成解决方案即可，在x64\ZlibDllDebug下面可以找到对应的输出文件
 
+## 导入库
+* 将 `zlib128` 目录下的 `zlib.h` 和 `zconf.h` 复制到自己的工程目录下，并且将在编译后生成在 `ZlibDllDebug` 文件夹下面的 `zlibwapi.lib` 复制到自己工程目录下。并且在项目属性->C/C++->常规->附加包含目录下加入 `./`。然后如下即可使用：
+```
+#include <zlib.h>
+#pragma comment(lib, "zlibwapi.lib")
+```
+
