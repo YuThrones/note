@@ -31,7 +31,7 @@ bld_ml64.bat
 5.  zipClose  关闭zip文件
 
 * 示例代码：
-```
+```cpp
 //code by MulinB
 //2011-04-28
 
@@ -154,7 +154,7 @@ void CreateZipFromDir(const CString& dirName, const CString& zipFileName)
 ### 解压缩
 参考[minizip解压文件详解](minizip解压文件详解 "http://www.cnblogs.com/menlsh/p/4480577.html")  
 * 示例代码：
-```
+```cpp
 /*
  * 函数功能 :  解压zip文件
  * 备    注 : 参数strFilePath表示zip压缩文件的路径
