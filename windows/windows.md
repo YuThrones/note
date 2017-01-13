@@ -361,3 +361,8 @@ DWORDWINAPIWaitForSingleObject(
 函数返回值：  
 在指定的时间内对象被触发，函数返回WAIT_OBJECT_0。超过最长等待时间对象仍未被触发返回WAIT_TIMEOUT。传入参数有错误将返回WAIT_FAILED  
 
+## 字符转换问题
+ANSI跟Unicode之间的转换，也就是char\* 跟wchar_t\* 之间的转换，可以通过 `WideCharToMultiByte` 和 `MultiByteToWideChar` 函数来解决，参考[WideCharToMultiByte和MultiByteToWideChar函数的用法](WideCharToMultiByte和MultiByteToWideChar函数的用法 "http://www.cnblogs.com/gakusei/articles/1585211.html")  
+有两个常用代码页：CP_ACP和CP_UTF8两个。  
+使用CP_ACP代码页就实现了ANSI与Unicode之间的转换。  
+使用CP_UTF8代码页就实现了UTF-8与Unicode之间的转换。  
