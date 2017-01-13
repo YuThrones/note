@@ -20,8 +20,8 @@ bld_ml64.bat
 
 ## 使用minizip
 ### 压缩
-总体流程是，创建一个zip文件，然后每个要压缩进去的文件都在zip文件里面创建对应的新文件，然后将源文件的数据写进入之后关闭zip文件流。  
-参考[minizip压缩文件详解](http://blog.csdn.net/shineorrain/article/details/26138129)   
+总体流程是，创建一个zip文件，然后每个要压缩进去的文件都在zip文件里面创建对应的新文件，然后将源文件的数据写进入之后关闭zip文件流。     
+[minizip压缩文件详解](http://blog.csdn.net/shineorrain/article/details/26138129)   
 用到的函数如下：
 
 1.  zipOpen  打开、创建zip文件
@@ -152,7 +152,7 @@ void CreateZipFromDir(const CString& dirName, const CString& zipFileName)
 ```
 
 ### 解压缩
-参考[minizip解压文件详解](minizip解压文件详解 "http://www.cnblogs.com/menlsh/p/4480577.html")  
+[minizip解压文件详解](minizip解压文件详解 "http://www.cnblogs.com/menlsh/p/4480577.html")  
 * 示例代码：
 ```cpp
 /*
