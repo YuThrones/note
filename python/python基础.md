@@ -15,3 +15,4 @@ f.close()
 **注意：**要传入C中的char\*类型，必须使用ctypes里面的**c\_char\_p**，并且，其**输入参数应为byte**，即需要把str转成byte，使用`str.encode(encoding="utf-8")`
 
 * 可以itertools包下面的permutations和combinations函数分别实现排列和组合
+* marshal模块可以用来将一个python数据结构写入文件
