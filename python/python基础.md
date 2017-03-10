@@ -16,3 +16,10 @@ f.close()
 
 * 可以itertools包下面的permutations和combinations函数分别实现排列和组合
 * marshal模块可以用来将一个python数据结构写入文件
+* 使用msvcrt模块可以实现命令行的无阻塞输入，使用其中的```kbhit()``` 函数来检测输入，使用```getch()``` 函数来接受单个字符输入，使用范例如下：
+```
+while not msvcrt.kbhit():
+    # 在没有接收到输入的时候进行的操作
+press_button = msvcrt.getch()
+# 接受字符
+```
