@@ -20,6 +20,7 @@ f.close()
 ```python
 while not msvcrt.kbhit():
     # 在没有接收到输入的时候进行的操作
+    do_something
 press_button = msvcrt.getch()
 # 接受字符
 ```
