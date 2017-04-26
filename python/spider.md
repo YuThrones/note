@@ -27,3 +27,7 @@ else:
     opener = urllib2.build_opener(null_proxy_handler)
 urllib2.install_opener(opener)
 ```
+* URLError可能产生的原因：
+  1. 网络无连接，即本机无法上网
+  2. 连接不到特定的服务器
+  3. 服务器不存在
