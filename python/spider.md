@@ -16,7 +16,7 @@ print response.read()
 
 * 有些服务器会识别头部以决定是否响应，可能需要设置User-Agent和Referer等。
 * 代理服务器用法如下：
-```
+```python
 import urllib2
 enable_proxy = True
 proxy_handler = urllib2.ProxyHandler({"http" : 'http://some-proxy.com:8080'})
