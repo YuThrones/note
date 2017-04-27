@@ -30,4 +30,5 @@ urllib2.install_opener(opener)
 * URLError可能产生的原因：
   1. 网络无连接，即本机无法上网
   2. 连接不到特定的服务器
-  3. 服务器不存在
+  3. 服务器不存在
+* 可以使用`cookielib`里面的函数跟类来满足cookie的使用需求，可以用`MozillaCookieJar`将cookie保存到文件中。
