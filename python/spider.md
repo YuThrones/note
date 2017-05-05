@@ -34,3 +34,5 @@ urllib2.install_opener(opener)
 * 可以使用`cookielib`里面的函数跟类来满足cookie的使用需求，可以用`MozillaCookieJar`将cookie保存到文件中。
 * 高级的的使用需求可以使用requests库，具体使用方法查看文档
 * 可以使用 beautiful soup来进行html和xml的解析，没必要写复杂易错的正则表达式
+
+## 要在requests库中保持一个对话，可以使用requests.Session()。
