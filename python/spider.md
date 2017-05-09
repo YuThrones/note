@@ -35,4 +35,4 @@ urllib2.install_opener(opener)
 * 高级的的使用需求可以使用requests库，具体使用方法查看文档
 * 可以使用 beautiful soup来进行html和xml的解析，没必要写复杂易错的正则表达式
 
-## 要在requests库中保持一个对话，可以使用requests.Session()。
+* 要在requests库中保持一个对话，可以使用requests.Session()。
