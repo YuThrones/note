@@ -36,3 +36,8 @@ urllib2.install_opener(opener)
 * 可以使用 beautiful soup来进行html和xml的解析，没必要写复杂易错的正则表达式
 
 * 要在requests库中保持一个对话，可以使用requests.Session()。
+
+## pyspider
+* 在遇到ＨＴＴＰ　５９９的时候，最简单的解决方法是在 crawl 方法中加入忽略证书验证的参数，validate_cert=False，即
+`self.crawl(url, callback=method_name, validate_cert=False)`，
+详细可以参照[PySpider HTTP 599: SSL certificate problem错误的解决方法](http://cuiqingcai.com/2703.html)
