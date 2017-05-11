@@ -41,3 +41,4 @@ urllib2.install_opener(opener)
 * 在遇到ＨＴＴＰ　５９９的时候，最简单的解决方法是在 crawl 方法中加入忽略证书验证的参数，validate_cert=False，即
 `self.crawl(url, callback=method_name, validate_cert=False)`，
 详细可以参照[PySpider HTTP 599: SSL certificate problem错误的解决方法](http://cuiqingcai.com/2703.html)
+* 在运行pyspider的时候如果遇到`No module named xmlrpc_server` 的问题，可以重新安装six模块，使用 `pip install -U six` 命令来解决。
