@@ -42,3 +42,11 @@ urllib2.install_opener(opener)
 `self.crawl(url, callback=method_name, validate_cert=False)`，
 详细可以参照[PySpider HTTP 599: SSL certificate problem错误的解决方法](http://cuiqingcai.com/2703.html)
 * 在运行pyspider的时候如果遇到`No module named xmlrpc_server` 的问题，可以重新安装six模块，使用 `pip install -U six` 命令来解决。
+
+## python多进程
+由于Python的多线程同时只能有一个线程在执行，python的多进程功能比多线程强大太多，因此建议使用多线程使得程序并行执行，参考[多进程用法](http://cuiqingcai.com/3335.html)
+* python的多进程要使用`mutilprocessing` 库来实现，可以使用使用里面的`Process` 类或者继承它并实现它的`run` 方法来实现。
+* 设置`Process` 类的`daemon` 属性如果设置为True，父进程结束后子进程会被自动终止。如果需要子进程执行完了再结束父进程，只需要加入join方法。
+* 我们可以使用`Lock` 来加锁以设立临界区，使用Semaphore来做到同步和互斥，并且控制临界资源的数量。使用Semaphore.acquire()来锁定一个资源，使用Semaphore来解锁一个资源。使用`multiprocessing.Queue` 作为共享队列，在进程间共享数据。
+* 我们可以使用`multiprocessing.Pipe` 来进行进程间的通信。
+* `multiprocessing.Pool` 中的 `apply_async` 可以添加非阻塞进程， `apply` 可以添加阻塞进程，map方法可以对列表中的所有元素都启动一个进程并将参数传入来执行。
