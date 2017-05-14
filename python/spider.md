@@ -72,7 +72,7 @@ projectname/
 ```
 
 * item是保存爬取到的数据的容器，使用方法类似python字典，范例如下：
-```
+```python
 import scrapy
 class DmozItem(scrapy.Item):
     title = scrapy.Field()
@@ -87,7 +87,7 @@ class DmozItem(scrapy.Item):
   * `parse()` 是spider的一个方法。 被调用时，每个初始URL完成下载后生成的 `Response` 对象将会作为唯一的参数传递给该函数。 该方法负责解析返回的数据(response data)，提取数据(生成item)以及生成需要进一步处理的URL的`Request` 对象。
 
 * 爬虫代码范例如下：
-```
+```python
 import scrapy
 
 class DmozSpider(scrapy.Spider):
@@ -124,8 +124,7 @@ scrapy crawl spidername
 
 * `Item` 是对象自定义的python字典。我们可以用标准的字典语法来获取每个字段的值(字段即是我们之前的Field赋值的属性)。
 一般的说，Spider将会将爬取的数据以`Item` 对象返回。所以为了将爬取的数据返回，我们最终的代码将是:
-
-```
+```python
 import scrapy
 from tutorial.items import DmozItem
 class DmozSpider(scrapy.Spider):
@@ -143,3 +142,8 @@ class DmozSpider(scrapy.Spider):
             item['desc'] = sel.xpath('text()').extract()
             yield item
 ```
+* 最简单的保存爬取数据的方式是：
+```
+scrapy crawl dmoz -o items.json
+```
+该命令采用JSON格式对爬取的数据进行序列化，生成 `items.json` 文件。如果需要对爬取到的item做更为复杂的操作，可以编写Item Pipeline。
