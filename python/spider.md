@@ -71,15 +71,6 @@ projectname/
             ...
 ```
 
-* item是保存爬取到的数据的容器，使用方法类似python字典，范例如下：
-```python
-import scrapy
-class DmozItem(scrapy.Item):
-    title = scrapy.Field()
-    link = scrapy.Field()
-    desc = scrapy.Field()
-```
-
 ### 编写爬虫
 * 为了创建爬虫，必须继承`scrapy.Spider` 类，且定义以下三个属性：
   * `name` 用于区别Spider，该名字必须唯一
@@ -142,8 +133,52 @@ class DmozSpider(scrapy.Spider):
             item['desc'] = sel.xpath('text()').extract()
             yield item
 ```
+
 * 最简单的保存爬取数据的方式是：
 ```
 scrapy crawl dmoz -o items.json
 ```
 该命令采用JSON格式对爬取的数据进行序列化，生成 `items.json` 文件。如果需要对爬取到的item做更为复杂的操作，可以编写Item Pipeline。
+
+### Scrapy 命令行使用
+* 命令行用法
+  * `scrapy <command> -h` 查看命令详细帮助
+  * `scrapy startproject project` 创建一个项目
+  * `scrapy genspider [-t template] <name> <domain>` 在当前项目中创建spider
+  * `scrapy crawl <spider>` 使用spider进行爬取
+  * `scrapy check [-l] <spider>` 运行contract检查
+  * `scrapy list` 列出当前项目中可用的spider
+  * `scrapy fetch <url>` 使用Scrapy下载器下载给定的URL，并将获取到的内容送到标准输出
+  * `scrapy view <url>` 在浏览器中打开给定的URL，并以Scrapy spider获取到的形式展现。
+  * `scrapy shell [url]` 以给定的URL(如果给出)或者空(没有给出URL)启动Scrapy shell。
+  * `scrapy parse <url> [options]` 获取给定的URL并使用相应的spider分析处理。如果您提供 `--callback` 选项，则使用spider的该方法处理，否则使用 `parse` 。
+  * `scrapy runspider <spider_file.py>` 在未创建项目的情况下，运行一个编写在Python文件中的spider。
+
+### Items定义使用
+* item是保存爬取到的数据的容器，使用方法类似python字典，范例如下：
+```python
+import scrapy
+class Product(scrapy.Item):
+    name = scrapy.Field()
+    price = scrapy.Field()
+    stock = scrapy.Field()
+    last_updated = scrapy.Field(serializer=str)
+```
+
+* `Field` 对象指明了每个字段的元数据(metadata)。上面例子中 ` last_updated` 中指明了该字段的序列化函数。
+
+* 创建Item范例
+```python
+>>> product = Product(name='Desktop PC', price=1000)
+>>> print product
+Product(name='Desktop PC', price=1000)
+```
+我们可以使用 dict API 来获取所有的值:
+```python
+>>> product.keys()
+['price', 'name']
+>>> product.items()
+[('price', 1000), ('name', 'Desktop PC')]
+```
+Item复制了标准的 dict API 。包括初始化函数也相同。Item唯一额外添加的属性是: `fields` 一个包含了item所有声明的字段的字典，而不仅仅是获取到的字段。该字典的key是字段(field)的名字，值是 Item声明 中使用到的 Field 对象。
+`Field` 仅仅是内置的 dict 类的一个别名，并没有提供额外的方法或者属性。换句话说， Field 对象完完全全就是Python字典(dict)。
