@@ -212,4 +212,4 @@ def logged_in(self, response):
     pass
 ```
 
-    * `make_requests_from_url(url)`:该方法接受一个URL并返回用于爬取的 Request 对象。 该方法在初始化request时被`start_requests()` 调用，也被用于转化url为request。
+    * `make_requests_from_url(url)` :该方法接受一个URL并返回用于爬取的 Request 对象。 该方法在初始化request时被`start_requests()` 调用，也被用于转化url为request。
