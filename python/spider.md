@@ -180,5 +180,12 @@ Product(name='Desktop PC', price=1000)
 >>> product.items()
 [('price', 1000), ('name', 'Desktop PC')]
 ```
-Item复制了标准的 dict API 。包括初始化函数也相同。Item唯一额外添加的属性是: `fields` 一个包含了item所有声明的字段的字典，而不仅仅是获取到的字段。该字典的key是字段(field)的名字，值是 Item声明 中使用到的 Field 对象。
+Item复制了标准的 dict API 。包括初始化函数也相同。Item唯一额外添加的属性是: `fields` 一个包含了item所有声明的字段的字典，而不仅仅是获取到的字段。该字典的key是字段(field)的名字，值是 Item声明 中使用到的 `Field` 对象。
 `Field` 仅仅是内置的 dict 类的一个别名，并没有提供额外的方法或者属性。换句话说， Field 对象完完全全就是Python字典(dict)。
+
+### Spiders
+* 对Spider来说，爬取的循环类似下文:
+  1. 以初始的URL初始化Request，并设置回调函数。 当该request下载完毕并返回时，将生成response，并作为参数传给该回调函数。spider中初始的request是通过调用 `start_requests()` 来获取的。 `start_requests()` 读取 `start_urls` 中的URL， 并以 `parse` 为回调函数生成 `Request` 。
+  2. 在回调函数内分析返回的(网页)内容，返回 `Item` 对象或者 Request 或者一个包括二者的可迭代容器。 返回的 `Request` 对象之后会经过Scrapy处理，下载相应的内容，并调用设置的callback函数(函数可相同)。
+  3. 在回调函数内，您可以使用 选择器(Selectors) (您也可以使用BeautifulSoup, lxml 或者您想用的任何解析器) 来分析网页内容，并根据分析的数据生成item。
+  4. 最后，由spider返回的item将被存到数据库(由某些 Item Pipeline 处理)或使用 Feed exports 存入到文件中。
