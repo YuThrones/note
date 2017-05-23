@@ -200,7 +200,7 @@ scrapy crawl myspider -a category=electronic
     * `allowed_domains`: 可选，包含了允许爬取的域名列表。
     * `start_urls`: 如果没有制定特定url，spider将从该列表爬取页面。
     * `start_requests()` 方法，必须返回一个可迭代对象。该对象包含了spider用于爬取的第一个Request。当spider启动爬取并且未制定URL时，该方法被调用。 当指定了URL时，make_requests_from_url() 将被调用来创建Request对象。 该方法仅仅会被Scrapy调用一次，因此您可以将其实现为生成器。该方法的默认实现是使用 start_urls 的url生成Request。如果您想要修改最初爬取某个网站的Request对象，您可以重写(override)该方法。 例如，如果您需要在启动时以POST登录某个网站，你可以这么写:
-    ```python
+```python
 def start_requests(self):
     return [scrapy.FormRequest("http://www.example.com/login",
                                formdata={'user': 'john', 'pass': 'secret'},
@@ -209,4 +209,4 @@ def logged_in(self, response):
     # here you would extract links to follow and return Requests for
     # each of them, with another callback
     pass
-    ```
+```
