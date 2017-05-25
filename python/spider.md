@@ -212,4 +212,7 @@ def logged_in(self, response):
 ```
 
 * CrawlSpider: `class scrapy.contrib.spiders.CrawlSpider` 爬取一般网站常用的spider。其定义了一些规则(rule)来提供跟进link的方便的机制。
-    * 
+    * `rules` : 一个包含一个(或多个) `Rule` 对象的集合(list)。 每个 `Rule` 对爬取网站的动作定义了特定表现。 Rule对象在下边会介绍。 如果多个rule匹配了相同的链接，则根据他们在本属性中被定义的顺序，第一个会被使用。
+    * `parse_start_url(response)` : 当start_url的请求返回时，该方法被调用。 该方法分析最初的返回值并必须返回一个 Item 对象或者 一个 Request 对象或者 一个可迭代的包含二者对象。
+
+* `Rules` : `class scrapy.contrib.spiders.Rule(link_extractor, callback=None, cb_kwargs=None, follow=None, process_links=None, process_request=None)`
