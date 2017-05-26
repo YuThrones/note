@@ -1,4 +1,4 @@
-#Jquery
+# Jquery
 * $(this).hide()
 演示 jQuery 的 hide() 函数，隐藏当前的 HTML 元素。
 * $("p").hide()
