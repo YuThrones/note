@@ -216,3 +216,89 @@ def logged_in(self, response):
     * `parse_start_url(response)` : 当start_url的请求返回时，该方法被调用。 该方法分析最初的返回值并必须返回一个 Item 对象或者 一个 Request 对象或者 一个可迭代的包含二者对象。
 
 * `Rules` : `class scrapy.contrib.spiders.Rule(link_extractor, callback=None, cb_kwargs=None, follow=None, process_links=None, process_request=None)`
+
+### 选择器（Selectors）
+* Scrapy selector 是以 文字(text) 或 `TextResponse` 构造的 `Selector` 实例。 其根据输入的类型自动选择最优的分析方法(XML vs HTML):
+
+* 以文字构造：
+```python
+>>> body = '<html><body><span>good</span></body></html>'
+>>> Selector(text=body).xpath('//span/text()').extract()
+[u'good']
+```
+
+* 以response构造：
+```python
+>>> response = HtmlResponse(url='http://example.com', body=body)
+>>>Selector(response=response).xpath('//span/text()').extract()
+[u'good']
+```
+
+* 为了方便起见，response对象以 .selector 属性提供了一个selector， 您可以随时使用该快捷方法:
+```python
+>>> response.selector.xpath('//span/text()').extract()
+[u'good']
+```
+或者直接使用
+```python
+>>> response.xpath('//span/text()').extract()
+[u'good']
+```
+
+* 假设你想提取在 `<div>` 元素中的所有 `<p>` 元素。首先，你将先得到所有的 `<div>` 元素:
+```python
+>>> divs = response.xpath('//div')
+```
+开始时，你可能会尝试使用下面的错误的方法，因为它其实是从整篇文档中，而不仅仅是从那些 `<div>` 元素内部提取所有的 `<p>` 元素:
+```python
+>>> for p in divs.xpath('//p'):  # this is wrong - gets all <p> from the whole document
+...     print p.extract()
+```
+下面是比较合适的处理方法(注意 .//p XPath的点前缀):
+```python
+>>> for p in divs.xpath('.//p'):  # extracts all <p> inside
+...     print p.extract()
+```
+另一种常见的情况将是提取所有直系 `<p>` 的结果:
+```python
+>>> for p in divs.xpath('p'):
+...     print p.extract()
+```
+
+* `//node[1]` 与 `(//node)[1]` 的区别：  
+例子：
+```python
+>>> from scrapy import Selector
+>>> sel = Selector(text="""
+....:     <ul class="list">
+....:         <li>1</li>
+....:         <li>2</li>
+....:         <li>3</li>
+....:     </ul>
+....:     <ul class="list">
+....:         <li>4</li>
+....:         <li>5</li>
+....:         <li>6</li>
+....:     </ul>""")
+>>> xp = lambda x: sel.xpath(x).extract()
+```
+下面的语法寻找所有在其父节点排名第一的 `<li>` 子节点：
+```python
+>>> xp("//li[1]")
+[u'<li>1</li>', u'<li>4</li>']
+```
+下面的语法寻找该文档第一个 `<li>` 子节点：
+```python
+>>> xp("(//li)[1]")
+[u'<li>1</li>']
+```
+
+* Selector 的参考：
+    * `response` 是 `HtmlResponse` 或 `XmlResponse` 的一个对象，将被用来选择和提取数据。
+    * `text` 是在 `response` 不可用时的一个unicode字符串或utf-8编码的文字。将 `text` 和 `response` 一起使用是未定义行为。
+    * `type` 定义了选择器类型，可以是 `"html"` , `"xml"` or `None (默认)`.
+    * `extract()` 串行化并将匹配到的节点返回一个unicode字符串列表。 结尾是编码内容的百分比。
+    * `re(regex)` 应用给定的regex，并返回匹配到的unicode字符串列表。
+    * `register_namespace(prefix, uri)`注册给定的命名空间，其将在 `Selector` 中使用。 不注册命名空间，你将无法从非标准命名空间中选择或提取数据。
+    * `remove_namespaces()`移除所有的命名空间，允许使用少量的命名空间xpaths遍历文档。
+    
