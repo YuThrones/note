@@ -1,5 +1,5 @@
-#CSS
-##CSS 概述
+# CSS
+## CSS 概述
 * CSS 指层叠样式表 (Cascading Style Sheets)
 * 样式定义如何显示 HTML 元素
 * 样式通常存储在样式表中
@@ -13,7 +13,7 @@
 3.内部样式表（位于 <head> 标签内部）
 4.内联样式（在 HTML 元素内部）
 
-##CSS 语法
+## CSS 语法
 CSS 规则由两个主要的部分构成：选择器，以及一条或多条声明。
 ```selector {declaration1; declaration2; ... declarationN }```
 选择器通常是您需要改变样式的 HTML 元素。
