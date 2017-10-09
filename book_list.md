@@ -1,7 +1,7 @@
 # 阅读书单
 
 ## 书籍参考
-* [http://justjavac.com/other/2012/05/15/qualified-programmer-should-read-what-books.html](一个合格的程序员要读的书)
+* [一个合格的程序员应该读过哪些书](http://justjavac.com/other/2012/05/15/qualified-programmer-should-read-what-books.html)
 
 ## 阅读进度
 * 《编程珠玑》 [√]
