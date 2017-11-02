@@ -1,3 +1,3 @@
 # README
 
-* [SCIP答案](https://github.com/huangz1990/SICP-answers)
+* [SCIP答案](http://sicp.readthedocs.io/en/latest/)
