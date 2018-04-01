@@ -40,3 +40,8 @@
 #### 脚本间的通信
 1. 通过 `GetComponent` 来找到其他脚本
 2. 通过 `GameObject.Find` 来找到其他物体
+
+#### 游戏输入
+1. 在 `Edit->Project Settings->Input` 设置游戏输入
+2. 在脚本中利用 `Input` 类来检测输入状态
+3. `Input.GetAxis` 返回的值是 -1 到 1 之间，0表示没有输入
