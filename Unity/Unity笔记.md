@@ -45,3 +45,6 @@
 1. 在 `Edit->Project Settings->Input` 设置游戏输入
 2. 在脚本中利用 `Input` 类来检测输入状态
 3. `Input.GetAxis` 返回的值是 -1 到 1 之间，0表示没有输入
+
+### 动态生成物体
+1. 把一个`prefab`做成模板，运行时用 `Instantiate` 生成一个实例，不需要的时候使用 `Destroy` 将 `GameObject` 销毁。
