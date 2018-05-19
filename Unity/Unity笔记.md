@@ -48,3 +48,11 @@
 
 ### 动态生成物体
 1. 把一个`prefab`做成模板，运行时用 `Instantiate` 生成一个实例，不需要的时候使用 `Destroy` 将 `GameObject` 销毁。
+
+### 碰撞检测
+1. 使用 `Collider` 组件来实现碰撞检测，类型分很多种，其中 `MeshCollider` 是根据物体形状生成碰撞区域的，效果最好，也最消耗性能，平时用一般的即可。
+2. 勾选 `IsOnTrigger` 会触发碰撞信息，一共有三种，分别是`OnTriggerEnter`, `OnTriggerStay`, `OnTriggerExit`。
+3. 如果给 `Collider` 加上 `Rigidbod`, 则不会触发 `OnTrigger` 事件，转而触发 `OnCollision`事件。
+4. 使用了 `Rigidbod`的组件会受到物理系统的管理，其中有很多参数可以调整。 `Mass` 是物体的质量，`Drag` 是运动时受到的阻力，`Angular Drag` 是角速度的阻力，即转圈时的阻力， `Is Kinematic`可以把控制权暂时交给脚本。
+5. 可以通过设置不同的 `tag` 来区分 `Collider` 。
+6. Unity 使用 `NavMeshAgent` 类帮我们寻找路径。
