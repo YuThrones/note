@@ -56,3 +56,8 @@
 4. 使用了 `Rigidbod`的组件会受到物理系统的管理，其中有很多参数可以调整。 `Mass` 是物体的质量，`Drag` 是运动时受到的阻力，`Angular Drag` 是角速度的阻力，即转圈时的阻力， `Is Kinematic`可以把控制权暂时交给脚本。
 5. 可以通过设置不同的 `tag` 来区分 `Collider` 。
 6. Unity 使用 `NavMeshAgent` 类帮我们寻找路径。
+
+### Unity中的自动寻路
+1. 设置导航网络
+2. 设置 `Nav Mesh Agent`
+3. 调用 `Nav Mesh Agent` 的方法设置路径。
