@@ -83,12 +83,14 @@ git rm <file>
 ```
 在手动删除文件后也要在git里面删除
 
-* 使用github
+* 使用github  
+
 ** 1.** 创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
 ```
 ssh-keygen -t rsa -C "youremail@example.com"
 ```
-如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。  
+
 ** 2.** 登陆GitHub，打开“Account settings”，“SSH Keys”页面，然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。
 
 * 关联远程仓库
@@ -199,10 +201,14 @@ Bootstrap的官方仓库twbs/bootstrap、你在GitHub上克隆的仓库my/bootst
 git config --global color.ui true
 ```
 * 在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。不需要从头写.gitignore文件，GitHub已经为我们准备了各种配置文件，只需要组合一下就可以使用了。所有配置文件可以直接在线浏览：https://github.com/github/gitignore
-忽略文件的原则是：
-** 1.** 忽略操作系统自动生成的文件，比如缩略图等；
-** 2.** 忽略编译生成的中间文件、可执行文件等，也就是如果一个文件是通过另一个文件自动生成的，那自动生成的文件就没必要放进版本库，比如Java编译产生的.class文件；
-** 3.** 忽略你自己的带有敏感信息的配置文件，比如存放口令的配置文件。
+忽略文件的原则是： 
+
+** 1.** 忽略操作系统自动生成的文件，比如缩略图等； 
+
+** 2.** 忽略编译生成的中间文件、可执行文件等，也就是如果一个文件是通过另一个文件自动生成的，那自动生成的文件就没必要放进版本库，比如Java编译产生的.class文件； 
+
+** 3.** 忽略你自己的带有敏感信息的配置文件，比如存放口令的配置文件。 
+
   可以用```git check-ignore```命令检查
 
 * 我们只需要敲一行命令，告诉Git，以后st就表示status：
