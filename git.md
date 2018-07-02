@@ -1,35 +1,45 @@
 # git
+
 * git是分布式版本控制系统，不需要中央电脑
-* ** 安装** 
-** ubuntu** 安装git：
+
+* ** 安装**
+
+**ubuntu** 安装git：
 ```
 sudo apt-get install git
 ```
+
 老版的ubuntu可能要运行：
 ```
 sudo apt-get install git-core
 ```
-** windows** 安装git：
+
+**windows** 安装git：
 [https://git-for-windows.github.io](https://git-for-windows.github.io "git for windows")
 安装成功后需要最后一步设置：
 ```
 $ git config --global user.name "Your Name"
 $ git config --global user.email "email@example.com"
 ```
+
 * 创建版本库：
 ```
 git init
 ```
+
 把当前目录变成git可以管理的仓库
-** 注：** git只能追踪纯文本格式文件的改动，图片视频等二进制文件只能追踪大小变化，word文件也是二进制文件，无法追踪。
+
+**注：** git只能追踪纯文本格式文件的改动，图片视频等二进制文件只能追踪大小变化，word文件也是二进制文件，无法追踪。
 
 * 把文件添加到git库流程：
-** 1.** 添加文件到暂存区(stage)
+
+**1.** 添加文件到暂存区(stage)
 ```
 git add <file>
 ```
 git add \* 可以添加** 所有** 文件
-** 2.** 把暂存区的所有改动提交到当前分支
+
+**2.** 把暂存区的所有改动提交到当前分支
 ```
 git commit -m 'update message'
 ```
@@ -66,7 +76,9 @@ git reset --hard <commit-id>
 git reflog
 ```
 记录每一次的命令，可以看到相应的commit-id
-** 注：** HEAD指向的版本就是当前版本
+
+**注：** HEAD指向的版本就是当前版本
+
 * 撤销修改
 ```
 git checkout -- <file>
@@ -76,6 +88,7 @@ git checkout -- <file>
 git reset HEAD <file>
 ```
 可以把暂存区的修改撤销掉，重新放回工作区
+
 * 删除文件
 ```
 rm <file>
@@ -85,13 +98,13 @@ git rm <file>
 
 * 使用github  
 
-** 1.** 创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+**1.** 创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
 ```
 ssh-keygen -t rsa -C "youremail@example.com"
 ```
 如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。  
 
-** 2.** 登陆GitHub，打开“Account settings”，“SSH Keys”页面，然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。
+**2.** 登陆GitHub，打开“Account settings”，“SSH Keys”页面，然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。
 
 * 关联远程仓库
 ```
@@ -203,11 +216,11 @@ git config --global color.ui true
 * 在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。不需要从头写.gitignore文件，GitHub已经为我们准备了各种配置文件，只需要组合一下就可以使用了。所有配置文件可以直接在线浏览：https://github.com/github/gitignore
 忽略文件的原则是： 
 
-** 1.** 忽略操作系统自动生成的文件，比如缩略图等； 
+**1.** 忽略操作系统自动生成的文件，比如缩略图等； 
 
-** 2.** 忽略编译生成的中间文件、可执行文件等，也就是如果一个文件是通过另一个文件自动生成的，那自动生成的文件就没必要放进版本库，比如Java编译产生的.class文件； 
+**2.** 忽略编译生成的中间文件、可执行文件等，也就是如果一个文件是通过另一个文件自动生成的，那自动生成的文件就没必要放进版本库，比如Java编译产生的.class文件； 
 
-** 3.** 忽略你自己的带有敏感信息的配置文件，比如存放口令的配置文件。 
+**3.** 忽略你自己的带有敏感信息的配置文件，比如存放口令的配置文件。 
 
   可以用```git check-ignore```命令检查
 
