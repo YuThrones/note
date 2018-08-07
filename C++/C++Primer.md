@@ -1,9 +1,10 @@
-#C++ Primer
-##2.2
+# C++ Primer
+
+## 2.2
 extern int i 声明i而非定义，在外部使用
 ：：全局作用域
 
-##2.3
+## 2.3
 &引用（Reference），给变量起另一个名字，必须初始化，无法重新绑定，不能定义引用的引用
 &取地址符
 不能定义指向引用的指针
@@ -11,7 +12,7 @@ extern int i 声明i而非定义，在外部使用
 ```void*``` 能存放任何类型对象的地址，但不能直接操作
 ```int *&a = b；``` a是对指针b的引用
 
-##2.4
+## 2.4
 const对象必须初始化
 const默认状态下只在文件内有效
 const int &a 对常量的引用a
@@ -19,7 +20,7 @@ const int &a 对常量的引用a
 只能用常量指针指向常量对象
 int *const a常量指针 初始化后不可改变
 
-##2.5
+## 2.5
 typedef定义类型别名
 typedef double wages //wages是double的同义词
 using SI = Sales_item //SI是Sales_item的同义词
@@ -28,7 +29,7 @@ decltype返回操作数的数据类型而不实际计算表达式的值
 decltype(f()) sum=x; //sum的类型就是函数f的返回类型
 decltype(*p)得到的是int&而非int
 
-##2.6
+## 2.6
 头文件保护符
 ```
 #ifdef仅当变量已定义时为真
@@ -36,7 +37,7 @@ decltype(*p)得到的是int&而非int
 ```
 一旦检查结果为真，则执行后续操作直至遇到#endif指令为止
 
-##3.1
+## 3.1
 using std::cin声明cin
 头文件不应该包含using声明，因为会拷贝到所有被引用的文件中
 string s7(10, 'c')1   “cccccccccc”
@@ -46,7 +47,7 @@ string用+号必须确保两边有一个是string对象
 for(变量：对象)  例如for(auto c: str)
 用引用可以改变string中字符的值
 
-##3.3
+## 3.3
 老式C++标准中vector<vector<int> >必须有空格
 vector<int> ivec(10,-1)初始化10个-1
 vector<int> ivec{10，-1}初始化10和-1
@@ -56,7 +57,7 @@ vector可以高效添加元素增长
 for(auto &i:v)可以通过i给v的元素赋值
 vector的下标可以用于访问已存在元素而不能用于添加元素
 
-##3.4
+## 3.4
 ```*iter``` 返回迭代器iter所指元素的引用
 ```
 iter->men等价于（*iter）.mem
@@ -64,7 +65,7 @@ vector<int>::iterator it
 ```
 vector<int>::const_iterator只能读取不能修改，常量对象只能用他读取
 
-##3.5
+## 3.5
 a[d]  d必须是一个常量表达式
 不能用auto推断数组类型
 用字符串字面值初始化字符数组会自动添加'\0'
@@ -74,18 +75,18 @@ int (*p)[10]=&a   p指向含有10个整数的数组
 begin，end可以操作数组得到头尾指针，例如begin(a)
 传入strlen等函数的指针必须指向以空字符结尾的数组
 
-##4.1
+## 4.1
 当一个对象被用作右值的时候，用的是对象的值（内容）；当对象被用作左值的时候，用的是对象的身份（在内存中的位置）
 
-##4.5
+## 4.5
 尽量用++i而不用i++，因为i++会有创建副本
 ```*beg=toupper(*beg++)``` 有问题，结果未定义
 
-##4.9
+## 4.9
 sizeof (type) 返回一个类型名字所占字节数
 sizeof expr 返回表达式结果类型的大小，并不实际计算值
 
-##4.11
+## 4.11
 
 cast-name<type>(expression)显示转换，casst-name是static_cast、dynamic_cast、const_cast、reinterpret_cast中的一种
 
@@ -99,24 +100,24 @@ const_cast只能改变对象的底层const
 reinterpret_cast本质上依赖于机器，非常危险
 
 
-##4.12
+## 4.12
 运算符优先级表
 
-##5.5
+## 5.5
 goto不能跳过变量定义	
 					
-##5.6
+## 5.6
 throw引发异常
 try处理语句块处理异常，以一个或多个catch结束
 exception class用于在throw跟catch之间传递异常具体信息
 throw runtime_error是标准库异常类型的一种
 execption.what()返回一个C字符串
 
-##6.1
+## 6.1
 函数返回类型不能是数组和函数，但是可以是指向他们的指针
 static在第一次定义时初始化，直到程序终止
 
-##6.2
+## 6.2
 * 命令行选项
   例如main函数位于prog之内，我们可以传递下面的选项：
 ```
@@ -128,7 +129,7 @@ int main(int argc, char * argv[]) {...}
 int main(int argc, char **argv){...}
 ```
 
-##6.3
+## 6.3
 不能返回局部变量的引用，不然会产生错误
 如果想定义一个返回数组指针的函数，则数组维度必须跟在函数名字之后，返回的数组指针的函数形式如下：
 ```Type (*function(parameter _list))[dimension]```
@@ -149,16 +150,16 @@ decltype(odd) *arrPtr(int i)
 ```
 不过decltype并不负责将数组类型转换成相应的指针，所以decltype的结果是个数组，要想返回arrPtr返回数组还必须在函数声明时加一个`*`符号。
 
-##6.4
+## 6.4
 * 如果一个作用域内的几个函数名字相同但是参数列表不同，我们称之为重载函数。
 
-##6.5
+## 6.5
 可以重复声明一个函数，但是不可以修改已经声明的默认参数值
 在函数的返回类型前面加强关键字```inline``` ，可以把函数声明为内联函数，消除运行时开销
 ```inline const string& func()```
 constexpr函数指能用于常量表达式的函数,函数的返回值和所有形参的类型都得是字面值类型
 
-##6.7
+## 6.7
 要声明一个可以指向函数的指针，只需要把函数名替换成指针：
 ```
 bool com(string a, string b);
@@ -169,19 +170,19 @@ bool (*pf)(string, string);
 auto f1(int) -> int (*) (int*, int);
 ```
 
-##7.1
+## 7.1
 * 把const关键字放在成员函数的参数列表之后，如下，此时表示this是一个指向常量的指针
 ```
 std:string Sales_data::isbn(const Sales_data *const this)
 ```
 
-##7.2
+## 7.2
 * 使用class和struct唯一的区别就是默认访问权限，struct是public，class是private
 类可以允许其他类或者函数访问它的非公有成员，方法是令其他类或者函数成为它的友元
 * 任何成员函数都可以改变可变数据成员的值
 * 提供一个类内初始值时必须以符号=或者花括号表示
 
-##7.3
+## 7.3
 * 返回引用可以像下列用法
 ```
 myScreen.move(4,0).set('#')
@@ -190,7 +191,7 @@ myScreen.move(4,0).set('#')
 * 一个类的成员不能是它自己，但是可以是自己的指针或者引用
 * 友元可以声明一个类，也可以声明一个函数。如果要把重载函数定义为友元，需要对这组函数中的每一个分别声明
 
-##7.4
+## 7.4
 * 一个类就是一个作用域。在类中，如果一个成员使用了外层作用域中的名字，就不可以重新定义它
 ```
 typedef double Money;
@@ -203,7 +204,7 @@ private:
 }
 ```
 
-##7.5
+## 7.5
 * 构造初始值列表：
 ```
 Salas_data(const std::string &s, unsigned n, double p):
@@ -243,7 +244,7 @@ Data vall = {0, "Aana"};
     3. 如果一个数据成员含有类内初始值，则内置数据成员的初始值必须是一条常量表达式；或者如果成员属于某种类类型，则初始值必须使用成员自己的constexpr构造函数。
     4. 类必须使用析构函数的默认定义，该成员负责销毁类的对象
 
-##7.6 类的静态成员
+## 7.6 类的静态成员
 * 静态成员函数不能声明成const，我们使用作用与运算符 `::` 直接访问静态成员，也可以使用域的对象，指针或者引用来访问。
 ```
 doublr r;
@@ -263,7 +264,7 @@ double Account::interestRate = initRate();
 
 *静态成员可以声明为类类型，而普通成员只能是类的引用或者指针
 
-##8.1
+## 8.1
 * iostream定义了用于读写流的基本类型，fstream定义了读写命名文件的类型，sstream定义了读写内存string对象的类型。
   1. istream 从流读取数据
   2. ostream 向流写入数据
@@ -295,7 +296,7 @@ double Account::interestRate = initRate();
 * **注：如果程序崩溃，输出缓冲区不会被刷新**
 * 任何试图从输入流读取数据的操作都会先刷新关联的输出流。tie有两个版本，一个不带参数，返回指向输出流的指针。第二个接受一个指向ostream的指针，将自己关联到ostream。即，x.tie(&o)将流关联到输出流o。每个流最多同时关联到一个流，但多个流可以同时关联到一个ostream。
 
-##8.2
+## 8.2
 * 特有操作：
     1. fstream fstrm；    创建一个未绑定的文件流
     2. fstream fstrm(s);  创建一个fstream并打开名为s的文件，s可以是string类型。
@@ -312,7 +313,7 @@ double Account::interestRate = initRate();
     6. binary 以二进制方式进行IO
 以out打开文件会丢弃已有数据
 
-##8.3 string流
+## 8.3 string流
 * 特有操作：
     1. sstream strm；
     2. sstream strm（s）
@@ -342,7 +343,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-##9.2
+## 9.2
 * C seq(n) seq包含n个元素，进行了值初始化
   C seq(n,t) seq包含n个初始化为t的元素
 * 标准库array具有固定大小
@@ -354,20 +355,20 @@ int main(int argc, char* argv[])
 * emplace类似于insert，但是它是构造而非拷贝元素，调用构造函数
 * 访问元素的成员函数返回的是引用，const容器返回const的引用，如果不是const，可以用来改变元素的值。可以使用at（）函数访问下标
 
-##9.3
+## 9.3
 * 删除操作：
   c.erase(p) 删除p指向的元素
   c.erase(b, e) 删除b到e范围元素，返回最后一个被删除元素之后元素的迭代器
 * forward_list中添加或删除元素的操作是通过改变给定的元素之后的元素来实现的，定义的行为有insert_after,emplace_after和erase_after。forward_list 定义了一个before_begin首前迭代器
 * resize可以增大或者缩小容器
 
-##9.4
+## 9.4
 * capacity是在不分配新的内存空间的前提下它最多可以保存多少元素，size是它已经保存的元素数目
   reserve（n）分配至少能容纳n个元素的空间
   shrink_to_fit()只适用于vector，string和deque，退回不需要的内存空间（未必成功），减少为与size（）相同
   capacity和reserve只适用于vector和string
 
-##9.5 string操作
+## 9.5 string操作
 * string s(cp, n) 拷贝cp指向的数组前n个元素
 * string s(s2, pos2) 从s2的pos位置开始拷贝
 * string s(s2, pos2, len2) 从s2的pos2开始拷贝len2个拷贝
@@ -405,7 +406,7 @@ double d = stod(s);
   7. stod(s, p)
   8. stold(s, p)
   
-##9.6 容器适配器（adaptor）
+## 9.6 容器适配器（adaptor）
 * 定义了三个顺序容器适配器：stack，queue和priority_queue。本质上，适配器是一种机制，能使某种事物的行为看起来像另外一种事物。一种容器适配器接受一种已有的容器类型，使其行为看起来像一种不同的类型。例如一个stack接受一个顺序容器（除array或forward_list外），并使其操作看起来像stack一样。
 * 适配器支持的操作：
     1. size_type
@@ -438,12 +439,12 @@ stack<string, vector<string>> str_stk;
   5. q.push(item)
   6. q.emplace(args)
 
-##10.1 泛型算法概述
+## 10.1 泛型算法概述
 * 大多数算法都定义在头文件algorithm中，标准库还在头文件numeric定义了一组数组泛型算法
 * 标准库算法find可用于搜索容器
 * 泛型算法本身不会执行容器的操作，它们只运行于迭代器之上
 
-##10.2
+## 10.2
 * 除了少数例外，标准库算法都对一个范围内的元素进行操作，我们将此元素的范围称为“输入范围”，两个输入元素分别是第一个元素和尾元素之后位置的迭代器。
 * 只读算法，值读取范围内的元素，不改变元素。例如find，还有定义在numeric之中的accumulate
   输入范围和和的初始值，求范围内的和，此外还有equal算法
@@ -470,7 +471,7 @@ auto end_unique = unique(words.begin(), words.end());
 words.erase(end_unique, words,end())
 ```
 
-##10.3 定制操作
+## 10.3 定制操作
 * 很多算法会比较输入序列中的元素，默认情况下，使用元素类型的<或者==来完成比较，标准库允许我们提供自己定义的操作来替代默认运算符。
 * 我们可以使用sort的第二个版本，它接受第三个参数，这个参数是一个**谓词（predicate）**。谓词是一个可调用的表达式，其运算结果是返回一个能用做条件的值。标准库算法使用的谓词分为两类：一元谓词（unary predicate）和二元谓词（binary predicate），代表参数的个数
 * 在我们将words大小重排的同时，还希望具有相同长度的元素按字典序排列。为了保持相同长度的单词按字典序排列，可以使用stable_sort算法，这种稳定排序算法维持相等元素的原有顺序。
@@ -489,7 +490,7 @@ words.erase(end_unique, words,end())
   例如 `auto g = bind(f, a, b, _2, c, _1);` 调用g(_1, _2)可以映射成 f(a, b, _2, c, _1) 
   使用placeholders名字，名字_n都定义在这个命名空间中，这个命名空间本身定义在std命名空间内，所以两个都要写上。bind拷贝参数，如果我们希望传递给bind一个对象而又不拷贝它，就必须使用ref函数
 
-##10.4
+## 10.4
 * 迭代器包括以下几种：
     1. 插入迭代器（insert iterator） 绑定到一个容器上，可以用来向容器插入元素
         * it = t，根据插入迭代器的不同种类，会分别调用push_back,push_front或者insert
@@ -510,7 +511,7 @@ words.erase(end_unique, words,end())
     3. 反向迭代器（reverse iterator） 这些迭代器不是向前而是向后移动
     4. 移动迭代器（move iterator） 这些迭代器不是拷贝其中的元素，而是移动他们
 
-##10.5 泛型算法结构
+## 10.5 泛型算法结构
 * 算法要求的迭代器分为5个级别：
 	1. 输入迭代器       只读，不写；单边扫描，只能递增
 	2. 输出迭代器       只写，不读；单边扫描，只能递增
@@ -518,7 +519,7 @@ words.erase(end_unique, words,end())
 	4. 双向迭代器       可读写；多遍扫描，可递增递减
 	5. 随机访问迭代器   可读写，多遍扫描，支持全部迭代器运算
 
-##10.6 特定容器算法
+## 10.6 特定容器算法
 * 链表类型定义的其他算法的通用版本可以用于链表，但是成本太高，应该优先使用成员函数版本的算法而不是通用算法。
 * list和forward_list成员函数版本的算法
     1. lst.merge(lst2)       将来自lst2的元素合并入lst，合并后lst2为空，使用<运算符
@@ -535,11 +536,11 @@ words.erase(end_unique, words,end())
 	2. (p, lst2, p2) 
 	3. (p, lst2, b, e)
 	
-##11.1
+## 11.1
 * 主要关联容器：map和set。multi开头的表示允许重复。从map提取一个元素时，会得到一个pair类型的对象，这是一个模板类型，保存一个名为first和second的（公有）数据成员。
 * find调用返回一个迭代器，找不到则返回尾后迭代器
 
-##11.2
+## 11.2
 * 默认情况下，标准库使用关键字类型的<运算符比较两个关键字，可以向算法提供我们定义的比较操作，所提供的的操作必须在关键字类型上定义一个**严格弱序（strict weak ordering）**，必须具有以下性质：
 	1. 两个关键字不能同时“小于等于”对方；
 	2. 如果k1小于等于k2<,且k2小于等于k3，那么k1必须小于等于k3
@@ -557,7 +558,7 @@ words.erase(end_unique, words,end())
 	8. p1 == p2 利用元素的<运算符来实现
 	9. p1 != p2
 
-##11.3 关联容器操作
+## 11.3 关联容器操作
 * 关联容器定义的类型：
   * key_type 关键字类型
   * mapped_type 每个关键字关联的类型，只适用于map
@@ -572,7 +573,7 @@ words.erase(end_unique, words,end())
 	4. c.upper_bound(k) 返回一个迭代器，指向第一个关键字大于k的元素
 	5. c.equal_range(k) 返回一个迭代器的pair，表示关键字等于k的元素的范围。若k不存在，pair的两个成员等于c.end()
 
-##11.4 无序容器
+## 11.4 无序容器
 * 无序容器不是使用比较运算符来组织元素，而是使用一个哈希函数和关键字类型的==运算符。
 * 用于map和set的操作能用于unordered_map和unordered_set。无序容器的性能依赖于哈希函数的质量和桶的数量和大小。
 * 无序容器的成员函数：
@@ -594,7 +595,7 @@ words.erase(end_unique, words,end())
 
 * 默认情况下，无序容器使用关键字类型的==运算符来比较元素，它们还使用一个hash<key_type>类型的对象来生成每个元素的hash值。标准库为内置类型（包括指针）提供了hash模板。但是我们**不能直接定义**关键字是自定义类类型的无序容器，不能直接使用哈希模板，而必须提供我们自己的hash模板版本。
 
-##12.1
+## 12.1
 * 全局对象在程序启动时分配，在程序结束时销毁。对于局部自动对象，当我们进入其定义的程序块时被创建，在离开块时销毁。局部static对象在第一次使用前分配，在程序结束时销毁。
 * new为对象分配内存空间，delete销毁对象
 * 新标准库提供了两种**智能指针（smart pointer）**类型来管理动态对象，其行为类似于常规指针，区别是它负责自动释放对象。**shared_ptr**允许多个指针指向同一对象，**unique_ptr**则独占所指向的对象。标准库还定义了一种名为**weak_ptr**的伴随类，它是一种弱引用，指向shared_ptr所管理的对象。
@@ -668,5 +669,5 @@ void f(destination &d /*其他参数*/)
 
 * weak_ptr是一种不控制所指向对象生存期的智能指针，它指向一个由shared_ptr管理的对象，并且不会改变shared_ptr的引用计数。
 
-##12.2 动态内存
+## 12.2 动态内存
 * 标准库中包含一个allocator的类，允许我们将分配和初始化分离，使用allocator通常会提供更好的性能和更灵活的内存管理能力。
