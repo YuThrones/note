@@ -50,13 +50,20 @@
 * 顶层const表示本身是个常量，不能改变，底层const表示指向的对象是常量，自己可以改变
 
 ## 2.5
-typedef定义类型别名
-typedef double wages //wages是double的同义词
-using SI = Sales_item //SI是Sales_item的同义词
-(C++11)auto可以在一行里声明多个变量，但是其基本数据类型必须一样
-decltype返回操作数的数据类型而不实际计算表达式的值
-decltype(f()) sum=x; //sum的类型就是函数f的返回类型
-decltype(*p)得到的是int&而非int
+
+* typedef定义类型别名
+
+* typedef double wages //wages是double的同义词
+
+* using SI = Sales_item //SI是Sales_item的同义词
+
+* (C++11)auto可以在一行里声明多个变量，但是其基本数据类型必须一样
+
+* decltype返回操作数的数据类型而不实际计算表达式的值
+
+* decltype(f()) sum=x; //sum的类型就是函数f的返回类型
+
+* decltype(*p)得到的是int&而非int
 
 ## 2.6
 头文件保护符
