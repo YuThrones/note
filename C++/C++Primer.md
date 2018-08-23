@@ -67,21 +67,33 @@
 
 ## 2.6
 头文件保护符
+
+```C
+#ifdef 仅当变量已定义时为真
+#ifndef 仅当变量为定义时为真
 ```
-#ifdef仅当变量已定义时为真
-#ifndef仅当变量为定义时为真
-```
+
 一旦检查结果为真，则执行后续操作直至遇到#endif指令为止
 
 ## 3.1
-using std::cin声明cin
-头文件不应该包含using声明，因为会拷贝到所有被引用的文件中
-string s7(10, 'c')1   “cccccccccc”
-getline(is, s)从is中读取一行赋给s
-string.zi返回的是size_type类型，无符号整型数
-string用+号必须确保两边有一个是string对象
-for(变量：对象)  例如for(auto c: str)
-用引用可以改变string中字符的值
+
+* using std::cin声明cin
+
+* 头文件不应该包含using声明，因为会拷贝到所有被引用的文件中
+
+* string s7(10, 'c') // “cccccccccc”
+
+* getline(is, s)从is中读取一行赋给s
+
+* string.zi返回的是size_type类型，无符号整型数
+
+* string用+号必须确保两边有一个是string对象
+
+* for(变量：对象)  例如for(auto c: str)
+
+* 用引用可以改变string中字符的值
+
+* C++语言中的字符串字面值并不是标准库string的对象。
 
 ## 3.3
 老式C++标准中vector<vector<int> >必须有空格
@@ -241,12 +253,15 @@ private:
 ```
 
 ## 7.5
+
 * 构造初始值列表：
-```
+
+```C
 Salas_data(const std::string &s, unsigned n, double p):
-			bookNo(s), units_sold(n), revenue(p*n) { }
+    bookNo(s), units_sold(n), revenue(p*n) { }
 ```
-const和引用必须被初始化，不能赋值
+
+* const和引用必须被初始化，不能赋值
 
 * 如果构造函数只接受一个实参，则它实际上定义了转换为此类类型的隐式转换机制，有时候我们称之为**转换构造函数**。但是只允许一步转换。
 ```
@@ -426,7 +441,7 @@ int main(int argc, char* argv[])
     4. cp, pos, n 从s中位置pos开始查找cp指向的数组的前n个字符，pos和n无默认值
 * s.compare函数能比较字符串是大于、小于还是等于
 * 新标准引入了多个函数，可以实现数值数据与标准库string之间的转换：
-```  
+```C
 int i = 42;
 string s = to_string(i);
 double d = stod(s);
