@@ -96,22 +96,31 @@
 * C++语言中的字符串字面值并不是标准库string的对象。
 
 ## 3.3
-老式C++标准中vector<vector<int> >必须有空格
-vector<int> ivec(10,-1)初始化10个-1
-vector<int> ivec{10，-1}初始化10和-1
-当花括号无法列表初始化时会尝试默认值初始化（）
-vector可以高效添加元素增长
-如果循环内部有向vector添加元素的语句，不能用范围for循环
-for(auto &i:v)可以通过i给v的元素赋值
-vector的下标可以用于访问已存在元素而不能用于添加元素
+
+* 老式C++标准中vector<vector<int> >必须有空格
+
+* vector<int> ivec(10,-1)初始化10个-1
+
+* 当花括号无法列表初始化时会尝试默认值初始化（），比如 `vector<string> v(10, "hi"); //v有10个值为"hi"的元素`
+
+* vector可以高效添加元素增长
+
+* 如果循环内部有向vector添加元素的语句，不能用范围for循环
+
+* for(auto &i:v)可以通过i给v的元素赋值
+
+* vector的下标可以用于访问已存在元素而不能用于添加元素
 
 ## 3.4
-```*iter``` 返回迭代器iter所指元素的引用
+
+* ```*iter``` 返回迭代器iter所指元素的引用
+
 ```
 iter->men等价于（*iter）.mem
 vector<int>::iterator it
 ```
-vector<int>::const_iterator只能读取不能修改，常量对象只能用他读取
+
+* vector<int>::const_iterator只能读取不能修改，常量对象只能用他读取
 
 ## 3.5
 a[d]  d必须是一个常量表达式
