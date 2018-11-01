@@ -11,13 +11,13 @@
 ### 2.6
 
 * 格式字符串语法如下:  
-```c#
-Console.WriteLine(格式字符串（含代替标记），替换值1，替换值2，替换值3，...);
-```  
-例子如下:  
-```c#
-Consle.WriteLine("Three integers are {1}, {0} and {1}.", 3, 6);
-```
+    ```c#
+    Console.WriteLine(格式字符串（含代替标记），替换值1，替换值2，替换值3，...);
+    ```  
+  例子如下:  
+    ```c#
+    Consle.WriteLine("Three integers are {1}, {0} and {1}.", 3, 6);
+    ```
 
 ## 第3章 类型、存储和变量
 
@@ -71,19 +71,19 @@ Consle.WriteLine("Three integers are {1}, {0} and {1}.", 3, 6);
     4. 在数据类型后放一组空的方括号
 
 * int型参数数组声明语法例子:
-```c#
-void ListInts(param int[] inVals)
-{}
+    ```c#
+    void ListInts(param int[] inVals)
+    {}
 
-//有两个调用方法提供实参
+    //有两个调用方法提供实参
 
-//一个逗号分隔的该数据类型元素的列表，所有元素必须是方法中声明的类型
-ListInts(10, 20, 30);
+    //一个逗号分隔的该数据类型元素的列表，所有元素必须是方法中声明的类型
+    ListInts(10, 20, 30);
 
-//一个该数据类型的元素的一维数组
-int[] intArray = {1, 2, 3};
-ListInts(intArray);
-```
+    //一个该数据类型的元素的一维数组
+    int[] intArray = {1, 2, 3};
+    ListInts(intArray);
+    ```
 
 ### 5.14
 
