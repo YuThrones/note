@@ -539,3 +539,7 @@ md.Average()
   int[][,] Arr;
   Arr = new int[3][,];
   ```
+
+  ## 第15章 委托
+
+  
