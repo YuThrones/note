@@ -285,3 +285,128 @@ md.Average()
 ```
 
 ### 7.14
+
+* **外部方法** 是在声明中没有实现的方法，其实现常常是用c#之外的语言编写的。 外部方法使用 `extern` 修饰符标记，而且在类的声明中没有实现，实现被分号取代。例:
+  ```c#
+  public static extern int GetCurrentDirectory(int size, StringBuilder buf); 
+  ```
+
+* 声明和实现的链接依赖实现，但是常常由 `DllImport` 特性完成。
+
+## 第8章 表达式和运算符
+
+### 8.2
+
+* **字面量** 是原代码中书写的数字或字符串，表示一个明确类型的、固定的值。
+
+### 8.14
+
+* 声明隐式转换的语法如下,其中 `public` 和 `static` 修饰符是所有用户定义转换必需的:
+    ```c#
+    public static implicit operator TargetType(SourceType Identifier)
+    {
+        ...
+        return ObjectTargetType;
+    }
+    ```
+
+* 显式转换的语法跟隐式相同，除了 `explicit` 替换掉 `implicit` 。
+  ```c#
+  public static implicit operator int (LimitedInt li)
+  {
+      return li.TheValue;
+  }
+  ```
+
+### 8.15
+
+* 运算符重载允许定义c#运算符应该如何操作自定义类型的操作数:
+  ```c#
+  public static LimitedInt operator -(LimitedInt x); // 一元运算符的重载带一个单独的class类型或struct类型的参数
+  public static LimitedInt operator +(LimitedInt x, double y); //二元运算符的重载带两个参数，其中一个至少必须是class或struct类型
+  ```
+
+* 运算符重载方法必须被声明为带 `static` 和 `public` 两个修饰符。
+
+* 可以重载的运算符只有下列这些:
+  ```
+  一元运算符：+、-、!、-、++、--、true、false
+  二元运算符：+、-、*、/、&、|、^、<<、>>、==、!=、>、<、>=、<=
+  ```
+
+### 8.16
+
+* `typeof` 运算符返回作为它的参数的任何类型的 `System.Type` 对象。
+
+## 第9章 语句
+
+### 9.13
+
+* `using` 语句帮助减少额外的运行时错误带来的潜在问题。
+  ```c#
+  using (ResourceType Identifier = Expression) Statement //Statement是使用资源的代码，using语句隐式产生处置该资源的代码。
+  ```
+
+## 第10章 命名空间和程序集
+
+### 10.3
+
+* `using` 指令词必须放在源文件的顶端，在任何类型声明之前。它们应用于当前源文件中的所有命名空间。
+
+* `using` 别名指令允许起一个别名给命名空间或者命名空间内的一个类型
+  ```c#
+  using Syst = System;
+  using SC = System.Console;
+  ```
+
+### 10.4
+
+* 程序集包括:
+  
+  1. 清单
+  
+  2. 类型元数据
+  
+  3. CIL代码(公共中间语言代码)
+  
+  4. 资源
+
+### 10.6
+
+* 强命名程序集有一个唯一的数字签名依附于它。强命名程序集默认只能访问其他强命名程序集。
+
+### 10.8
+
+* 有时候我们会想把DLL放在一个中心位置，这样一个单独的拷贝就可以被系统中其他程序共享。.NET有这样的贮藏库，称为 **全局程序集缓存(GAC)** 。放进GAC的程序集称为 **共享程序集** 。GAC的位置在 Assembly 子目录下，在 Windows 系统目录中。
+
+## 第11章 异常
+
+### 11.2
+
+* 异常用法
+  ```
+  try
+  {
+      ...
+  }
+  catch [(ExceptionType [InstID])]
+  {
+      ...
+  }
+  finally
+  {
+      ...
+  }
+  ```
+
+### 11.3
+
+* 当一个异常发生时，CLR创建该类型的异常对象，寻找合适catch语句处理它。所有异常根本上派生自System.Exception.
+
+### 11.5
+
+* 如果程序的控制流进入了一个带 `finally` 块的 `try` 语句，那么 `finally` 始终会执行，即使 `try` 中含有return语句，也会在返回之前执行 `finally` 中的语句。
+
+### 11.9
+
+* 如果在 `catch` 块内部 `throw` 语句不带异常对象使用，会重新抛出当前异常。
