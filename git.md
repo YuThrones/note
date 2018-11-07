@@ -5,25 +5,25 @@
 * **安装**
 
 **ubuntu** 安装git：
-```
+```bash
 sudo apt-get install git
 ```
 
 老版的ubuntu可能要运行：
-```
+```bash
 sudo apt-get install git-core
 ```
 
 **windows** 安装git：
 [https://git-for-windows.github.io](https://git-for-windows.github.io "git for windows")
 安装成功后需要最后一步设置：
-```
+```bash
 $ git config --global user.name "Your Name"
 $ git config --global user.email "email@example.com"
 ```
 
 * 创建版本库：
-```
+```bash
 git init
 ```
 
@@ -34,45 +34,45 @@ git init
 * 把文件添加到git库流程：
 
 **1.** 添加文件到暂存区(stage)
-```
+```bash
 git add <file>
 ```
 git add \* 可以添加** 所有** 文件
 
 **2.** 把暂存区的所有改动提交到当前分支
-```
+```bash
 git commit -m 'update message'
 ```
 如果修改没有add到暂存区，就不会被commit
 
 * 查看信息
-```
+```bash
 git status
 ```
 掌握版本库当前状态
-```
+```bash
 git diff <file>
 ```
 查看文件修改
 
 * 版本回退
-```
+```bash
 git log
 ```
 查看历史提交记录
-```
+```bash
 git reset --hard HEAD^
 ```
 回退一个版本
-```
+```bash
 git reset --hard HEAD~100
 ```
 回退100个版本
-```
+```bash
 git reset --hard <commit-id>
 ```
 回退到指定版本
-```
+```bash
 git reflog
 ```
 记录每一次的命令，可以看到相应的commit-id
@@ -80,17 +80,17 @@ git reflog
 **注：** HEAD指向的版本就是当前版本
 
 * 撤销修改
-```
+```bash
 git checkout -- <file>
 ```
 撤销修改到最后一次git commit或者git add时的状态
-```
+```bash
 git reset HEAD <file>
 ```
 可以把暂存区的修改撤销掉，重新放回工作区
 
 * 删除文件
-```
+```bash
 rm <file>
 git rm <file>
 ```
@@ -99,7 +99,7 @@ git rm <file>
 * 使用github  
 
 **1.** 创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
-```
+```bash
 ssh-keygen -t rsa -C "youremail@example.com"
 ```
 如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。  
@@ -107,60 +107,60 @@ ssh-keygen -t rsa -C "youremail@example.com"
 **2.** 登陆GitHub，打开“Account settings”，“SSH Keys”页面，然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。
 
 * 关联远程仓库
-```
+```bash
 git remote add origin git@github.com:michaelliao/learngit.git
 ```
 添加后，远程库的名字就是```origin```，也可以改成别的。
-```
+```bash
 git push -u origin master
 ```
 第一次推送```master```分支时，加上了```-u```参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
 
 * 克隆远程仓库
-```
+```bash
 git clone git@github.com:michaelliao/gitskills.git
 ```
 
 * 创建与合并分支
-```
+```bash
 git checkout -b dev
 ```
 创建dev分支并切换到dev分支
 ```git checkout```命令加上```-b```参数表示创建并切换，相当于以下两条命令：
-```
+```bash
 git branch dev
 git checkout dev
 ```
 查看当前分支：
-```
+```bash
 git branch
 ```
 当前分支前面会有一个\*号
-```
+```bash
 git merge dev
 ```
 把dev分支的工作成果合并到master分支上
-```
+```bash
 git branch -d dev
 ```
 删除dev分支
-```
+```bash
 git log --graph --pretty=oneline --abbrev-commit
 ```
 用带参数的```git log```也可以看到分支的合并情况
-```
+```bash
 git merge --no-ff -m "merge with no-ff" dev
 ```
 ```--no-ff```参数，表示禁用```Fast forward```,Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
-```
+```bash
 git stash
 ```
 Git提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续push工作
-```
+```bash
 git stash list
 ```
 ```stash list``` 能够查看储存的工作现场,有两种方法可以恢复：一是用```git stash apply```恢复，但是恢复后，```stash```内容并不删除，你需要用```git stash drop```来删除；另一种方式是用```git stash pop```，恢复的同时把```stash```内容也删了。
-```
+```bash
 git stash apply stash@{0}
 ```
 可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash
@@ -184,20 +184,20 @@ git stash apply stash@{0}
   还可以创建带有说明的标签，用```-a```指定标签名，```-m```指定说明文字
   还可以通过```-s```用私钥签名一个标签
   如果标签打错了，也可以删除：
-```
+```bash
 git tag -d v0.1
 ```
   如果要推送某个标签到远程，使用命令```git push origin <tagname>```
   一次性推送全部尚未推送到远程的本地标签：
-```
+```bash
 git push origin --tags
 ```
   如果标签已经推送到远程，要删除远程标签就麻烦一点，先从本地删除:
-```
+```bash
 git tag -d <tagname>
 ```
   然后，从远程删除。删除命令也是push，但是格式如下：
-```
+```bash
 git push origin :refs/tags/<tagname>
 ```
 
@@ -210,7 +210,7 @@ Bootstrap的官方仓库twbs/bootstrap、你在GitHub上克隆的仓库my/bootst
   如果你希望bootstrap的官方库能接受你的修改，你就可以在GitHub上发起一个pull request。当然，对方是否接受你的pull request就不一定了。
 
 * Git还有很多可配置项。比如，让Git显示颜色，会让命令输出看起来更醒目：
-```
+```bash
 git config --global color.ui true
 ```
 * 在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。不需要从头写.gitignore文件，GitHub已经为我们准备了各种配置文件，只需要组合一下就可以使用了。所有配置文件可以直接在线浏览：https://github.com/github/gitignore
@@ -225,7 +225,7 @@ git config --global color.ui true
   可以用```git check-ignore```命令检查
 
 * 我们只需要敲一行命令，告诉Git，以后st就表示status：
-```
+```bash
 git config --global alias.st status
 ```
 
@@ -233,11 +233,11 @@ git config --global alias.st status
 
 ##搭建Git服务器
 第一步，安装git:
-```
+```bash
 sudo apt-get install git
 ```
 第二步，创建一个git用户，用来运行git服务：
-```
+```bash
 sudo adduser git
 ```
 第三步，创建证书登录：
@@ -246,21 +246,21 @@ sudo adduser git
 
 第四步，初始化Git仓库：
 先选定一个目录作为Git仓库，假定是/srv/sample.git，在/srv目录下输入命令：
-```
+```bash
 sudo git init --bare sample.git
 ```
 Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾。然后，把owner改为git：
-```
+```bash
 sudo chown -R git:git sample.git
 ```
 第五步，禁用shell登录：
 
 出于安全考虑，第二步创建的git用户不允许登录shell，这可以通过编辑/etc/passwd文件完成。找到类似下面的一行：
-```
+```bash
 git:x:1001:1001:,,,:/home/git:/bin/bash
 ```
 改为：
-```
+```bash
 git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
 ```
 这样，git用户可以正常通过ssh使用git，但无法登录shell，因为我们为git用户指定的git-shell每次一登录就自动退出。
@@ -268,7 +268,7 @@ git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
 第六步，克隆远程仓库：
 
 现在，可以通过git clone命令克隆远程仓库了，在各自的电脑上运行：
-```
+```bash
 git clone git@server:/srv/sample.git
 ```
 
