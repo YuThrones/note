@@ -23,7 +23,7 @@
 #### 脚本驱动游戏
 1. `Instantiate()` 创建 `GameObject`。
 2. 通过 `Awakte()` 和 `Start()` 来做初始化。
-3. `Uptate`, `LateUpdate` 和 `FixedUpdate` 更新逻辑
+3. `Update`, `LateUpdate` 和 `FixedUpdate` 更新逻辑
 
 #### 逻辑更新顺序
 1. 场景启动时调用所有的 `Awake()`
