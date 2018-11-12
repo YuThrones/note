@@ -57,3 +57,11 @@
 5. 可以通过设置不同的 `tag` 来区分 `Collider` 。
 6. Unity 使用 `NavMeshAgent` 类帮我们寻找路径。
 7. Unity会为静态对象设置缓存，但是在移动、旋转、缩放的时候缓存会重新计算。被设置刚体的对象被视为动态对象。
+
+### 改变Image的显示内容
+
+* 可以使用 `Texture2d` 生成一份纹理，然后使用 `sprite.Create` 函数生成一个 `sprite` ，然后替换 `Image` 的 `sprite`，示例代码如下
+  ```c#
+  Texture2D texture = (Texture2D)AssetDatabase.LoadAssetAtPath<Texture2D>(string.Format(IconFormat, Icon.Data[icon].icon));
+  PlayerHeadIcon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100);
+  ```

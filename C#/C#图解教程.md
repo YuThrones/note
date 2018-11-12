@@ -605,3 +605,30 @@ md.Average()
 * 事件不是类型，是成员，会隐式初始化为null。
 
 * 最好使用.NET BCL使用的并被指为事件使用标准的预定义委托类型 EventHandler。
+
+### 16.6
+
+* 事件使用的标准模式的根本就是System的命名空间声明的 `EventHandler` 委托类型。声明如下所示:
+  1. 第一个参数用来保存触发事件的对象的引用。由于是object类型，可以匹配任何类型的实例。
+  2. 第二个参数用来保存有关状态对于应用程序来说是否合适的状态信息
+  3. 返回类型是 `void`
+    ```c#
+    public delegate void EventHandler(object sender, EventArg e);
+    ```
+
+* `EventArgs` 被设计为不能传递任何数据。它用于不需要传递数据的事件处理程序。通常会被忽略。如果你希望传递数据，必须声明一个从 `EventArgs` 继承的类，使用合适的字段来保存需要传递的数据。
+
+* 使用自定义委托的方式有两种：
+  1. 第一种方式是使用非泛型委托
+   ```c#
+   public delegate void MyTCEventHandler(object sender, MyTCEventArgs e);
+   ```
+
+  2. 使用 `EventHandler` 泛型委托的方式。
+   ```c#
+   public event EventHandler<MyTCEventArgs> Elapsed;
+   ```
+
+### 16.8
+
+* 可以通过修改 `add` 和 `remove` 运算符的行为来改变 `+=` 和 `-=` 的行为。
