@@ -65,3 +65,7 @@
   Texture2D texture = (Texture2D)AssetDatabase.LoadAssetAtPath<Texture2D>(string.Format(IconFormat, Icon.Data[icon].icon));
   PlayerHeadIcon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100);
   ```
+
+### UI
+
+* UI使用 `SetParent` 函数的时候要注意，可能会导致子控件的 `transform` 数据适配世界改变，为了使用 `prefab` 中设置好的数据，调用 `SetParent` 的时候要给第二个参数 `worldPositionStays` 传 `false` ，这样就不会缩放、位置等乱掉的情况。

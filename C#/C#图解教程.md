@@ -811,3 +811,17 @@ md.Average()
 ### 20.6
 
 * `IEnumerator<T>` 接口使用泛型来返回实际的类型，而不是object类型的对象，它从另外两个接口继承——非泛型的 `IEnumerable` 接口和 `IDisposable` 接口。 `IDisposable` 接口只有一个叫做 `Dispose` 的类型为void的无参方法，用于释放由类占据的非托管资源。
+
+### 20.8
+
+* `yield return` 语句执行了序列中返回的下一项。
+* `yield break` 语句指定在序列中没有更多项。
+
+## 第21章 介绍LINQ
+
+### 21.1
+
+* `LINQ` 是集成到C#和Visual Basic.NET 这些语言中用于提供查询数据能力的一个新特性。以下是 `LINQ` 重要高级特性：
+  1. LINQ(发音为link)代表语言集成查询（Language Integrated Query）
+  2. LINQ是.NET框架的的拓展，它允许我们以数据库查询的方式查询数据集合。
+  3. C# 3.0 包含整合LINQ到语言中的一些拓展，允许我们从数据库、程序对象集合以及XML文档中查询数据。
