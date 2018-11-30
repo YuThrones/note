@@ -825,3 +825,87 @@ md.Average()
   1. LINQ(发音为link)代表语言集成查询（Language Integrated Query）
   2. LINQ是.NET框架的的拓展，它允许我们以数据库查询的方式查询数据集合。
   3. C# 3.0 包含整合LINQ到语言中的一些拓展，允许我们从数据库、程序对象集合以及XML文档中查询数据。
+
+### 21.2
+
+* 匿名类型创建代码示例如下：
+  ```c#
+  static void Main()
+  {
+      var student = new {LName="Jones", FName="Mary", Age=19, Major="History"};
+      Console.WriteLine("{0} {1}, Age {2}, Major:{3}", student.FName, student.LName, student.Age, student.Major);
+  }
+  ```
+* 匿名类型需要注意
+  1. 匿名类型只能配置局部变量使用，不能用于类成员
+  2. 由于匿名类型没有名字，必须使用var作为变量类型
+
+* 有两种形式的语法可以供我们在写LINQ的使用使用
+  1. **查询语法** 是声明形式的，看上去跟SQL语句很相似，查询语句使用查询表达式形式书写。
+  2. **方法语法** 是命令形式的，它使用的是标准的方法调用。方法是一组叫做标准查询运算符的方法。
+
+* 两种方法使用示例
+  ```c#
+  static void Main()
+  {
+      int[] numbers = {2, 5, 28, 31};
+      var numsQuery = from n in numbers // 查询语法
+                      where n < 20
+                      select n;
+      var numsMethod = numbers.Where(x => x < 20); // 方法语法
+      int numsCount = (from n in numbers // 两种形式的结合
+                       where n < 20
+                       select n).Count();
+  }
+  ```
+
+### 21.4
+
+* `LINQ` 查询可以返回两种类型的结果：
+  1. 一个枚举，列出了满足查询参数的项列表，如果查询表达式返回枚举，查询一直到处理枚举时才执行，如果枚举被处理多次，查询就会被**执行多次**。
+  2. 一个叫做标量的单一值，它是满足查询条件的结果的某种摘要形式。如果查询返回标量，查询会立即执行并且把结果放到查询变量中。
+
+### 21.5
+
+* 联结语法如下:
+  ```
+  join Identifier in Collection2 on Field1 equals Fields2
+  ```
+  示例
+  ```c#
+  var query = from s in students 
+              join c in studentsInCourses on s.StID equals C.StID;
+  ```
+
+* `let` 语句接受一个表达式的运算并且把它赋值给一个需要在其他运算中使用的标志符。
+  ```c#
+  let Identifier = Expression
+  ```
+* `orderby` 子句接受一个表达式并根据表达式依次返回结果项。默认排序是升序，可以使用`ascending` 和 `descending` 关键词显式设置元素的排序为升序或降序。可以有任意多个子句，必须用逗号分离。
+
+* `group` 子句把 `select` 的对象根据一些标准分组，作为分组依据的项叫键(key)。`gourp` 子句不从原始的数据源中返回可枚举项的可枚举类型，而是返回可以枚举已经形成的项的分组的可枚举类型。示例如下:
+  ```c#
+  stctic void Main()
+  {
+      var students = new []
+      {
+          new {LName"Jones", Fame="Mary", Age=19, Major="History"},
+          new {LName"Jones", Fame="Mary", Age=19, Major="History"},
+          new {LName"Jones", Fame="Mary", Age=19, Major="History"}
+      };
+
+      var query = from student in students,
+                  group student by student.Major;
+
+      foreach(var s in query) // 枚举分组
+      {
+          Console.WriteLine("{0}", s.Key);
+
+          foreach(var t in s)
+          {
+              Console.WriteLine("{0} {1}" , t.LName, t.FName);
+          }
+      }
+  }
+  ```
+
