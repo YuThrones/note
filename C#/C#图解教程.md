@@ -938,3 +938,92 @@ Timer(TimerCallback callback, object state, uint dueTIme, uint period)
 ### 23.1
 
 * 预处理指令指示编译器如何处理源代码，在C和C++中有实际的预处理阶段，此时预处理程序遍历源代码并且为之后的编译阶段准备文本输出流。在C#中没有实际的预处理程序。
+
+## 第24章 反射和特性
+
+### 24.1
+
+* 有关程序及其类型的数据被称作元数据，它们保存在程序集中。一个运行的程序查看本身的元数据或其他程序的元数据的行为叫反射。
+
+### 24.4
+
+* **特性（attribute）** 是一种允许我们向程序集增加元数据的语言结构，它是用于保存程序结构信息的某种特殊类型的类。特性的目的是把程序结构的某组元数据嵌入到程序集。
+
+### 24.8
+
+* 所有特性类派生自 `System.Attribute`，在声明构造函数时必须使用全名，包括后缀，只可以在应用特性时使用短名称。应用一个特性是一条声明语句，它不会决定什么时候构造特性类的对象。
+
+* 可以通过命名参数给构造函数三个实参：
+  ```c#
+  public sealed class MyAttributeAttribute : System.Attribute
+  {
+      public string Description;
+      public string Ver;
+      public string Reviewer;
+
+      public  MyAttributeAttribute(string desc) 
+      {
+          Description = desc;
+      }
+  }
+
+  [MyAttribute("An excellent class", Reviewer="Amy McArthur", Ver="7.15.33")]
+  class MyClass
+  {...}
+  ```
+
+* 可以使用 `AttributeUsage` 来限制特性使用在某个目标类型上
+  ```c#
+  [AttributeUsage(AttributeTarget.Method | AttributeTarget.Constructor)]
+  public sealed class MyAttributeAttribute:System.Attribute
+  ```
+
+### 24.9
+
+* 使用 `IsDefined` 方法可以检测某个特性是否应用到了某个类上。
+  ```c#
+  class Program
+  {
+      static void Main()
+      {
+          MyClass mc = new MyClass();
+          Type t = mc.GetType();
+          bool isDefined = t.IsDefined(typeof(MyAttributeAttribute), false);
+      }
+  }
+  ```
+
+* 可以使用 `GetCustomAttribute` 方法返回应用到结构的特性的数组。
+
+## 第25章 其他主题
+
+### 25.1
+
+* 字符串是 Unicode字符串数组，是不能被修改的。
+
+### 25.2
+
+* 字符串格式化形式如下：
+  ```c#
+  Console.WriteLine("The value : {0:C}", 500);
+  // {index, alignment:format}
+  ```
+
+### 25.4
+
+* 可以从值类型创建可空类型，并通过 `HasValue` 属性判断值是否有效，通过 `Value`属性返回变量的值，如果变量有效的话。
+  ```c#
+  int? myInt1 = 15
+  if (myInt1.HasValue)
+    Console.WriteLine("{0}", myInt1.Value);
+  ```
+
+### 25.6
+
+* 可以使用三个正斜杠来表示文档注释
+  ```c#
+  /// <summary>
+  /// balabala
+  /// balabala
+  /// <summary>  
+  ```
