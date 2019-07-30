@@ -267,3 +267,83 @@
   ```
   > db.ensureIndex({"location" : "2d", "desc" : 1})
   ```
+
+## 第6章 聚合
+
+### 6.1 count
+
+* `count` 是最简单的聚合工具，返回集合中的文档数量:
+  ```
+  > db.foo.count()
+  ```
+  不论集合多大，都会很快返回总的文档数量，但是增加查询条件会变慢
+  ```
+  > db.foo.count({"x":1})
+  ```
+
+### 6.2 distinct
+
+* `distinct` 用来找出给定键的所有不同的值，使用时必须指定集合和键。
+  ```
+  > db.runCommand({"distinct": "people", "key" : "age"}})
+  ```
+
+### 6.3 group
+
+* `group` 做的聚合选定分组依据的键，根据键值不同分成若干组，可以聚合每一组内的文档，产生一个结果文档。
+  ```
+  > db.runCommand({
+    "ns" : "stocks",
+    "key" : "day",
+    "initial" : {"time" : 0},
+    "$reduce" : function(doc, prev) {
+      if (doc.time > prev.time) {
+        prev.price = doc.price;
+        prev.time = doc.time;
+      }  
+    "condition" : {"day" : {"$gt" : "2010/09/30"}}
+    }})
+  ```
+
+* `"ns" : " stocks"` 指定要分组的集合。
+  
+* `"key" : "day"` 指定文档分组依据的键。
+
+* `"initial" : {"time" : 0}` 每一组 `reduce` 函数调用的初始时间，会作为初始文档传递给后续过程。每一组的所有成员都会使用这个累加器，所以改变会保留住。
+  
+* `"$reduce" : function(doc, prev) {...}` 每个文档都对应一次这个调用。系统会传递两个参数：当前文档和累加器文档（本组当前的结果）
+
+* `condition` 的作用是只处理满足条件的文档。
+
+* 有的文档没有依据的键，就都会被分到一组，相应的部分使用 "day : null" 这样的形式，在 "condition" 中加入 `"day" : {"$exists" : true}` 就可以去掉这组。
+
+* 完成器(finalizer)用以精简从数据库传到用户的数据，可以在每组结果传递到客户端之前被调用一次。
+  ```
+  > db.runCommand({"group":{
+    ...
+    "finalize" : function(prev) {
+      var mostPopular = 0;
+      for (i in prev.tags) {
+        if (prev.tags[i] > mostPopular){
+          prev.tag = i;
+          mostPopular = prev.tags[i];
+        }
+      }
+    }
+  }})
+  ```
+
+* 可以使用 `$keyf` 键定义分组函数:
+  ```
+  > db.posts.group("ns":"posts",
+  ... "$keyf" :function(x) {return x.category.toLowerCase();},
+  ...)
+  ```
+
+### 6.4 MapReduce
+
+* count、distinct、group能做的上述事情 MapReduce都能做，是一个可以轻轻并行化到多个服务器的聚合方法，它会拆分问题，将各个部分发送到不同的机器上，让每台机器都完成一部分。
+
+* MapReduce有几个步骤，最开始是映射(map)，将操作映射到集合中的每个文档，这个从操作要么“无作为”，要么“产生一些键和X个值”。然后是中间环节，称作洗牌（shuffle），按照键分组，并将产生的键值组成列表放到对应的键中。化简(reduce)这把列表中的值华建伟一个单值并返回，接着进行洗牌，知道每个键的列表都只有一个值，也就是最后结果。
+
+* MapReduce的代价是速度，比group还蛮，不能用在实时环境中。
