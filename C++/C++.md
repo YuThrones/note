@@ -1,5 +1,5 @@
-#C++
-##Union
+# C++
+## Union
 * “联合”与“结构”有一些相似之处。但两者有本质上的不同。在结构中各成员有各自的内存空间， 一个结构变量的总长度是各成员长度之和（空结构除外，同时不考虑边界调整）。而在“联合”中，各成员共享一段内存空间， 一个联合变量的长度等于各成员中最长的长度。应该说明的是， 这里所谓的共享不是指把多个成员同时装入一个联合变量内， 而是指该联合变量可被赋予任一成员值，但**每次只能赋一种值， 赋入新值则冲去旧值。**  
 
 ```
@@ -19,7 +19,7 @@ void main()
 答案：266 (低位低地址，高位高地址，内存占用情况是Ox010A）
 ```
 
-##static_cast, dynamic_cast, reinterpret_cast, const_cast区别比较
+## static_cast, dynamic_cast, reinterpret_cast, const_cast区别比较
 * static_cast <new_type> (expression) 静态转换
  
 
@@ -46,7 +46,7 @@ B * b = reinterpret_cast<B*>(a);//correct!
 这个转换好理解，可以将常量转成非常量。
 * C风格转换是“万能的转换”，但需要程序员把握转换的安全性，编译器无能为力；static_cast最接近于C风格转换，但在无关类指针转换时，编译器会报错，提升了安全性；dynamic_cast要求转换类型必须是指针或引用，且在下行转换时要求基类是多态的，如果发现下行转换不安全，dynamic_cast返回一个null指针，dynamic_cast总是认为void*之间的转换是安全的；reinterpret_cast可以对无关类指针进行转换，甚至可以直接将整型值转成指针，这种转换是底层的，有较强的平台依赖性，可移植性差；const_cast可以将常量转成非常量，但不会破坏原常量的const属性，只是返回一个去掉const的变量。
 
-##排序算法
+## 排序算法
 ![排序算法](http://img.my.csdn.net/uploads/201207/17/1342514529_5795.jpg)  
 
 * 当n较大，则应采用时间复杂度为O(nlog2n)的排序方法：快速排序、堆排序或归并排序序。
@@ -151,15 +151,15 @@ int main(){
 * **桶排序/基数排序(Radix Sort)**  
   是将阵列分到有限数量的桶子里。每个桶子再个别排序（有可能再使用别的排序算法或是以递回方式继续使用桶排序进行排序）。桶排序是鸽巢排序的一种归纳结果。当要被排序的阵列内的数值是均匀分配的时候，桶排序使用线性时间（Θ（n））。但桶排序并不是 比较排序，他不受到 O(n log n) 下限的影响。
 
-##KMP算法
+## KMP算法
 [http://blog.csdn.net/yutianzuijin/article/details/11954939/](http://blog.csdn.net/yutianzuijin/article/details/11954939/ "KMP算法详解")
 
-##判断单链表是否存在环
+## 判断单链表是否存在环
 [http://blog.sina.com.cn/s/blog_725dd1010100tqwp.html](http://blog.sina.com.cn/s/blog_725dd1010100tqwp.html "单链表是否存在环")
 
 * 在计算机编程语言中用来为复杂的声明定义简单的别名，与宏定义有些差异。它本身是一种存储类的关键字，与auto、extern、mutable、static、register等关键字不能出现在同一个表达式中。
 
-##泛型
+## 泛型
 * 泛型函数：
 ```
 template  <typename T1, typename T2>
@@ -168,7 +168,7 @@ T1 fun(T1, T2, int )
 ```  
 * 泛型类：
 ```
-##声明部分
+## 声明部分
 template  <class T1, class T2 >  
 class A {
    private:
@@ -178,14 +178,14 @@ class A {
   int fun1(T1 x, int y );
  T2 fun2(T1 x, T2 y);
 }
-##实现部分
+## 实现部分
 template  <class T1, class T2 >
 int A<T1>:: fun1(T1 x, int y ){//实现…… }
  template  <class T1, class T2 >
 T2 A<T1,T2>:: fun2(T1 x, T2 y) {//实现…… }
 ```
 
-##文件读写
+## 文件读写
 [http://blog.csdn.net/kingstar158/article/details/6859379/](http://blog.csdn.net/kingstar158/article/details/6859379/)
 ```
 #include <fstream>  
@@ -227,28 +227,28 @@ fstream          //读写操作，对打开的文件可进行读写操作
    }  
 ```
 
-##const用法
+## const用法
 1. 用于指针的两种情况:const是一个左结合的类型修饰符.
 ```
 int const *A; //A可变,*A不可变
 int *const A; //A不可变,*A可变
 ```
-2.限定函数的传递值参数:
+2. 限定函数的传递值参数:
 ```
 void function(const int Var); //传递过来的参数在函数内不可以改变.
 ```
-3.限定函数返回值型.
+3. 限定函数返回值型.
 ```
 const int function(); //此时const无意义
 const myclassname function(); //函数返回自定义类型myclassname.
 ```
-4限定函数类型.
+4. 限定函数类型.
 ```
 void function()const; //常成员函数, 常成员函数是不能改变成员变量值的函数。
 ```
 const修饰的对象，该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图。
 
-##随机数生成
+## 随机数生成
 * C++中常用rand()函数生成随机数，我们一般将系统当前时间(Unix时间)作为种子
 ```
 #include <ctime>
@@ -257,7 +257,7 @@ srand(unsigned(time(0)));
 cout << rand();
 ```
 
-##constexpr
+## constexpr
 constexpr是C++11中新增的关键字，其语义是“常量表达式”，也就是在编译期可求值的表达式。最基础的常量表达式就是字面值或全局变量/函数的地址或sizeof等关键字返回的结果，而其它常量表达式都是由基础表达式通过各种确定的运算得到的。constexpr值可用于enum、switch、数组长度等场合。
 
 constexpr所修饰的变量一定是编译期可求值的，所修饰的函数在其所有参数都是constexpr时，一定会返回constexpr。
@@ -269,7 +269,7 @@ constexpr所修饰的变量一定是编译期可求值的，所修饰的函数�
 编译器可以在编译期对constexpr的代码进行非常大的优化，比如将用到的constexpr表达式都直接替换成最终结果等。
 相比宏来说，没有额外的开销，但更安全可靠。
 
-##多线程
+## 多线程
 * 旧版C++使用多线程需要系统支持：参考
 [http://blog.sina.com.cn/s/blog_4ae717db01013z9m.html](http://blog.sina.com.cn/s/blog_4ae717db01013z9m.html)
 * C++ 11 多线程：参考
