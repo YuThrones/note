@@ -1,4 +1,4 @@
-#python基础
+# python基础
 * input和print
 ```
 name = input("Please input your name:\n")
