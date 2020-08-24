@@ -187,7 +187,7 @@ s.__class__查看类型
 hasattr(a,"setname") #检查是否存在该方法
 random.choice从非空序列中随机选择元素
 
-###8.1
+### 8.1
 ```
 raise Exception引发异常
 try:
