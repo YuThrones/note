@@ -312,3 +312,4 @@ typedef　char*　pstr;
 int　mystrcmp(const　pstr　p1,const　pstr　p3);
 ```
 
+* C++的类如果需要自己写有参的构造函数，最好也提供无参构造函数，否则在诸如继承、列表初始化等地方会默认调用无参构造函数，不提供会编译失败。
