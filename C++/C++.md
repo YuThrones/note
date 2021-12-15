@@ -2,8 +2,8 @@
 ## Union
 * “联合”与“结构”有一些相似之处。但两者有本质上的不同。在结构中各成员有各自的内存空间， 一个结构变量的总长度是各成员长度之和（空结构除外，同时不考虑边界调整）。而在“联合”中，各成员共享一段内存空间， 一个联合变量的长度等于各成员中最长的长度。应该说明的是， 这里所谓的共享不是指把多个成员同时装入一个联合变量内， 而是指该联合变量可被赋予任一成员值，但**每次只能赋一种值， 赋入新值则冲去旧值。**  
 
-```
-＃include <stdio.h>
+```cpp
+#include <stdio.h>
 union
 {
 　　int i;
@@ -36,7 +36,7 @@ int i = static_cast<int>(d);
  
 
 这个转换是最“不安全”的，两个没有任何关系的类指针之间转换都可以用这个转换实现，举个例子：
-```
+```cpp
 class A {};
 class B {};
 A * a = new A;
@@ -231,28 +231,28 @@ int main () {
 
 ## const用法
 1. 用于指针的两种情况:const是一个左结合的类型修饰符.
-```
+```cpp
 int const *A; //A可变,*A不可变
 int *const A; //A不可变,*A可变
 ```
 2. 限定函数的传递值参数:
-```
+```cpp
 void function(const int Var); //传递过来的参数在函数内不可以改变.
 ```
 3. 限定函数返回值型.
-```
+```cpp
 const int function(); //此时const无意义
 const myclassname function(); //函数返回自定义类型myclassname.
 ```
 4. 限定函数类型.
-```
+```cpp
 void function()const; //常成员函数, 常成员函数是不能改变成员变量值的函数。
 ```
 const修饰的对象，该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图。
 
 ## 随机数生成
 * C++中常用rand()函数生成随机数，我们一般将系统当前时间(Unix时间)作为种子
-```
+```cpp
 #include <ctime>
 #include <cstdlib>
 srand(unsigned(time(0)));
@@ -295,18 +295,18 @@ constexpr所修饰的变量一定是编译期可求值的，所修饰的函数�
 
 * typedef 还可以掩饰复合类型，如指针和数组。  
 例如，你不用像下面这样重复定义有 81 个字符元素的数组：
-```
+```cpp
 char　line[81];
 char　text[81];
 ```
 只需这样定义，Line类型即代表了具有81个元素的字符数组，使用方法如下：
-```
+```cpp
 typedef char Line[81];
 Line　text,line;
 getline(text);
 ```
 同样，可以像下面这样隐藏指针语法：
-```
+```cpp
 typedef　char*　pstr;
 int　mystrcmp(const　pstr　p1,const　pstr　p3);
 ```
