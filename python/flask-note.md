@@ -1,16 +1,16 @@
-###Install virtualenv and use
+### Install virtualenv and use
 	$ sudo apt-get install python-virtualenv
-###User
+### User
 	$ git clone https://github.com/miguelgrinberg/flasky.git
 	$ cd flasky
 	$ git checkout 1a
 	$ virtualenv venv
 	$ source venv/bin/activate
 
-###Install flask
+### Install flask
 	$ pip install flask
 
-###hello.py
+### hello.py
 	from flask import Flask   
 	app = Flask(__name__)
 	@app.route('/')  
@@ -22,7 +22,7 @@
 	if __name__ == '__main__':
  	   app.run(debug=True)
 
-#request
+### request
 	from flask import request
 	@app.route('/')
 	def index():

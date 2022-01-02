@@ -9,7 +9,7 @@ Playbook是基于yaml开发的
 * Ansible使用Jinja2作为模板引擎  
 * ansible命令并不常用，一般用于点对点的、一次性的事情上  
   
-##第二章 playbook
+## 第二章 playbook
 * 示例web-notls.yml   
   
 ```
@@ -47,7 +47,7 @@ testserver ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 
 * 类Unix操作系统中的文本文件第一行前两个字符为#！时叫做shebang，操作系统的程序载入器会分析#！后的内容，将这些内容作为解释器指令，并将含有这个shebang的文件及其路径作为该解释器的参数。  
 
-###YAML知识：  
+### YAML知识：  
 * 文件的起始  
 YAML文件以三个减号`---`开头以标记文档的开始，不过如果你忘记在playbook文件开头敲三个减号，不会影响Ansible的运行。  
 * 注释  
@@ -128,7 +128,7 @@ command:"{{ myapp }}"
 
 * handlers与task想死，但是只有被task通知的时候才会运行。如果Ansiblel识别到task改变了系统的状态，task就会触发通知机制。使用notify来通知。handler指挥在所有任务执行后执行，而且即使被通知了多次，也只会执行一次。它会按照play中定义的顺序执行，而不是被通知的顺序。
 
-##第三章 inventory：描述你的服务器
+## 第三章 inventory：描述你的服务器
 * Ansible可管理的主机集合叫做inventory。在Ansible中，描述主机的默认方法是列在inventory文件中。
 * 群组：Ansible自动定义了一个群组叫all，包含所有inventory中的主机  
 可以定义群组的嵌套，比如定义一个包括web和task两个群组的“django”群组  
