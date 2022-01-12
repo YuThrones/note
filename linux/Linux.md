@@ -41,7 +41,7 @@ resolvconf -u
 ```
 
 ## 系统常识
-* Linux一般将档案可存取的身份分为三个类别，分别是 owner/group/others，丏三种身份各有 read/write/execute 等权限
+* Linux一般将档案可存取的身份分为三个类别，分别是 owner/group/others，三种身份各有 read/write/execute 等权限
 
 ### 文件档案类型
 * 正规档案（regular file），用`ls -al` 显示时第一个字符为 `-`，根据档案内容大致可以分为：
@@ -122,12 +122,12 @@ resolvconf -u
 
 * 各查看命令：
  * cat 由第一行开始显示档案内容
- * tac 从最后一行开始显示，可以看出 tac 是 cat 癿倒着写！
- * nl 显示癿时候，顺道输出行号！
- * more 一页一页癿显示档案内容
+ * tac 从最后一行开始显示，可以看出 tac 是 cat的倒着写！
+ * nl 显示的时候，顺道输出行号！
+ * more 一页一页的显示档案内容
  * less 与 more 类似，但是比 more 更好的是，他可以往前翻页！
  * head 叧看头几行
- * tail 叧看尾巳几行
+ * tail 叧看尾几行
  * od 以二进制的方式读取档案内容！
 
 * umask指定目前用户在建立档案或者目录时候的默认值，它指的是要去除的权限。
@@ -166,14 +166,14 @@ resolvconf -u
 * `mkfs` 格式化文件系统，可以用`-t` 接ext3、ext2,vfat等
 * `fsck` 扫描修复磁盘分区
 
-* 常见癿压缩文件案扩展名吧：
+* 常见的压缩文件案扩展名吧：
 ```
 .Z compress 程序压缩的档案；
 .gz gzip 程序压缩的档案；
 .bz2 bzip2 程序压缩的档案；
 .tar tar 程序打包的数据，并没有压缩过；
 .tar.gz tar 程序打包的档案，其中并且经过 gzip 的压缩
-.tar.bz2 tar 程序打包的档案，其中并且经过 bzip2 癿压缩
+.tar.bz2 tar 程序打包的档案，其中并且经过 bzip2 的压缩
 ```
 
 * zcat 则可以读取纯文本档被压缩后的压缩文件

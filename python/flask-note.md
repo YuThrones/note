@@ -37,7 +37,7 @@
 * after\_request：注册一个函数，如果没有未处理的异常抛出，在每次请求之后运行。
 * teardown\_request：注册一个函数，即使有未处理的异常抛出，也在每次请求之后运行。
 
-###response
+### response
 	from flask import make_response
 	@app.route('/')
 	def index():
@@ -45,7 +45,7 @@
  	   response.set_cookie('answer', '42')
  	   return response
 
-###flask拓展
+### flask拓展
 `(venv) $ pip install flask-script`
 
 	from flask.ext.script import Manager
@@ -56,7 +56,7 @@
 
 `python hello.py runserver`
 
-###渲染模板
+### 渲染模板
 	from flask import Flask, render_template
 	# ...
 	@app.route('/')
@@ -66,10 +66,10 @@
 	def user(name):
 	    return render_template('user.html', name=name）
 
-###过滤器
+### 过滤器
 Hello, {{ name|capitalize }}
 
-###模板控制结构
+### 模板控制结构
 #控制
 	{% if user %}
 	    Hello, {{ user }}!
@@ -99,7 +99,7 @@ Hello, {{ name|capitalize }}
 	    {% endfor %}
 	</ul>
 
-###模板继承
+### 模板继承
 #base.html
 	<html>
 	<head>
@@ -162,18 +162,18 @@ Hello, {{ name|capitalize }}
 	</div>
 	{% endblock %}
 
-###自定义错误页面
+### 自定义错误页面
 	@app.errorhandler(404)
 	def page_not_found(e):
     	return render_template('404.html'), 404
 
-###链接
+### 链接
 使用url\_for() 生成动态地址时， 将动态部分作为关键字参数传入。例如，url\_for
 ('user', name='john', \_external=True) 的返回结果是http://localhost:5000/user/john。  
 传入url\_for() 的关键字参数不仅限于动态路由中的参数。函数能将任何额外参数添加到
 查询字符串中。例如，url\_for('index', page=2) 的返回结果是/?page=2。
 
-###静态文件
+### 静态文件
 调用url_for('static', filename='css/styles.css', _external=True) 得到的结果是http://
 localhost:5000/static/css/styles.css。
 默认设置下，Flask 在程序根目录中名为static 的子目录中寻找静态文件。如果需要，可在
@@ -212,17 +212,17 @@ static 文件夹中使用子文件夹存放文件。服务器收到前面那个U
 	<p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
 	<p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 
-##4.Web表单
+## 4.Web表单
 
-###Flask-WTF安装
+### Flask-WTF安装
 	(venv) $ pip install flask-wtf
-###设置秘钥  
+### 设置秘钥  
 hello.py：设置Flask-WTF  
 
 	app = Flask(__name__)
 	app.config['SECRET_KEY'] = 'hard to guess string'
 
-###hello.py：定义表单类
+### hello.py：定义表单类
 	from flask.ext.wtf import Form
 	from wtforms import StringField, SubmitField
 	from wtforms.validators import Required
@@ -230,7 +230,7 @@ hello.py：设置Flask-WTF
 		name = StringField('What is your name?', validators=[Required()])
 		submit = SubmitField('Submit')
 
-###hello.py：路由方法
+### hello.py：路由方法
 	@app.route('/', methods=['GET', 'POST'])
 	def index():
 		name = None
@@ -248,7 +248,7 @@ hello.py：设置Flask-WTF
 			return redirect(url_for('index'))
 		return render_template('index.html', form=form, name=session.get('name'))
 
-###hello.py：Flash 消息
+### hello.py：Flash 消息
 	from flask import Flask, render_template, session, redirect, url_for, flash
 	@app.route('/', methods=['GET', 'POST'])
 	def index():
@@ -262,11 +262,11 @@ hello.py：设置Flask-WTF
 		return render_template('index.html',
 			form = form, name = session.get('name'))
 
-###，Flask-SQLAlchemy 也使用pip 安装：
+### Flask-SQLAlchemy 也使用pip 安装：
 `(venv) $ pip install flask-sqlalchemy`  
 mysql的url:  **mysql://username:password@hostname/databas**
 
-###hello.py：配置数据库
+### hello.py：配置数据库
 	from flask.ext.sqlalchemy import SQLAlchemy
 	basedir = os.path.abspath(os.path.dirname(__file__))
 	app = Flask(__name__)
@@ -289,7 +289,7 @@ mysql的url:  **mysql://username:password@hostname/databas**
 		def __repr__(self):
 			return '<User %r>' % self.username
 
-###hello.py：关系
+### hello.py：关系
 	class Role(db.Model):
 		# ...
 		users = db.relationship('User', backref='role')
