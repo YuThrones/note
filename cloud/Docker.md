@@ -1,5 +1,5 @@
-#Docker
-##简介
+# Docker
+## 简介
 * Docker依赖于“写时复制”模型，修改应用程序非常迅速，拥有很高的性能
 * Docker的核心组件：
   * Docker客户端和服务器
@@ -21,7 +21,7 @@
     * 日志：容器产生的STDOUT、STDERR和STDIN这些IO流都会被收集并计入日志，用来进行日志分析和故障排错
     * 交互式Shell：用户可以创建一个伪tty终端，将其连接到STDIN，为容器提供一个交互式的Shell
 
-##Docker安装
+## Docker安装
 * 前提条件：
   * 64位CPU的计算机
   * Linux3.8或者更高版本的内核
@@ -66,7 +66,7 @@
 ``` sudo status docker ```
   可以使用stop和start来停止和启动Docker守护进程
 
-##Docker入门
+## Docker入门
 * 查看Docker程序是否存在：  
 ``` sudo docker info ```
 
@@ -133,7 +133,7 @@ sudo docker run --restart=always --name daemon_dave -d ubuntu /bin/sh -c "while 
 ```docker rm `docker ps -a -q` ```
   ```-q``` 标志表示只需要返回ID不需要其他信息，通过ID删除所有容器
 
-##使用镜像和仓库
+## 使用镜像和仓库
 * Docker镜像是由文件系统叠加而成，最底层是一个引导文件系统，即**bootfs**，当一个容器启动后，引导文件系统会被卸载，流出更多空间供initrd磁盘镜像使用。  
   Docker镜像的第二层是root文件系统**rootfs**，它可以是一种或多种操作系统（如Debian或者Ubuntu），在Docker里，它永远是只读状态，Docker利用联合加载技术在它上面加载更多只读文件系统，联合加载指一次同时加载一个或多个文件系统，但是在外面看起来只能看到一个文件系统。  
   Docker底层是基础镜像，最顶层是读写层，采用**写时复制**。
