@@ -1,5 +1,5 @@
-#Ansible：Up and running  
-##第一章 概述  
+# Ansible：Up and running  
+## 第一章 概述  
 * Ansible中将脚本称作playbook，它描述了哪些主机需要哪些配置，执行命令如下：
 ```ansible-playbook webservers.yml```  
 Playbook是基于yaml开发的  
